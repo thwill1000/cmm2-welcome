@@ -8,6 +8,7 @@ mkdir -p $base
 mkdir -p $base/eliza
 mkdir -p $base/launcher
 mkdir -p $base/lunar
+mkdir -p $base/turtle
 #mkdir -p $base/src
 
 cp ChangeLog $base
@@ -18,6 +19,7 @@ cp welcome.bas $base
 cp -R eliza/* $base/eliza
 cp -R launcher/* $base/launcher
 cp -R lunar/* $base/lunar
+cp -R turtle/* $base/turtle
 #cp docs/sptools.pdf $base
 
 cd $release_dir
