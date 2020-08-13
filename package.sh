@@ -9,6 +9,7 @@ mkdir -p $base/eliza
 mkdir -p $base/graphics
 mkdir -p $base/launcher
 mkdir -p $base/lunar
+mkdir -p $base/pirate
 mkdir -p $base/turtle
 #mkdir -p $base/src
 
@@ -21,6 +22,7 @@ cp -R eliza/* $base/eliza
 cp -R eliza/* $base/graphics
 cp -R launcher/* $base/launcher
 cp -R lunar/* $base/lunar
+cp -R pirate/* $base/pirate
 cp -R turtle/* $base/turtle
 #cp docs/sptools.pdf $base
 
