@@ -4,35 +4,19 @@ Option Explicit
 Option Default Integer
 Option Base 1
 
-Const VERSION$ = "Version 0.1"
+#Include "launcher.inc"
 
 Dim contents$(10, 2)
 Dim denizens$(20, 3)
 
-main()
+Mode 1
+
+read_string_data_2d("CONTENTS", contents$())
+read_string_data_2d("DENIZENS", denizens$())
+
+Do While show_menu() : Loop
+
 End
-
-Sub main()
-  Local i, k$
-
-  Cls
-
-  read_string_data_2d("CONTENTS", contents$())
-  read_string_data_2d("DENIZENS", denizens$())
-
-  Print "Welcome to the Colour Maximite 2"
-  Print VERSION$
-
-  Do While show_menu() : Loop
-
-  'Print "Contents:"
-  'dump_string_array_2d(contents$())
-  'Print
-
-  'Print "Denizens:"
-  'dump_string_array_2d(denizens$())
-  'Print
-End Sub
 
 Sub read_string_data_2d(section$, a$())
   Local i = 1, j = 1, s$
@@ -50,8 +34,11 @@ End Sub
 Function show_menu()
   Local i, k$
 
-  show_menu = 1
+  Cls
 
+  Print
+  Print "Welcome to the Colour Maximite 2"
+  Print VERSION$
   Print
   Print "Press a key to select an option:"
   Print
@@ -66,6 +53,8 @@ Function show_menu()
   ' Clear the keyboard buffer.
   Do While Inkey$ <> ""
   Loop
+
+  show_menu = 1
 
   Do
     k$ = LCase$(Inkey$)
@@ -83,24 +72,8 @@ Sub launch_program(i)
   If i < 0 Or contents$(i, 2) = "" Then Exit Sub
 
   Local f$ = get_parent$(Mm.Info$(Current)) + "/../" + contents$(i, 2)
-  Print f$
   run_first_program(f$)
 End Sub
-
-' Gets the parent directory of 'f$', of the empty string if it does not have one.
-Function get_parent$(f$)
-  Local ch$, i
-
-  For i = Len(f$) To 1 Step -1
-    ch$ = Mid$(f$, i, 1)
-    If InStr("/\", ch$) > 0 Then Exit For
-  Next i
-  If i = 0 Then
-    get_parent$ = ""
-  Else
-    get_parent$ = Left$(f$, i - 1)
-  EndIf
-End Function
 
 Sub run_first_program(d$)
   Const MAX_NUM_FILES = 20
@@ -123,18 +96,18 @@ Sub run_first_program(d$)
   Sort file_list$()
 
   Local cmd$ = "Run " + Chr$(34) + d$ + "/" + file_list$(1) + Chr$(34) + ", --welcome"
-  Print cmd$
+'  Print cmd$
   Execute(cmd$)
 End Sub
 
 Sub show_credits()
-  Local i
+  Cls
 
   Print
   Print "This Welcome Disk was brought to you by the Denizens of The Back Shed:"
   Print
 
-  i = 1
+  Local i = 1
   Do While denizens$(i, 1) <> ""
     Print "  " denizens$(i, 1);
     If denizens$(i, 2) <> "" Then
@@ -153,6 +126,11 @@ Sub show_credits()
   Print
   Print "  Geoff Graham, Peter Mather & 'The Team' - for creating the Colour Maximite 2"
   Print "  Scott Adams - for permission to include 'Pirate Adventure'"
+  Print
+  Print "Press any key to return to the menu."
+
+  Do While Inkey$ <> "" : Loop
+  Do While Inkey$ = "" : Loop
 End Sub
 
 Function quit()

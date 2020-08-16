@@ -6,7 +6,7 @@
   '   August 2020
   '
   ' v6 - fixed over-writing of "Press [H|h] for Help" text
-  '	   - tidied up with MMBASIC keywords in uppercase 
+  '    - tidied up with MMBASIC keywords in uppercase
   ' v5 - added help (of sorts)
   '    - added sun to moonscape
   '    - added up arrow as a panic stop/start/pause
@@ -27,8 +27,10 @@
   ' Landed.mod "The Eagle has landed"
   ' Success.wav - not used in this version but you can try it!
   ' Crash.wav
+
+#Include "../launcher/launcher.inc"
   
-  'Option Explicit
+  ' Option Explicit
   MODE 1,8  ' default but still...
   CLS
   
@@ -59,7 +61,9 @@
   ' Finally, the 38 total sprites are then yanked from the page.
   PAGE WRITE 2
   CLS
-  LOAD PNG "LanderPict.png"
+  Print VERSION$
+  Dim f$ = get_parent$(Mm.Info$(Current)) + "/LanderPict.png"
+  LOAD PNG f$
   
   ' generate the rotations
   FOR i = 1 TO 18
@@ -298,7 +302,7 @@
 Paused:
       PAUSE 50  'This controls the speed of the game   
     
-	LOOP UNTIL done
+    LOOP UNTIL done
     
     PAGE WRITE 0
     TEXT MM.HRES/2,200,"Press [Enter] to go again.","CT",4,1, RGB(WHITE)
@@ -360,7 +364,7 @@ SUB Showlander(n,b)
       alander = 74-n + offset
       sprite show alander,xlander,y,1,1
   END SELECT
-END SUB		'ShowLander
+END SUB 'ShowLander
   
   '***********************************
 SUB Help
@@ -458,7 +462,7 @@ SUB DrawMoon
   LINE X_Vert+40, Y_Vert, X_Vert+50, Y_Vert,, RGB(WHITE)'Centre bar
   TEXT X_Vert-15, Y_Vert-40, "+90", CB, 7,1,RGB(WHITE),RGB(GRAY)
   TEXT X_Vert-15, Y_Vert+50, "-90", CB, 7,1,RGB(WHITE),RGB(GRAY)
-END SUB	'DrawMoon
+END SUB 'DrawMoon
   
   '***********************************
 SUB CreateMoon
@@ -491,7 +495,7 @@ SUB DrawStars
   FOR i = 1 TO 200
     PIXEL 800*RND,500*RND,MAP(RND*255)
   NEXT i  
-END SUB	'DrawStars
+END SUB 'DrawStars
   
   ' Andrew_G - Arrows 24x32.bas
   ' Font type    : Full (4 characters)

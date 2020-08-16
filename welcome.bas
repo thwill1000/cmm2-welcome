@@ -1,3 +1,3 @@
-' Copyright (c) 2020 Thomas Hugo Williams
+' Author: Thomas Hugo Williams
 
-Execute "run " + Chr$(34)+"launcher/launcher.bas" + Chr$(34) + ", --show-splash"
+Execute "Run " + Chr$(34)+"splash/splash.bas" + Chr$(34)

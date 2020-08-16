@@ -1,3 +1,29 @@
+Option Explicit On
+Option Default Integer
+Option Base 1
+
+#Include "../launcher/launcher.inc"
+
+Mode 1
+Cls
+
+Print
+Print "Scott Adams' Pirate Adventure"
+Print " ... still needs to be ported to CMM2"
+Print " ... perhaps you could do it?"
+Print
+Print "Press any key to return to the menu."
+
+' Clear the input buffer.
+Do While Inkey$ <> "" : Loop
+
+' Wait for the user to press a key.
+Do While Inkey$ = "" : Loop
+
+Dim d$ = get_parent$(Mm.Info$(Current))
+Execute("Run " + Chr$(34) + d$ + "/../launcher/launcher.bas" + Chr$(34))
+End
+
 100 rem adventure 2
 110 rem by scott adams
 120 rem modified for pet by jeff jessee
