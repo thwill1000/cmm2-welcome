@@ -21,7 +21,7 @@ Do While Inkey$ <> "" : Loop
 Do While Inkey$ = "" : Loop
 
 Dim d$ = get_parent$(Mm.Info$(Current))
-Execute("Run " + Chr$(34) + d$ + "/../launcher/launcher.bas" + Chr$(34))
+Execute("Run " + Chr$(34) + d$ + "/../menu/menu.bas" + Chr$(34))
 End
 
 100 rem adventure 2

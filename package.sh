@@ -8,8 +8,8 @@ mkdir -p $base
 mkdir -p $base/common
 mkdir -p $base/eliza
 mkdir -p $base/graphics
-mkdir -p $base/launcher
 mkdir -p $base/lunar
+mkdir -p $base/menu
 mkdir -p $base/pirate
 mkdir -p $base/splash
 mkdir -p $base/turtle
@@ -21,8 +21,8 @@ cp welcome.bas $base
 cp -R common/* $base/common
 cp -R eliza/* $base/eliza
 cp -R graphics/* $base/graphics
-cp -R launcher/* $base/launcher
 cp -R lunar/* $base/lunar
+cp -R menu/* $base/menu
 cp -R pirate/* $base/pirate
 cp -R splash/* $base/splash
 cp -R turtle/* $base/turtle

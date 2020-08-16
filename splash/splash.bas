@@ -51,6 +51,6 @@ For i = 1 To 16
 Next i
 
 Dim d$ = get_parent$(Mm.Info$(Current))
-Execute "Run " + Chr$(34) + d$ + "/../launcher/launcher.bas" + Chr$(34)
+Execute "Run " + Chr$(34) + d$ + "/../menu/menu.bas" + Chr$(34)
 
 End
