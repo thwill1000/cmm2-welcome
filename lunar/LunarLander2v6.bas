@@ -28,7 +28,7 @@
   ' Success.wav - not used in this version but you can try it!
   ' Crash.wav
 
-#Include "../launcher/launcher.inc"
+#Include "../common/common.inc"
   
   ' Option Explicit
   MODE 1,8  ' default but still...

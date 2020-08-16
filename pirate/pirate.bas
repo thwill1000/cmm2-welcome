@@ -2,7 +2,7 @@ Option Explicit On
 Option Default Integer
 Option Base 1
 
-#Include "../launcher/launcher.inc"
+#Include "../common/common.inc"
 
 Mode 1
 Cls

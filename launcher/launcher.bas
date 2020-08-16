@@ -4,7 +4,7 @@ Option Explicit
 Option Default Integer
 Option Base 1
 
-#Include "launcher.inc"
+#Include "../common/common.inc"
 
 Dim contents$(10, 2)
 Dim denizens$(20, 3)
