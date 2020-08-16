@@ -11,17 +11,15 @@ Print
 Print "Scott Adams' Pirate Adventure"
 Print " ... still needs to be ported to CMM2"
 Print " ... perhaps you could do it?"
-Print
-Print "Press any key to return to the menu."
 
-' Clear the input buffer.
-Do While Inkey$ <> "" : Loop
+If we.is_menu_launched() Then
+  Print
+  Print "Press any key to return to the menu."
+  Do While Inkey$ <> "" : Loop
+  Do While Inkey$ = "" : Loop
+  we.run_menu()
+EndIf
 
-' Wait for the user to press a key.
-Do While Inkey$ = "" : Loop
-
-Dim d$ = get_parent$(Mm.Info$(Current))
-Execute("Run " + Chr$(34) + d$ + "/../menu/menu.bas" + Chr$(34))
 End
 
 100 rem adventure 2

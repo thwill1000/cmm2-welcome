@@ -2,6 +2,8 @@
 ' Bill McKinley
 ' adapted by TassyJim
 
+#Include "../common/common.inc"
+
 ' Things that can be changed:
 DIM INTEGER MatX = 66   ' Matrix horizontal size
 DIM integer PT = 0    ' Pause time in mS between display updates
@@ -44,6 +46,7 @@ LOOP
 
 page write 0 ' clean exit
 cls
+If we.is_menu_launched() Then we.run_menu()
 end
 
 SUB Intro ' Print intro

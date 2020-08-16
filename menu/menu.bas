@@ -10,6 +10,7 @@ Dim contents$(10, 2)
 Dim denizens$(20, 3)
 
 Mode 1
+Page Write 0
 
 read_string_data_2d("CONTENTS", contents$())
 read_string_data_2d("DENIZENS", denizens$())
@@ -38,7 +39,7 @@ Function show_menu()
 
   Print
   Print "Welcome to the Colour Maximite 2"
-  Print VERSION$
+  Print WE.VERSION$
   Print
   Print "Press a key to select an option:"
   Print
@@ -71,33 +72,7 @@ Sub launch_program(i)
   ' Check that there is a program 'i'
   If i < 0 Or contents$(i, 2) = "" Then Exit Sub
 
-  Local f$ = get_parent$(Mm.Info$(Current)) + "/../" + contents$(i, 2)
-  run_first_program(f$)
-End Sub
-
-Sub run_first_program(d$)
-  Const MAX_NUM_FILES = 20
-  Local file_list$(MAX_NUM_FILES) Length 50
-  Local f$, file_list_sz
-
-  f$ = Dir$(d$ + "/*.bas", File)
-  Do While f$ <> ""
-    file_list_sz = file_list_sz + 1
-    file_list$(file_list_sz) = f$
-    f$ = Dir$()
-  Loop
-
-  ' Ensure empty elements will be sorted to the end of the list.
-  Do While file_list_sz < MAX_NUM_FILES
-    file_list_sz = file_list_sz + 1
-    file_list$(file_list_sz) = Chr$(&h7F)
-  Loop
-
-  Sort file_list$()
-
-  Local cmd$ = "Run " + Chr$(34) + d$ + "/" + file_list$(1) + Chr$(34) + ", --welcome"
-'  Print cmd$
-  Execute(cmd$)
+  we.run_first_program(WE.INSTALL_DIR$ + "/" + contents$(i, 2))
 End Sub
 
 Sub show_credits()
@@ -157,8 +132,8 @@ End Sub
 Data "CONTENTS"
 Data "Lunar Lander", "lunar"
 Data "Turtle Graphics Demos", "turtle"
-Data "Graphics Prmitives Demos", "graphics"
-Data "Conway's Game of Life [COMING SOON]", "life"
+Data "Graphics Primitives Demos", "graphics"
+Data "Conway's Game of Life", "life"
 Data "Eliza, the Rogerian psychotherapist", "eliza"
 Data "Scott Adams' Pirate Adventure [COMING SOON]", "pirate"
 Data "END"

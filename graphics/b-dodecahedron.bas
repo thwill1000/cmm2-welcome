@@ -1,5 +1,8 @@
 option explicit
 option default none
+
+#Include "../common/common.inc"
+
 page write 1
 const edgelength=200 'set the length of the verticies of the dodecahedron
 const zlocation=1000 'how far is the center of the dodecahedron away from us
@@ -73,6 +76,9 @@ for j=0 to 11
  read col(j)
 next j
 
+' Clear the_keyboard_buffer.
+Do While Inkey$ <> "" : Loop
+
 do
 cls
 for i=0 to 19 'rotate coordinates
@@ -101,8 +107,15 @@ for k=0 to 11
  polygon 5,xarr(),yarr(),col(i),col(i)
 next k
 page copy 1 to 0,b
+
+  If LCase$(Inkey$) = "q" Then Exit Do
+
 loop
-'
+
+Page Write 0
+If we.is_menu_launched() Then we.run_next_program()
+End
+
 sub create_normalised_quaternion(theta as float,x as float,y as float,z as float,q() as float)
  local float radians = theta/180.0*PI
  local float sineterm= sin(radians!/2)

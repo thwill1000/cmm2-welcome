@@ -62,7 +62,7 @@
   PAGE WRITE 2
   CLS
   Print VERSION$
-  Dim f$ = get_parent$(Mm.Info$(Current)) + "/LanderPict.png"
+  Dim f$ = WE.PROG_DIR$ + "/LanderPict.png"
   LOAD PNG f$
   
   ' generate the rotations
@@ -268,11 +268,11 @@
             IF rlander < 3 OR rlander > 68 THEN     ' near vertical?
               IF vylander > -2 THEN                 ' low vertical velocity?
                 TEXT xlander+20,ylander-15,"Success!","CT",4,1,rgb(green)
-                'PLAY STOP : PLAY WAV "success.wav"
+                'PLAY STOP : PLAY WAV WE.PROG_DIR$ + "/success.wav"
                 PLAY STOP
                 IF NOT Mute THEN
                   PLAY VOLUME 30, 30  ' Added because Landed.MOD is too quiet
-                  PLAY MODFILE "Landed.Mod"
+                  PLAY MODFILE WE.PROG_DIR$ + "/Landed.Mod"
                   PAUSE 2000
                   PLAY STOP
                   PLAY VOLUME Vol_Level, Vol_Level
@@ -280,19 +280,19 @@
               ELSE
                 TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
                 TEXT xlander+20,ylander-15),"Too fast.","CT",4,1, RGB(WHITE)
-                IF NOT Mute THEN PLAY STOP : PLAY WAV "crash.wav"
+                IF NOT Mute THEN PLAY STOP : PLAY WAV WE.PROG_DIR$ + "/crash.wav"
               END IF
             ELSE
               TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
               TEXT xlander+20,ylander-15),"Too far off level.","CT",4,1, RGB(WHITE)
-              IF NOT Mute THEN PLAY STOP : PLAY WAV "crash.wav"
+              IF NOT Mute THEN PLAY STOP : PLAY WAV WE.PROG_DIR$ + "/crash.wav"
             END IF
           ELSE
             TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
             TEXT xlander+20,ylander-15),"Missed the pad.","CT", 4,1, RGB(WHITE)
             TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
             TEXT xlander+20,ylander-15),"Missed the pad.","CT", 4,1, RGB(WHITE)
-            IF NOT mute THEN PLAY STOP : PLAY WAV "crash.wav"
+            IF NOT mute THEN PLAY STOP : PLAY WAV WE.PROG_DIR$ + "/crash.wav"
           END IF
           done = 1
           PAGE COPY 1,0
@@ -321,7 +321,11 @@ Paused:
             Help
           END IF
         END IF
-        IF ASC(Tmp$) = 27 THEN END      ' Escape key, quit
+        IF ASC(Tmp$) = 27 THEN
+          ' Escape key, quit
+          If we.is_menu_launched() Then we.run_menu()
+          END
+        END IF
         IF ASC(Tmp$) = 13 THEN EXIT DO  ' Return key, go again
       END IF
     LOOP

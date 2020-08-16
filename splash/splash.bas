@@ -27,7 +27,7 @@ Print "          \  /\  /|  __/| || (__ | (_) || | | | | ||  __/   | |  | (_| ||
 Print "           \/  \/  \___||_| \___| \___/ |_| |_| |_| \___|   \_/   \__,_|| .__/  \___|            "
 Print "                                                                        | |                      "
 Print "                                                                        |_|                      "
-Print Space$(41) + VERSION$
+Print Space$(41) + WE.VERSION$
 Print
 Print
 Print "             <Imagine this is an impressive 15 second demo of sound and graphics>"
@@ -50,7 +50,6 @@ For i = 1 To 16
   Next j
 Next i
 
-Dim d$ = get_parent$(Mm.Info$(Current))
-Execute "Run " + Chr$(34) + d$ + "/../menu/menu.bas" + Chr$(34)
+we.run_menu()
 
 End

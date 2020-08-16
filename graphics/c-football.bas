@@ -1,5 +1,8 @@
 option explicit
 option default none
+
+#Include "../common/common.inc"
+
 mode 2
 page write 1
 const edgelength=100 'set the length of the verticies of the ticosahedron
@@ -147,6 +150,9 @@ next i
 'play with the x,y,z vector which is the sxis of rotation
 create_normalised_quaternion(4,1,0.5,0.25,q1())
 
+' Clear the_keyboard_buffer.
+Do While Inkey$ <> "" : Loop
+
 do
  cls
  for i=0 to 59 'rotate coordinates
@@ -199,8 +205,15 @@ do
  next l
  polygon nd(),xarr(),yarr(),rgb(black),ncol()
  page copy 1 to 0
+
+  If LCase$(Inkey$) = "q" Then Exit Do
+
 loop
-'
+
+Page Write 0
+If we.is_menu_launched() Then we.run_next_program()
+End
+
 sub create_normalised_quaternion(theta as float,x as float,y as float,z as float,q() as float)
  local float radians = theta/180.0*PI
  local float sineterm= sin(radians!/2)
