@@ -1,1 +1,201 @@
-' Copyright (c) 2020 Thomas Hugo Williams
+' Author: Thomas Hugo Williams
+
+Option Explicit
+Option Default Integer
+Option Base 1
+
+Const VERSION$ = "Version 0.1"
+
+Dim contents$(10, 2)
+Dim denizens$(20, 3)
+
+main()
+End
+
+Sub main()
+  Local i, k$
+
+  Cls
+
+  read_string_data_2d("CONTENTS", contents$())
+  read_string_data_2d("DENIZENS", denizens$())
+
+  Print "Welcome to the Colour Maximite 2"
+  Print VERSION$
+
+  Do While show_menu() : Loop
+
+  'Print "Contents:"
+  'dump_string_array_2d(contents$())
+  'Print
+
+  'Print "Denizens:"
+  'dump_string_array_2d(denizens$())
+  'Print
+End Sub
+
+Sub read_string_data_2d(section$, a$())
+  Local i = 1, j = 1, s$
+  Restore
+  Do : Read s$ : Loop Until s$ = section$
+  Do
+    Read s$
+    If s$ = "END" Then Exit Do
+    a$(i, j) = s$
+    j = j + 1
+    If j = Bound(a$(), 2) + 1 Then j = 1 : i = i + 1
+  Loop
+End Sub
+
+Function show_menu()
+  Local i, k$
+
+  show_menu = 1
+
+  Print
+  Print "Press a key to select an option:"
+  Print
+  i = 1
+  Do While contents$(i, 1) <> ""
+    Print "  [" Str$(i) "] " contents$(i, 1)
+    i = i + 1
+  Loop
+  Print "  [C] Show credits"
+  Print "  [Q] Quit"
+
+  ' Clear the keyboard buffer.
+  Do While Inkey$ <> ""
+  Loop
+
+  Do
+    k$ = LCase$(Inkey$)
+    Select Case k$
+      Case "1" To "9" : launch_program(Val(k$)) : Exit Do
+      Case "c"        : show_credits() : Exit Do
+      Case "q"        : show_menu = Not quit() : Exit Do
+    End Select
+  Loop
+
+End Function
+
+Sub launch_program(i)
+  ' Check that there is a program 'i'
+  If i < 0 Or contents$(i, 2) = "" Then Exit Sub
+
+  Local f$ = get_parent$(Mm.Info$(Current)) + "/../" + contents$(i, 2)
+  Print f$
+  run_first_program(f$)
+End Sub
+
+' Gets the parent directory of 'f$', of the empty string if it does not have one.
+Function get_parent$(f$)
+  Local ch$, i
+
+  For i = Len(f$) To 1 Step -1
+    ch$ = Mid$(f$, i, 1)
+    If InStr("/\", ch$) > 0 Then Exit For
+  Next i
+  If i = 0 Then
+    get_parent$ = ""
+  Else
+    get_parent$ = Left$(f$, i - 1)
+  EndIf
+End Function
+
+Sub run_first_program(d$)
+  Const MAX_NUM_FILES = 20
+  Local file_list$(MAX_NUM_FILES) Length 50
+  Local f$, file_list_sz
+
+  f$ = Dir$(d$ + "/*.bas", File)
+  Do While f$ <> ""
+    file_list_sz = file_list_sz + 1
+    file_list$(file_list_sz) = f$
+    f$ = Dir$()
+  Loop
+
+  ' Ensure empty elements will be sorted to the end of the list.
+  Do While file_list_sz < MAX_NUM_FILES
+    file_list_sz = file_list_sz + 1
+    file_list$(file_list_sz) = Chr$(&h7F)
+  Loop
+
+  Sort file_list$()
+
+  Local cmd$ = "Run " + Chr$(34) + d$ + "/" + file_list$(1) + Chr$(34) + ", --welcome"
+  Print cmd$
+  Execute(cmd$)
+End Sub
+
+Sub show_credits()
+  Local i
+
+  Print
+  Print "This Welcome Disk was brought to you by the Denizens of The Back Shed:"
+  Print
+
+  i = 1
+  Do While denizens$(i, 1) <> ""
+    Print "  " denizens$(i, 1);
+    If denizens$(i, 2) <> "" Then
+      Print Space$(12 - Len(denizens$(i, 1))) " - " denizens$(i, 2) " ";
+      If denizens$(i, 3) <> "" Then Print denizens$(i, 3) " ";
+    EndIf
+    Print
+    i = i + 1
+  Loop
+
+  Print
+  Print "Please join us as http://www.thebackshed.com/forum/ViewForum.php?FID=16"
+
+  Print
+  Print "Many thanks also to:"
+  Print
+  Print "  Geoff Graham, Peter Mather & 'The Team' - for creating the Colour Maximite 2"
+  Print "  Scott Adams - for permission to include 'Pirate Adventure'"
+End Sub
+
+Function quit()
+  Print
+  Print "QUIT"
+  ' TODO: Prompt for if the user really wants to quit.
+  End
+  quit = 1
+End Function
+
+Sub dump_string_array_2d(a$())
+  Local i, j
+  For i = 1 To Bound(a$(), 1)
+    Print "[" Str$(i) "] ";
+    For j = 1 To Bound(a$(), 2)
+      If j <> 1 Then Print ", ";
+      If a$(i, j) = "" Then Print "<empty>"; Else Print "{" a$(i, j) "}";
+    Next j
+    Print
+  Next i
+End Sub
+
+' Contents and corresponding sub-directories
+Data "CONTENTS"
+Data "Lunar Lander", "lunar"
+Data "Turtle Graphics Demos", "turtle"
+Data "Graphics Prmitives Demos", "graphics"
+Data "Conway's Game of Life [COMING SOON]", "life"
+Data "Eliza, the Rogerian psychotherapist", "eliza"
+Data "Scott Adams' Pirate Adventure [COMING SOON]", "pirate"
+Data "END"
+
+' Denizens of TBS: TBS username, forename, surname, TBS username
+'  - ordered alphabetically by username unless someone has a better idea.
+' Note that Scott Adams will be listed seperately as he is not a denizen of the TBS.
+DATA "DENIZENS"
+Data "Andrew_G", "", ""
+Data "bigmik", "Mick", ""
+Data "capsikin", "", ""
+Data "matherp", "Peter", "Mather"
+Data "Sasquatch", "", ""
+Data "TassyJim", "Jim", "Hiley"
+Data "thwill", "Thomas", "Williams"
+Data "Turbo46", "Bill", "McKinley"
+Data "vegipete", "", ""
+Data "END"
