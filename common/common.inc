@@ -4,6 +4,8 @@ Const WE.VERSION$ = "Version 0.1"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
 
+Dim we.quit = 0
+
 Function we.get_install_dir$()
   Local d$ = WE.PROG_DIR$
   Do While d$ <> ""
@@ -108,4 +110,19 @@ Sub we.run_next_program()
   EndIf
 
   we.run_menu()
+End Sub
+
+Sub we.clear_keyboard_buffer()
+  Do While Inkey$ <> "" : Loop
+End Sub
+
+Function we.check_for_quit%()
+  If LCase$(Inkey$) = "q" Then we.quit% = 1
+  we.check_for_quit% = we.quit%
+End Function
+
+Sub we.end_program()
+  Do While Not we.check_for_quit%() : Loop
+  If we.is_menu_launched() Then we.run_next_program()
+  End
 End Sub

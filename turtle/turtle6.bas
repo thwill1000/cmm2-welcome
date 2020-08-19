@@ -1,6 +1,11 @@
-' Square Nautilus Turtle Graphics Demo
+' Square Nautilus
+' Author: ???
+
+#Include "../common/common.inc"
 
 Mode 1,8
+Cls
+we.clear_keyboard_buffer()
 
 Size = 275
 N = 100
@@ -23,4 +28,4 @@ For i = 1 to N
 
 Next i
 
-End
+we.end_program()

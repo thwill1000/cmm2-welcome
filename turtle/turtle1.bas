@@ -1,8 +1,12 @@
-'CMM2 Turtle Graphics Demo
-'Adapted from various sources on the Internet
-'by "Sasquatch"
+' CMM2 Turtle Graphics Demo
+' Author: "Sasquatch"
+' Adapted from various sources on the Internet
+
+#Include "../common/common.inc"
 
 Mode 1,8
+Cls
+we.clear_keyboard_buffer()
 
 Draw(400,45.5)
 Pause(10000)
@@ -37,20 +41,20 @@ Pause(10000)
 Draw (1000,190)
 Pause(10000)
 
-End
+we.end_program()
 
 Sub Draw(Count,Angle)
 
- Turtle Reset
- N = 5
- A = 90
+  Turtle Reset
+  N = 5
+  A = 90
 
- For I = 1 To Count
-   Turtle Forward N
-   A = A + Angle
-   Turtle Heading A mod 360
-   Turtle Pen Colour Map(I mod 255)
-   N = N + 0.5
- Next I
+  For I = 1 To Count
+    Turtle Forward N
+    A = A + Angle
+    Turtle Heading A mod 360
+    Turtle Pen Colour Map(I mod 255)
+    N = N + 0.5
+  Next I
 
 End Sub
