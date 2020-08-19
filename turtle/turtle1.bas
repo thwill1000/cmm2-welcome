@@ -1,6 +1,11 @@
 ' CMM2 Turtle Graphics Demo
 ' Author: "Sasquatch"
 ' Adapted from various sources on the Internet
+' Adapted for CMM2 "Welcome Tape" by "thwill"
+
+Option Base 1
+Option Explicit
+Option Default None
 
 #Include "../common/common.inc"
 
@@ -8,53 +13,38 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
-Draw(400,45.5)
-Pause(10000)
+Dim count%(11) = (400, 500, 600, 800, 900, 1000, 1000, 1000, 1000, 1000, 1000)
+Dim angle!(11) = (45.5, 55.5, 60.2, 89.5, 110, 119.9, 120.1, 135.1, 145, 176, 190)
+Dim ch$, i%
 
-Draw (500,55.5)
-Pause(10000)
+For i% = 1 To 11
+  Draw(count%(i%), angle!(i%))
+  we.clear_keyboard_buffer()
+  Do
+    ch$ = Inkey$
+    If ch$ <> "" Then Exit Do
+  Loop
+  If LCase$(ch$) = "q" Then Exit For
+Next i%
 
-Draw (600,60.2)
-Pause(10000)
-
-Draw (800,89.5)
-Pause(10000)
-
-Draw (900,110)
-Pause(10000)
-
-Draw (1000,119.9)
-Pause(10000)
-
-Draw (1000,120.1)
-Pause(10000)
-
-Draw (1000,135.1)
-Pause(10000)
-
-Draw (1000,145)
-Pause(10000)
-
-Draw (1000,176)
-Pause(10000)
-
-Draw (1000,190)
-Pause(10000)
-
+we.quit% = 1
 we.end_program()
 
-Sub Draw(Count,Angle)
+Sub Draw(count%, angle!)
+  Local n! = 5
+  Local a! = 90
 
   Turtle Reset
-  N = 5
-  A = 90
+  Text 0, 0, "Turtle Patterns", "", 2
+  Text 2, 25, "Press Q to Quit, or any other key for the next pattern", "", 1
 
-  For I = 1 To Count
-    Turtle Forward N
-    A = A + Angle
-    Turtle Heading A mod 360
-    Turtle Pen Colour Map(I mod 255)
-    N = N + 0.5
-  Next I
+  Local j%
+  For j% = 1 To count%
+    Turtle Forward n!
+    a! = a! + angle!
+    Turtle Heading a! mod 360
+    Turtle Pen Colour Map(j% mod 255)
+    n! = n! + 0.5
+  Next j%
 
 End Sub

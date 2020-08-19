@@ -7,7 +7,8 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
-text 100,500,"Dragon Curve - a Fractal","CT"
+'text 100,500,"Dragon Curve - a Fractal","CT"
+Text 0, 0, "Dragon Curve", "", 2
 
 do
   do
@@ -44,7 +45,7 @@ loop
 we.end_program()
 
 sub DrawDragon(ord, sig)
-  If we.check_for_quit%() Then Exit Sub
+  If we.is_quit_pressed%() Then Exit Sub
 
   if ord = 0 then
     turtle forward dist

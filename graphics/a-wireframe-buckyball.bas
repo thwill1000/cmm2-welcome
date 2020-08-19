@@ -141,7 +141,7 @@ next i
 loop
 
 Page Write 0
-If we.is_menu_launched() Then we.run_next_program()
+If we.is_menu_launched%() Then we.run_next_program()
 End
 
 sub create_normalised_quaternion(theta as float,x as float,y as float,z as float,q() as float)

@@ -7,7 +7,10 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
-G = RGB(0,100,0)
+Text 0, 0, "Barnsley's Fern", "", 2
+Text 2, 25, "Press Q to Quit", "", 1
+
+Const GREEN = RGB(0,100,0)
 
 For i = 1 to 1000000
 
@@ -29,9 +32,9 @@ For i = 1 to 1000000
   X = NextX
   Y = NextY
 
-  Pixel X * 100 + 400,600 - Y * 55 ,G
+  Pixel X * 100 + 400, 600 - Y * 55, GREEN
 
-  If we.check_for_quit%() Then Exit For
+  If we.is_quit_pressed%() Then Exit For
 
 Next i
 

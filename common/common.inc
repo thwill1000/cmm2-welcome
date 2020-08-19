@@ -4,7 +4,7 @@ Const WE.VERSION$ = "Version 0.1"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
 
-Dim we.quit = 0
+Dim we.quit% = 0
 
 Function we.get_install_dir$()
   Local d$ = WE.PROG_DIR$
@@ -44,8 +44,8 @@ Function we.get_parent$(f$)
   EndIf
 End Function
 
-Function we.is_menu_launched() As Integer
-  we.is_menu_launched = InStr(Mm.CmdLine$, "--menu") > 0
+Function we.is_menu_launched%()
+  we.is_menu_launched% = InStr(Mm.CmdLine$, "--menu") > 0
 End Function
 
 Sub we.run_menu()
@@ -116,13 +116,26 @@ Sub we.clear_keyboard_buffer()
   Do While Inkey$ <> "" : Loop
 End Sub
 
-Function we.check_for_quit%()
+Function we.is_quit_pressed%()
   If LCase$(Inkey$) = "q" Then we.quit% = 1
-  we.check_for_quit% = we.quit%
+  we.is_quit_pressed% = we.quit%
 End Function
 
 Sub we.end_program()
-  Do While Not we.check_for_quit%() : Loop
-  If we.is_menu_launched() Then we.run_next_program()
+  Do While Not we.is_quit_pressed%() : Loop
+  If we.is_menu_launched%() Then we.run_next_program()
   End
+End Sub
+
+Sub we.wait_for_key()
+  Local ch$
+  Do While ch$ = "" : ch$ = Inkey$ : Loop
+  If ch$ = "q" Then we.quit% = 1
+End Sub
+
+Sub we.title(title$, can_continue%)
+  Text 0, 0, title$, "", 2
+  Local s$ = "Press [Esc] to return to the menu"
+  If can_continue% Then s$ = s$ + ", or any other key to continue"
+  Text 2, 25, s$, "", 1
 End Sub

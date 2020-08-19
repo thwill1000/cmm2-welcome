@@ -7,17 +7,22 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
+Dim ch$
 C = 1
 
 Turtle Reset
+we.title("Hilbert Curve (1 of 2)", 1)
 Turtle Pen Up
 Turtle Move 20,600
 Turtle Pen Down
 Hilbert(7,90,6)
+we.title("Hilbert Curve (1 of 2)", 1)
 
-Pause 10000
+we.wait_for_key()
+If we.quit% Then we.end_program()
 
 Turtle Reset
+we.title("Hilbert Curve (2 of 2)", 1)
 Turtle Pen Up
 Turtle Move 150,550
 Turtle Pen Down
