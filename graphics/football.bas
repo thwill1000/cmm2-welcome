@@ -206,13 +206,11 @@ do
  polygon nd(),xarr(),yarr(),rgb(black),ncol()
  page copy 1 to 0
 
-  If LCase$(Inkey$) = "q" Then Exit Do
+  If LCase$(Inkey$) = "q" Then we.quit% = 1
 
-loop
+Loop While Not we.quit%
 
-Page Write 0
-If we.is_menu_launched() Then we.run_next_program()
-End
+we.end_program()
 
 sub create_normalised_quaternion(theta as float,x as float,y as float,z as float,q() as float)
  local float radians = theta/180.0*PI

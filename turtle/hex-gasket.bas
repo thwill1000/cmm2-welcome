@@ -7,14 +7,13 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
-Colour 0,RGB(255,255,255)
+Text 0, 0, "Hex Gasket Recursive Fractal", "", 2
+Text 2, 25, "Press Q to Quit", "", 1
 
-Turtle Reset
 Turtle Pen Up
-Turtle Move 70,575
+Turtle Move 70,400
 Turtle Turn Right 90
 Turtle Pen Down
-Turtle Pen Colour 0
 Gasket(650,5)
 
 we.end_program()

@@ -6,34 +6,29 @@ Option Base 1
 
 #Include "../common/common.inc"
 
-Dim contents$(10, 2)
-Dim denizens$(20, 3)
-
-Mode 1
+Mode 1, 8
 Page Write 0
 
-read_string_data_2d("CONTENTS", contents$())
-read_string_data_2d("DENIZENS", denizens$())
+Dim menu_label$ = "menu_top"
 
-Do While show_menu() : Loop
+Do While menu_label$ <> ""
+  menu_label$ = show_menu$(menu_label$)
+Loop
 
 End
 
-Sub read_string_data_2d(section$, a$())
-  Local i = 1, j = 1, s$
-  Restore
-  Do : Read s$ : Loop Until s$ = section$
-  Do
-    Read s$
-    If s$ = "END" Then Exit Do
-    a$(i, j) = s$
-    j = j + 1
-    If j = Bound(a$(), 2) + 1 Then j = 1 : i = i + 1
-  Loop
-End Sub
+Function show_menu$(menu_label$)
+  Local i, k$, s$
 
-Function show_menu()
-  Local i, k$
+  Select Case menu_label$
+    Case "menu_top"      : Restore menu_top
+    Case "menu_turtle"   : Restore menu_turtle
+    Case "menu_graphics" : Restore menu_graphics
+    Case Else            : Error "Unknown menu: " + menu_label$
+  End Select
+
+  Local items$(20, 3)
+  read_string_data(items$())
 
   Cls
 
@@ -44,38 +39,57 @@ Function show_menu()
   Print "Press a key to select an option:"
   Print
   i = 1
-  Do While contents$(i, 1) <> ""
-    Print "  [" Str$(i) "] " contents$(i, 1)
+  Do While items$(i, 1) <> ""
+    Print "  [" items$(i, 1) "] " items$(i, 2)
     i = i + 1
   Loop
-  Print "  [C] Show credits"
-  Print "  [Q] Quit"
 
   ' Clear the keyboard buffer.
   Do While Inkey$ <> ""
   Loop
 
-  show_menu = 1
-
   Do
-    k$ = LCase$(Inkey$)
-    Select Case k$
-      Case "1" To "9" : launch_program(Val(k$)) : Exit Do
-      Case "c"        : show_credits() : Exit Do
-      Case "q"        : show_menu = Not quit() : Exit Do
-    End Select
+    k$ = ""
+    Do k$ = "" : k$ = LCase$(Inkey$) : Loop Until k$ <> ""
+
+    For i = 1 To Bound(items$(), 1)
+      If LCase$(items$(i, 1)) = k$ Then
+        If items$(i, 3) = "credits" Then
+          show_credits()
+          show_menu$ = menu_label$
+          Exit Function
+        Else If items$(i, 3) = "quit" Then
+          If Not quit() Then show_menu$ = menu_label$
+          Exit Function
+        Else If Left$(items$(i, 3), 5) = "menu_" Then
+          show_menu$ = items$(i, 3)
+          Exit Function
+        Else
+          we.run_program(WE.INSTALL_DIR$ + "/" + items$(i, 3), "--menu")
+          Error "Should never get here"
+        EndIf
+      EndIf
+    Next i
   Loop
 
 End Function
 
-Sub launch_program(i)
-  ' Check that there is a program 'i'
-  If i < 0 Or contents$(i, 2) = "" Then Exit Sub
-
-  we.run_first_program(WE.INSTALL_DIR$ + "/" + contents$(i, 2))
+Sub read_string_data(a$())
+  Local i = 1, j = 1, s$
+  Do
+    Read s$
+    If s$ = "end" Then Exit Do
+    a$(i, j) = s$
+    j = j + 1
+    If j = Bound(a$(), 2) + 1 Then j = 1 : i = i + 1
+  Loop
 End Sub
 
 Sub show_credits()
+  Local denizens$(20, 3)
+  Restore denizens
+  read_string_data(denizens$())
+
   Cls
 
   Print
@@ -128,20 +142,45 @@ Sub dump_string_array_2d(a$())
   Next i
 End Sub
 
-' Contents and corresponding sub-directories
-Data "CONTENTS"
-Data "Lunar Lander", "lunar"
-Data "Turtle Graphics Demos", "turtle"
-Data "Graphics Primitives Demos", "graphics"
-Data "Conway's Game of Life", "life"
-Data "Eliza, the Rogerian psychotherapist", "eliza"
-Data "Scott Adams' Pirate Adventure [COMING SOON]", "pirate"
-Data "END"
+menu_top:
+Data "1", "Lunar Lander", "lunar/LunarLander2v6.bas"
+Data "2", "Turtle Graphics Demos", "menu_turtle"
+Data "3", "Graphics Primitives Demos", "menu_graphics"
+Data "4", "Conway's Game of Life", "life/life.bas"
+Data "5", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
+Data "6", "Scott Adams' Pirate Adventure [COMING SOON]", "pirate/pirate.bas"
+Data "C", "Show credits", "credits"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_turtle:
+Data "1", "Barnsley's Fern", "turtle/barnsleys-fern.bas"
+Data "2", "Dragon Curve", "turtle/dragon-curve.bas"
+Data "3", "Spirals", "turtle/spirals.bas"
+Data "4", "Hilbert Curve", "turtle/hilbert-curve.bas"
+Data "5", "Recursive Fractal Tree", "turtle/tree.bas"
+Data "6", "Random Recursive Fractal Tree", "turtle/random-tree.bas"
+Data "7", "Sierpinski's Triangle", "turtle/sierpinskis-triangle.bas"
+Data "8", "Square Nautilus", "turtle/square-nautilus.bas"
+Data "9", "Recursive Fractal Pine Tree", "turtle/pine-tree.bas"
+Data "A", "Random Recursive Fractal Pine Tree", "turtle/random-pine-tree.bas"
+Data "B", "Hex Gasket", "turtle/hex-gasket.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_graphics:
+Data "1", "Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
+Data "2", "Dodecahedron", "graphics/dodecahedron.bas"
+Data "3", "Football", "graphics/football.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
 
 ' Denizens of TBS: TBS username, forename, surname, TBS username
 '  - ordered alphabetically by username unless someone has a better idea.
 ' Note that Scott Adams will be listed seperately as he is not a denizen of the TBS.
-DATA "DENIZENS"
+denizens:
 Data "Andrew_G", "", ""
 Data "bigmik", "Mick", ""
 Data "capsikin", "", ""
@@ -151,4 +190,4 @@ Data "TassyJim", "Jim", "Hiley"
 Data "thwill", "Thomas", "Williams"
 Data "Turbo46", "Bill", "McKinley"
 Data "vegipete", "", ""
-Data "END"
+Data "end"

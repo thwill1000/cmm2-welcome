@@ -13,6 +13,9 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
+Text 0, 0, "Spirals", "", 2
+Text 2, 25, "Press Q to Quit", "", 1
+
 Dim count%(11) = (400, 500, 600, 800, 900, 1000, 1000, 1000, 1000, 1000, 1000)
 Dim angle!(11) = (45.5, 55.5, 60.2, 89.5, 110, 119.9, 120.1, 135.1, 145, 176, 190)
 Dim ch$, i%

@@ -56,64 +56,12 @@ Sub we.run_program(f$, cmdline$)
   Execute("Run " + Chr$(34) + f$ + Chr$(34) + ", " + cmdline$)
 End Sub
 
-' Runs the first .bas file in directory 'd$'.
-Sub we.run_first_program(d$)
-  Local progs$(20) Length 32
-  we.get_prog_list(d$, progs$())
-  Local first_prog$ = progs$(Bound(progs$(), 0))
-  If first_prog$ = Chr$(&h7F) Then Error "No programs found"
-  we.run_program(d$ + "/" + first_prog$, "--menu")
-End Sub
-
-Sub we.get_prog_list(d$, progs$())
-  Local i%, f$
-
-  ' Use Chr$(&h7F) for empty elements to ensure they are sorted to end of array.
-  For i% = Bound(progs$(), 0) To Bound(progs$(), 1)
-    progs$(i%) = Chr$(&h7F)
-  Next i%
-
-  i% = Bound(progs$(), 0)
-  f$ = Dir$(d$ + "/*.bas", File)
-  Do While f$ <> ""
-    If i% = Bound(progs$(), 1) + 1 Then Error "Too many programs"
-    progs$(i%) = LCase$(f$)
-    f$ = Dir$()
-    i% = i% + 1
-  Loop
-
-  Sort progs$()
-End Sub
-
-Sub we.run_next_program()
-  Local progs$(20) Length 32
-
-  Local d$ = we.get_parent$(Mm.Info$(Current))
-  we.get_prog_list(d$, progs$())
-  If progs$(Bound(progs$(), 0)) = Chr$(&h7F) Then Error "No programs found"
-
-  Local current$ = LCase$(we.get_name$(Mm.Info$(Current)))
-  Local i%
-
-  For i% = Bound(progs$(), 0) To Bound(progs$(), 1)
-    If progs$(i%) = current$ Then Exit For
-  Next i%
-
-  If progs$(i%) = Chr$(&h7F) Then Error "Current program not found"
-
-  If progs$(i%) = current$ Then
-    If i% < Bound(progs$(), 1) Then
-      If progs$(i% + 1) <> Chr$(&h7F) Then
-        we.run_program(WE.PROG_DIR$ + "/" + progs$(i% + 1), "--menu")
-      EndIf
-    EndIf
-  EndIf
-
-  we.run_menu()
-End Sub
-
 Sub we.clear_keyboard_buffer()
   Do While Inkey$ <> "" : Loop
+End Sub
+
+Sub we.wait_for_quit()
+  Do While Not we.is_quit_pressed%() : Loop
 End Sub
 
 Function we.is_quit_pressed%()
@@ -122,8 +70,9 @@ Function we.is_quit_pressed%()
 End Function
 
 Sub we.end_program()
-  Do While Not we.is_quit_pressed%() : Loop
-  If we.is_menu_launched%() Then we.run_next_program()
+  we.wait_for_quit()
+  Page Write 0
+  If we.is_menu_launched%() Then we.run_menu()
   End
 End Sub
 

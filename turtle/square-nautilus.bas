@@ -7,12 +7,13 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
+Text 0, 0, "Square Nautilus", "", 2
+Text 2, 25, "Press Q to Quit", "", 1
+
 Size = 275
 N = 100
 Angle = 10
 Ratio = 0.97
-
-Turtle Reset
 
 For i = 1 to N
  

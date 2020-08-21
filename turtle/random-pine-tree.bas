@@ -1,4 +1,4 @@
-' Random Recursive Fractal Pine Trees
+' Random Recursive Fractal Pine Tree
 ' Author: ???
 
 #Include "../common/common.inc"
@@ -7,11 +7,12 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
-Turtle Reset
+Text 0, 0, "Random Recursive Fractal Pine Tree", "", 2
+Text 2, 25, "Press Q to Quit", "", 1
+
 Turtle Pen Up
 Turtle Move 400,500
 Turtle Pen Down
-
 PineTree(100,19)
 
 we.end_program()
