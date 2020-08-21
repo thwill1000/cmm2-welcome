@@ -117,7 +117,7 @@ Sub we.clear_keyboard_buffer()
 End Sub
 
 Function we.is_quit_pressed%()
-  If LCase$(Inkey$) = "q" Then we.quit% = 1
+  If Not we.quit% Then we.quit% = LCase$(Inkey$) = "q"
   we.is_quit_pressed% = we.quit%
 End Function
 
