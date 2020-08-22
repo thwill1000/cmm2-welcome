@@ -7,6 +7,10 @@ Const WE.QUIT_KEY$ = "Q"
 
 Dim we.quit% = 0
 
+Sub we.check_firmware_version()
+  If Mm.Info(Version) < (5.0505-0.0001) Then Error "Requires firmware version 5.05.05 or later"
+End Sub
+
 Function we.get_install_dir$()
   Local d$ = WE.PROG_DIR$
   Do While d$ <> ""
@@ -49,12 +53,7 @@ Sub we.run_menu()
 End Sub
 
 Sub we.run_program(f$, cmdline$)
-  Local f2$ = f$
-
-  ' EXECUTE "RUN ..." doesn't like a leading drive letter, i.e. A:
-  If Left$(LCase$(f2$), 2) = "a:" Then f2$ = Mid$(f2$, 3)
-
-  Execute("Run " + Chr$(34) + f2$ + Chr$(34) + ", " + cmdline$)
+  Execute("Run " + Chr$(34) + f$ + Chr$(34) + ", " + cmdline$)
 End Sub
 
 Sub we.clear_keyboard_buffer()

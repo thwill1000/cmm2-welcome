@@ -6,6 +6,8 @@ Option Base 1
 
 #Include "../common/welcome.inc"
 
+we.check_firmware_version()
+
 Mode 1, 8
 Page Write 0
 
