@@ -18,6 +18,7 @@ PineTree(100,20)
 we.end_program()
 
 Sub PineTree(Length,Depth)
+  If we.is_quit_pressed%() Then Exit Sub
   If Depth <= 0 Then Exit Sub
 
   If Length > 2 Then

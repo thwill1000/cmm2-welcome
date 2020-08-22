@@ -1,4 +1,4 @@
-' Sierpinski's Triangle Recursive Fractal
+' Sierpinski Triangle Recursive Fractal
 ' Author: ???
 
 #Include "../common/common.inc"
@@ -7,7 +7,7 @@ Mode 1,8
 Cls
 we.clear_keyboard_buffer()
 
-Text 0, 0, "Sierpinski's Triangle Recursive Fractal", "", 2
+Text 0, 0, "Sierpinski Triangle", "", 2
 Text 2, 25, "Press Q to Quit", "", 1
 
 Turtle Pen Up

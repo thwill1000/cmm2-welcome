@@ -11,26 +11,38 @@ Dim ch$
 C = 1
 
 Turtle Reset
-we.title("Hilbert Curve (1 of 2)", 1)
+Text 0, 0, "Hilbert Curve (1 of 2)", "", 2
+Text 2, 25, "Press Q to Quit, or any other key for the next pattern", "", 1
 Turtle Pen Up
 Turtle Move 20,600
 Turtle Pen Down
 Hilbert(7,90,6)
-we.title("Hilbert Curve (1 of 2)", 1)
+Text 0, 0, "Hilbert Curve (1 of 2)", "", 2
+Text 2, 25, "Press Q to Quit, or any other key for the next pattern", "", 1
 
-we.wait_for_key()
+If ch$ = "" Then
+  we.wait_for_key()
+ElseIf LCase$(ch$) = "q" Then
+  we.quit% = 1
+EndIf
 If we.quit% Then we.end_program()
 
+ch$ = ""
 Turtle Reset
-we.title("Hilbert Curve (2 of 2)", 1)
+Text 0, 0, "Hilbert Curve (2 of 2)", "", 2
+Text 2, 25, "Press Q to Quit", "", 1
 Turtle Pen Up
 Turtle Move 150,550
 Turtle Pen Down
 Hilbert(8,90,2)
 
+If LCase$(ch$) = "q" Then we.quit% = 1
 we.end_program()
 
 Sub Hilbert(Level,Angle,Length)
+  If ch$ = "" Then ch$ = Inkey$
+  If ch$ <> "" Then Exit Sub
+
   If Level = 0 Then Exit Sub
 
   C = C + 0.1

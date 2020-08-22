@@ -76,41 +76,42 @@ for j=0 to 11
  read col(j)
 next j
 
-' Clear the_keyboard_buffer.
-Do While Inkey$ <> "" : Loop
+we.clear_keyboard_buffer()
 
 do
-cls
-for i=0 to 19 'rotate coordinates
- v(2)=ndodec(0,i): v(3)=ndodec(1,i): v(4)=ndodec(2,i): v(0)=ndodec(3,i): v(1)=0
- rotate_vector(vout(),v(),q1())
- ndodec(0,i)=vout(2): ndodec(1,i)=vout(3): ndodec(2,i)=vout(4): ndodec(3,i)=vout(0)
-next i
+  cls
+  Text 0, 0, "Rotating Dodecahedron", "", 2
+  Text 2, 25, "Press Q to Quit", "", 1
 
-' Now see which faces are furthest away by adding up the Z coordinates
-for i=0 to 11
- depth(i)=0
- sortorder(i)=i
- for j=0 to 4
-  depth(i)=depth(i)+ndodec(2,faces(j,i))
- next j
-next i
-'
-sort depth(),sortorder()
+  for i=0 to 19 'rotate coordinates
+    v(2)=ndodec(0,i): v(3)=ndodec(1,i): v(4)=ndodec(2,i): v(0)=ndodec(3,i): v(1)=0
+    rotate_vector(vout(),v(),q1())
+    ndodec(0,i)=vout(2): ndodec(1,i)=vout(3): ndodec(2,i)=vout(4): ndodec(3,i)=vout(0)
+  next i
 
-for k=0 to 11
- i=sortorder(11-k) 'get the index to the faces in order of nearest last
- for j=0 to 4
-  xarr(j)=ndodec(0,faces(j,i))*viewplane/(ndodec(2,faces(j,i))+zlocation)*ndodec(3,faces(j,i))+MM.HRES/2
-  yarr(j)=ndodec(1,faces(j,i))*viewplane/(ndodec(2,faces(j,i))+zlocation)*ndodec(3,faces(j,i))+MM.VRES/2
- next j
- polygon 5,xarr(),yarr(),col(i),col(i)
-next k
-page copy 1 to 0,b
+  ' Now see which faces are furthest away by adding up the Z coordinates
+  for i=0 to 11
+    depth(i)=0
+    sortorder(i)=i
+    for j=0 to 4
+      depth(i)=depth(i)+ndodec(2,faces(j,i))
+    next j
+  next i
 
-  If LCase$(Inkey$) = "q" Then we.quit% = 1
+  sort depth(),sortorder()
 
-Loop While Not we.quit%
+  for k=0 to 11
+    i=sortorder(11-k) 'get the index to the faces in order of nearest last
+    for j=0 to 4
+      xarr(j)=ndodec(0,faces(j,i))*viewplane/(ndodec(2,faces(j,i))+zlocation)*ndodec(3,faces(j,i))+MM.HRES/2
+      yarr(j)=ndodec(1,faces(j,i))*viewplane/(ndodec(2,faces(j,i))+zlocation)*ndodec(3,faces(j,i))+MM.VRES/2
+    next j
+    polygon 5,xarr(),yarr(),col(i),col(i)
+  next k
+
+  page copy 1 to 0,b
+
+Loop While Not we.is_quit_pressed%()
 
 we.end_program()
 

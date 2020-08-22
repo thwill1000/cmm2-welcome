@@ -28,7 +28,7 @@ DO
   a = 0 : b = 1
   page write 0
   Intro         ' Print intro
-  IF k$ = "Q" OR k$ = "q" THEN EXIT DO
+  IF LCASE$(k$) = "q" THEN EXIT DO
   page write 1
   CLS
   InitM         ' Initialize the matrix
@@ -41,13 +41,11 @@ DO
     PAUSE PT
     rate = Timer - rateX- PT
     rateX = timer
-  LOOP UNTIL INKEY$ <> "" ' loop forever or until a keypres
+  LOOP UNTIL INKEY$ <> "" ' loop forever or until a keypress
 LOOP
 
-page write 0 ' clean exit
-cls
-If we.is_menu_launched() Then we.run_menu()
-end
+we.quit% = 1
+we.end_program()
 
 SUB Intro ' Print intro
   DO

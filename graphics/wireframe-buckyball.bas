@@ -110,35 +110,36 @@ next i
 'play with the x,y,z vector which is the sxis of rotation
 create_normalised_quaternion(2,1,0.5,0.25,q1())
 
-' Clear the keyboard buffer.
-Do While Inkey$ <> "" : Loop
+we.clear_keyboard_buffer()
 
 do
-cls
-for i=0 to 59 'rotate coordinates
- v(2)=nticos(0,i): v(3)=nticos(1,i): v(4)=nticos(2,i): v(0)=nticos(3,i): v(1)=0
- rotate_vector(vout(),v(),q1())
- nticos(0,i)=vout(2): nticos(1,i)=vout(3): nticos(2,i)=vout(4): nticos(3,i)=vout(0)
-next i
+  cls
+  Text 0, 0, "Rotating Wireframe Buckyball", "", 2
+  Text 2, 25, "Press Q to Quit", "", 1
 
-' for every vertex create the lines that radiate from it. This will draw every line twice
- j=0
- for k=0 to 59
-   x=nticos(0,k)*viewplane/(nticos(2,k)+zlocation)*nticos(3,k)+MM.HRES/2
-   y=nticos(1,k)*viewplane/(nticos(2,k)+zlocation)*nticos(3,k)+MM.VRES/2
-   for i=0 to 2
-     x1=nticos(0,linelist(i,k))*viewplane/(nticos(2,linelist(i,k))+zlocation)*nticos(3,linelist(i,k))+MM.HRES/2
-     y1=nticos(1,linelist(i,k))*viewplane/(nticos(2,linelist(i,k))+zlocation)*nticos(3,linelist(i,k))+MM.VRES/2
- 'store the coordinates for a single line command
-     xs(j)=x:ys(j)=y:xe(j)=x1:ye(j)=y1:j=j+1
-   next i
- next k
- line xs(),ys(),xe(),ye()
- page copy 1 to 0,b
+  for i=0 to 59 'rotate coordinates
+    v(2)=nticos(0,i): v(3)=nticos(1,i): v(4)=nticos(2,i): v(0)=nticos(3,i): v(1)=0
+    rotate_vector(vout(),v(),q1())
+    nticos(0,i)=vout(2): nticos(1,i)=vout(3): nticos(2,i)=vout(4): nticos(3,i)=vout(0)
+  next i
 
-  If LCase$(Inkey$) = "q" Then we.quit% = 1
+  ' for every vertex create the lines that radiate from it. This will draw every line twice
+  j=0
+  for k=0 to 59
+    x=nticos(0,k)*viewplane/(nticos(2,k)+zlocation)*nticos(3,k)+MM.HRES/2
+    y=nticos(1,k)*viewplane/(nticos(2,k)+zlocation)*nticos(3,k)+MM.VRES/2
+    for i=0 to 2
+      x1=nticos(0,linelist(i,k))*viewplane/(nticos(2,linelist(i,k))+zlocation)*nticos(3,linelist(i,k))+MM.HRES/2
+      y1=nticos(1,linelist(i,k))*viewplane/(nticos(2,linelist(i,k))+zlocation)*nticos(3,linelist(i,k))+MM.VRES/2
+      'store the coordinates for a single line command
+      xs(j)=x:ys(j)=y:xe(j)=x1:ye(j)=y1:j=j+1
+    next i
+  next k
+  line xs(),ys(),xe(),ye()
 
-Loop While Not we.quit%
+  page copy 1 to 0,b
+
+Loop While Not we.is_quit_pressed%()
 
 we.end_program()
 

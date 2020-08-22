@@ -305,8 +305,8 @@ Paused:
     LOOP UNTIL done
     
     PAGE WRITE 0
-    TEXT MM.HRES/2,200,"Press [Enter] to go again.","CT",4,1, RGB(WHITE)
-    TEXT MM.HRES/2,230,"Press [ESC] to go quit.","CT", 4,1, RGB(WHITE)
+    TEXT MM.HRES/2,200,"Press [Enter] to try again.","CT",4,1, RGB(WHITE)
+    TEXT MM.HRES/2,230,"Press [Q] to Quit.","CT", 4,1, RGB(WHITE)
     
     DO
       Tmp$ = INKEY$
@@ -321,10 +321,9 @@ Paused:
             Help
           END IF
         END IF
-        IF ASC(Tmp$) = 27 THEN
-          ' Escape key, quit
-          If we.is_menu_launched() Then we.run_menu()
-          END
+        IF UCASE$(Tmp$) = "Q" THEN
+          we.quit% = 1
+          we.end_program()
         END IF
         IF ASC(Tmp$) = 13 THEN EXIT DO  ' Return key, go again
       END IF

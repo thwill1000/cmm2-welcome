@@ -17,6 +17,7 @@ Turtle Pen Down
 For X = 1 to 5
   Tree(100)
   Pause(1000)
+  If we.is_quit_pressed%() Then Exit For
 Next X
 
 we.end_program()

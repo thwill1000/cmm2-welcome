@@ -151,64 +151,68 @@ next i
 create_normalised_quaternion(4,1,0.5,0.25,q1())
 
 ' Clear the_keyboard_buffer.
-Do While Inkey$ <> "" : Loop
+we.clear_keyboard_buffer()
 
 do
- cls
- for i=0 to 59 'rotate coordinates
-   v(2)=nticos(0,i): v(3)=nticos(1,i): v(4)=nticos(2,i): v(0)=nticos(3,i): v(1)=0
-   rotate_vector(vout(),v(),q1())
-   nticos(0,i)=vout(2): nticos(1,i)=vout(3): nticos(2,i)=vout(4): nticos(3,i)=vout(0)
- next i
-'
-' average the z positions for the five sided faces
- for k=0 to 11
-   zpos(k)=0
-   for i=0 to 4
-     zpos(k)=zpos(k)+nticos(2,f5(i,k))
-   next i
-   zpos(k)=zpos(k)/5
-'    index(k)=k
- next k
-'average the z positions for the 6 sided faces
- for k=12 to 31
-   zpos(k)=0
-   for i=0 to 5
-     zpos(k)=zpos(k)+nticos(2,f6(i,k-12))
-   next i
-   zpos(k)=zpos(k)/6
-'    index(k)=k
- next k
-' sort the z positions
- sort zpos(),index()
-'
- j=0:m=0
- for l=0 to 31
-   k=index(l)
-   m=np(k)
-   nd(l)=nv(k)
-   if nv(k)=5 then
-     ncol(l)=rgb(red)
-   else
-     ncol(l)=rgb(white)
-   endif
-   for i=0 to nv(k)-1
-     if nv(k)=5 then
-       xarr(j)=nticos(0,f5(i,m))*viewplane/(nticos(2,f5(i,m))+zlocation)*nticos(3,f5(i,m))+MM.HRES/2
-       yarr(j)=nticos(1,f5(i,m))*viewplane/(nticos(2,f5(i,m))+zlocation)*nticos(3,f5(i,m))+MM.VRES/2
-     else
-       xarr(j)=nticos(0,f6(i,m))*viewplane/(nticos(2,f6(i,m))+zlocation)*nticos(3,f6(i,m))+MM.HRES/2
-       yarr(j)=nticos(1,f6(i,m))*viewplane/(nticos(2,f6(i,m))+zlocation)*nticos(3,f6(i,m))+MM.VRES/2
-     endif
-     j=j+1
-   next i
- next l
- polygon nd(),xarr(),yarr(),rgb(black),ncol()
- page copy 1 to 0
+  cls
+  Text 10, 0, "Rotating Football", "", 2
+  Text 12, 25, "Press Q to Quit", "", 1
 
-  If LCase$(Inkey$) = "q" Then we.quit% = 1
+  for i=0 to 59 'rotate coordinates
+    v(2)=nticos(0,i): v(3)=nticos(1,i): v(4)=nticos(2,i): v(0)=nticos(3,i): v(1)=0
+    rotate_vector(vout(),v(),q1())
+    nticos(0,i)=vout(2): nticos(1,i)=vout(3): nticos(2,i)=vout(4): nticos(3,i)=vout(0)
+  next i
 
-Loop While Not we.quit%
+  ' average the z positions for the five sided faces
+  for k=0 to 11
+    zpos(k)=0
+    for i=0 to 4
+      zpos(k)=zpos(k)+nticos(2,f5(i,k))
+    next i
+    zpos(k)=zpos(k)/5
+    ' index(k)=k
+  next k
+
+  'average the z positions for the 6 sided faces
+  for k=12 to 31
+    zpos(k)=0
+    for i=0 to 5
+      zpos(k)=zpos(k)+nticos(2,f6(i,k-12))
+    next i
+    zpos(k)=zpos(k)/6
+    ' index(k)=k
+  next k
+
+  ' sort the z positions
+  sort zpos(),index()
+
+  j=0:m=0
+  for l=0 to 31
+    k=index(l)
+    m=np(k)
+    nd(l)=nv(k)
+    if nv(k)=5 then
+      ncol(l)=rgb(red)
+    else
+      ncol(l)=rgb(white)
+    endif
+    for i=0 to nv(k)-1
+      if nv(k)=5 then
+        xarr(j)=nticos(0,f5(i,m))*viewplane/(nticos(2,f5(i,m))+zlocation)*nticos(3,f5(i,m))+MM.HRES/2
+        yarr(j)=nticos(1,f5(i,m))*viewplane/(nticos(2,f5(i,m))+zlocation)*nticos(3,f5(i,m))+MM.VRES/2
+      else
+        xarr(j)=nticos(0,f6(i,m))*viewplane/(nticos(2,f6(i,m))+zlocation)*nticos(3,f6(i,m))+MM.HRES/2
+        yarr(j)=nticos(1,f6(i,m))*viewplane/(nticos(2,f6(i,m))+zlocation)*nticos(3,f6(i,m))+MM.VRES/2
+      endif
+      j=j+1
+    next i
+  next l
+  polygon nd(),xarr(),yarr(),rgb(black),ncol()
+
+  page copy 1 to 0
+
+Loop While Not we.is_quit_pressed%()
 
 we.end_program()
 

@@ -49,11 +49,24 @@ Function we.is_menu_launched%()
 End Function
 
 Sub we.run_menu()
-  we.run_program(WE.INSTALL_DIR$ + "/menu/menu.bas")
+  Local i%, j%
+  Local menu_label$ = ""
+  i% = InStr(Mm.CmdLine$, "--menu")
+  If i% > 0 Then
+    i% = i% + 7
+    j% = InStr(i%, Mm.CmdLine$ + " ", " ")
+    menu_label$ = Mid$(Mm.CmdLine$, i%, j% - i%)
+  EndIf
+  we.run_program(WE.INSTALL_DIR$ + "/menu/menu.bas", menu_label$)
 End Sub
 
 Sub we.run_program(f$, cmdline$)
-  Execute("Run " + Chr$(34) + f$ + Chr$(34) + ", " + cmdline$)
+  Local f2$ = f$
+
+  ' EXECUTE "RUN ..." doesn't like a leading drive letter, i.e. A:
+  If Left$(LCase$(f2$), 2) = "a:" Then f2$ = Mid$(f2$, 3)
+
+  Execute("Run " + Chr$(34) + f2$ + Chr$(34) + ", " + cmdline$)
 End Sub
 
 Sub we.clear_keyboard_buffer()
@@ -63,6 +76,11 @@ End Sub
 Sub we.wait_for_quit()
   Do While Not we.is_quit_pressed%() : Loop
 End Sub
+
+'Function we.check_for_quit()
+'  If Not we.quit% Then we.quit% = LCase$(Inkey$) = "q"
+'  we.check_for_quit% = we.quit%
+'End Sub
 
 Function we.is_quit_pressed%()
   If Not we.quit% Then we.quit% = LCase$(Inkey$) = "q"
@@ -82,9 +100,9 @@ Sub we.wait_for_key()
   If ch$ = "q" Then we.quit% = 1
 End Sub
 
-Sub we.title(title$, can_continue%)
-  Text 0, 0, title$, "", 2
-  Local s$ = "Press [Esc] to return to the menu"
-  If can_continue% Then s$ = s$ + ", or any other key to continue"
-  Text 2, 25, s$, "", 1
-End Sub
+'Sub we.title(title$, can_continue%)
+'  Text 0, 0, title$, "", 2
+'  Local s$ = "Press [Esc] to return to the menu"
+'  If can_continue% Then s$ = s$ + ", or any other key to continue"
+'  Text 2, 25, s$, "", 1
+'End Sub

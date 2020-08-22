@@ -12,12 +12,13 @@ Print "Scott Adams' Pirate Adventure"
 Print " ... still needs to be ported to CMM2"
 Print " ... perhaps you could do it?"
 
-If we.is_menu_launched() Then
+If we.is_menu_launched%() Then
   Print
   Print "Press any key to return to the menu."
-  Do While Inkey$ <> "" : Loop
-  Do While Inkey$ = "" : Loop
-  we.run_menu()
+  we.clear_keyboard_buffer()
+  we.wait_for_key()
+  we.quit% = 1
+  we.end_program()
 EndIf
 
 End

@@ -56,8 +56,9 @@
 240 IF L+4>LEN(I$)THEN 250
 241 IF MID$(I$,L,4) <> "SHUT" THEN 250
 242 PRINT "O.K. IF YOU FEEL THAT WAY I'LL SHUT UP...."
-If we.is_menu_launched() Then Pause 1000 : we.run_menu()
-243 END
+Pause 2000
+we.quit% = 1
+we.end_program()
 250 NEXT L
 255 IF I$=P$ THEN PRINT "PLEASE DON'T REPEAT YOURSELF!":GOTO 170
 260 REM ***********************************

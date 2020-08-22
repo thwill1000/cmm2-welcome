@@ -9,28 +9,36 @@ Option Base 1
 Mode 1, 8
 Page Write 0
 
-Dim menu_label$ = "menu_top"
+Dim menu_label$ = Mm.CmdLine$
+If menu_label$ = "" Then menu_label$ = "menu_top"
 
 Do While menu_label$ <> ""
   menu_label$ = show_menu$(menu_label$)
 Loop
+
+Print
+Print "Goodbye!"
 
 End
 
 Function show_menu$(menu_label$)
   Local i, k$, s$
 
-  Select Case menu_label$
-    Case "menu_top"      : Restore menu_top
-    Case "menu_turtle"   : Restore menu_turtle
-    Case "menu_graphics" : Restore menu_graphics
-    Case Else            : Error "Unknown menu: " + menu_label$
-  End Select
+  Cls
+
+'  Select Case menu_label$
+'    Case "menu_top"      : Restore menu_top
+'    Case "menu_turtle"   : Restore menu_turtle
+'    Case "menu_graphics" : Restore menu_graphics
+'    Case Else            : Error "Unknown menu: " + menu_label$
+'  End Select
+  On Error Ignore
+  Execute "Restore " + menu_label$
+  On Error Abort
+  If Mm.ErrNo <> 0 Then Error "Unknown menu: " + menu_label$
 
   Local items$(20, 3)
   read_string_data(items$())
-
-  Cls
 
   Print
   Print "Welcome to the Colour Maximite 2"
@@ -65,7 +73,7 @@ Function show_menu$(menu_label$)
           show_menu$ = items$(i, 3)
           Exit Function
         Else
-          we.run_program(WE.INSTALL_DIR$ + "/" + items$(i, 3), "--menu")
+          we.run_program(WE.INSTALL_DIR$ + "/" + items$(i, 3), "--menu " + menu_label$)
           Error "Should never get here"
         EndIf
       EndIf
@@ -118,16 +126,15 @@ Sub show_credits()
   Print
   Print "Press any key to return to the menu."
 
-  Do While Inkey$ <> "" : Loop
-  Do While Inkey$ = "" : Loop
+  we.wait_for_key()
 End Sub
 
 Function quit()
+  Local k$
   Print
-  Print "QUIT"
-  ' TODO: Prompt for if the user really wants to quit.
-  End
-  quit = 1
+  Print "Are you sure you want to Quit [y|N] ?"
+  Do While k$ = "" : k$ = Inkey$ : Loop
+  If LCase$(k$) = "y" Then quit = 1
 End Function
 
 Sub dump_string_array_2d(a$())
@@ -160,7 +167,7 @@ Data "3", "Spirals", "turtle/spirals.bas"
 Data "4", "Hilbert Curve", "turtle/hilbert-curve.bas"
 Data "5", "Recursive Fractal Tree", "turtle/tree.bas"
 Data "6", "Random Recursive Fractal Tree", "turtle/random-tree.bas"
-Data "7", "Sierpinski's Triangle", "turtle/sierpinskis-triangle.bas"
+Data "7", "Sierpinski Triangle", "turtle/sierpinskis-triangle.bas"
 Data "8", "Square Nautilus", "turtle/square-nautilus.bas"
 Data "9", "Recursive Fractal Pine Tree", "turtle/pine-tree.bas"
 Data "A", "Random Recursive Fractal Pine Tree", "turtle/random-pine-tree.bas"
@@ -170,9 +177,9 @@ Data "Q", "Quit", "quit"
 Data "end"
 
 menu_graphics:
-Data "1", "Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
-Data "2", "Dodecahedron", "graphics/dodecahedron.bas"
-Data "3", "Football", "graphics/football.bas"
+Data "1", "Rotating Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
+Data "2", "Rotating Dodecahedron", "graphics/dodecahedron.bas"
+Data "3", "Rotating Football", "graphics/football.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
