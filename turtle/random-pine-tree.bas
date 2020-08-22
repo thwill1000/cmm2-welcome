@@ -1,5 +1,5 @@
 ' Random Recursive Fractal Pine Tree
-' Author: ???
+' Author: "Sasquatch"
 
 #Include "../common/welcome.inc"
 

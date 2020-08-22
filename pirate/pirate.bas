@@ -1,3 +1,5 @@
+' Copyright (c) 1979 Scott Adams
+
 Option Explicit On
 Option Default Integer
 Option Base 1

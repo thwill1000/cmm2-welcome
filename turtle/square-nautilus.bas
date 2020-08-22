@@ -1,5 +1,5 @@
 ' Square Nautilus
-' Author: ???
+' Author: "Sasquatch"
 
 #Include "../common/welcome.inc"
 

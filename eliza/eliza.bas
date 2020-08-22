@@ -1,3 +1,6 @@
+' Authors: Patricia Danielson, Paul Hashfield, "vegipete"
+'          and no doubt innumerable others over the years
+
 #Include "../common/welcome.inc"
 
 10 CLS

@@ -1,7 +1,6 @@
 ' CMM2 Turtle Graphics Demo
 ' Author: "Sasquatch"
 ' Adapted from various sources on the Internet
-' Adapted for CMM2 "Welcome Tape" by "thwill"
 
 Option Base 1
 Option Explicit

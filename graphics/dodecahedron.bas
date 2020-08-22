@@ -1,3 +1,5 @@
+' Author: Peter Mather
+
 option explicit
 option default none
 

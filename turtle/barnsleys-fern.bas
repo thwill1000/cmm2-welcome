@@ -1,5 +1,5 @@
 ' Barnsley's Fern
-' Author: ???
+' Author: "Sasquatch"
 
 #Include "../common/welcome.inc"
 

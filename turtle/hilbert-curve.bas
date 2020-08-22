@@ -1,5 +1,5 @@
 ' Hilbert Curve using recursion
-' Author:
+' Author: "Sasquatch"
 
 #Include "../common/welcome.inc"
 

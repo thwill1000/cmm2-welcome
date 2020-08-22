@@ -1,5 +1,5 @@
 ' Sierpinski Triangle Recursive Fractal
-' Author: ???
+' Author: "Sasquatch"
 
 #Include "../common/welcome.inc"
 

@@ -1,5 +1,5 @@
 ' Dragon curve
-' Author: ???
+' Author: "vegipete"
 
 #Include "../common/welcome.inc"
 

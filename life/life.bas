@@ -1,4 +1,4 @@
-' John Conway's Game of Life for Micromite MMBasic
+' John Conway's Game of Life for Colour Maximite 2
 ' Authors: Bill McKinley & TassyJim
 
 #Include "../common/welcome.inc"
