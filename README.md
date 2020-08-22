@@ -4,6 +4,14 @@ The purpose of this project is to produce a "Welcome Tape" (actually a .zip file
 
 It is a collaborative effort by the denizens of [The Back Shed](http://www.thebackshed.com/forum/ViewForum.php?FID=16).
 
+## How do I run it?
+
+ - **IMPORTANT: Requires firmware version 5.05.05 or later**
+ - Download the latest release: https://github.com/thwill1000/cmm2-welcome/releases/download/r0.1/welcome-r0.1.zip
+    - or clone/download the latest work in progress: https://github.com/thwill1000/cmm2-welcome
+ - Extract all the files to ```A:\welcome\```
+ - ```RUN "\welcome\welcome.bas"```
+
 ## FAQ
 
 **1. What is the Colour Maximite 2 ?**
