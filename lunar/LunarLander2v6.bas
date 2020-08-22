@@ -28,7 +28,7 @@
   ' Success.wav - not used in this version but you can try it!
   ' Crash.wav
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
   
   ' Option Explicit
   MODE 1,8  ' default but still...

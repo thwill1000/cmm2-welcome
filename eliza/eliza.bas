@@ -1,4 +1,4 @@
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 10 CLS
 11 XV = 300

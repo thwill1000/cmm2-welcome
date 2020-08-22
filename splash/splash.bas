@@ -4,9 +4,9 @@ Option Explicit
 Option Default Integer
 Option Base 1
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
-Mode 1
+Mode 1, 8
 Cls
 
 Print
@@ -37,8 +37,7 @@ Print "                                    Press any key to skip"
 Print
 Print
 
-' Clear the keyboard input buffer
-Do While Inkey$ <> "" : Loop
+we.clear_keyboard_buffer()
 
 Dim i, j
 For i = 1 To 16

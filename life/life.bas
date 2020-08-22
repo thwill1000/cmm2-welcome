@@ -1,8 +1,7 @@
 ' John Conway's Game of Life for Micromite MMBasic
-' Bill McKinley
-' adapted by TassyJim
+' Authors: Bill McKinley & TassyJim
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 ' Things that can be changed:
 DIM INTEGER MatX = 66   ' Matrix horizontal size

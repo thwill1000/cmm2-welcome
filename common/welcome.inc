@@ -3,6 +3,7 @@
 Const WE.VERSION$ = "Version 0.1"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
+Const WE.QUIT_KEY$ = "Q"
 
 Dim we.quit% = 0
 
@@ -20,15 +21,6 @@ Function we.get_install_dir$()
   Error "Failed to determine 'welcome' directory"
 End Function
 
-' Gets the name of file/directory 'f$' minus any path information.
-Function we.get_name$(f$)
-  Local i%
-  For i% = Len(f$) To 1 Step -1
-    If InStr("/\", Mid$(f$, i%, 1)) > 0 Then Exit For
-  Next i%
-  we.get_name$ = Mid$(f$, i% + 1)
-End Function
-
 ' Gets the parent directory of 'f$', or the empty string if it does not have one.
 Function we.get_parent$(f$)
   Local i%
@@ -42,10 +34,6 @@ Function we.get_parent$(f$)
   Else
     we.get_parent$ = Left$(f$, i% - 1)
   EndIf
-End Function
-
-Function we.is_menu_launched%()
-  we.is_menu_launched% = InStr(Mm.CmdLine$, "--menu") > 0
 End Function
 
 Sub we.run_menu()
@@ -73,36 +61,28 @@ Sub we.clear_keyboard_buffer()
   Do While Inkey$ <> "" : Loop
 End Sub
 
-Sub we.wait_for_quit()
-  Do While Not we.is_quit_pressed%() : Loop
-End Sub
-
-'Function we.check_for_quit()
-'  If Not we.quit% Then we.quit% = LCase$(Inkey$) = "q"
-'  we.check_for_quit% = we.quit%
-'End Sub
-
-Function we.is_quit_pressed%()
-  If Not we.quit% Then we.quit% = LCase$(Inkey$) = "q"
-  we.is_quit_pressed% = we.quit%
-End Function
-
 Sub we.end_program()
-  we.wait_for_quit()
+  Do While Not we.is_quit_pressed%() : Loop
   Page Write 0
   If we.is_menu_launched%() Then we.run_menu()
   End
 End Sub
 
-Sub we.wait_for_key()
-  Local ch$
-  Do While ch$ = "" : ch$ = Inkey$ : Loop
-  If ch$ = "q" Then we.quit% = 1
-End Sub
+Function we.is_quit_pressed%()
+  If Not we.quit% Then we.quit% = we.is_quit_key%(Inkey$)
+  we.is_quit_pressed% = we.quit%
+End Function
 
-'Sub we.title(title$, can_continue%)
-'  Text 0, 0, title$, "", 2
-'  Local s$ = "Press [Esc] to return to the menu"
-'  If can_continue% Then s$ = s$ + ", or any other key to continue"
-'  Text 2, 25, s$, "", 1
-'End Sub
+Function we.is_quit_key%(k$)
+  we.is_quit_key% = UCase$(k$) = WE.QUIT_KEY$
+End Function
+
+Function we.is_menu_launched%()
+  we.is_menu_launched% = InStr(Mm.CmdLine$, "--menu") > 0
+End Function
+
+Sub we.wait_for_key()
+  Local k$
+  Do While k$ = "" : k$ = Inkey$ : Loop
+  If we.is_quit_key%(k$) Then we.quit% = 1
+End Sub

@@ -1,7 +1,7 @@
 option explicit
 option default none
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 mode 2
 page write 1

@@ -1,7 +1,7 @@
 ' Hex Gasket Recursive Fractal
 ' Author: ???
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 Mode 1,8
 Cls

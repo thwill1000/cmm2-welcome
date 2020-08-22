@@ -1,7 +1,7 @@
 option explicit
 option default none
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 page write 1
 const edgelength=100 'set the length of the verticies of the ticosahedron

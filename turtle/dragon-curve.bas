@@ -1,32 +1,28 @@
 ' Dragon curve
 ' Author: ???
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 Mode 1,8
 Cls
-we.clear_keyboard_buffer()
 
-Text 0, 0, "Dragon Curve", "", 2
+Dim k$
 
-do
-  do
-    print @(0,520) "Order: (1-19)"
-    input "0 to quit: "; dord
-  loop until dord >= 0 and dord < 20
-
-  If dord = 0 Then we.quit% = 1 : Exit Do
+For i% = 1 To 19
+  Turtle Reset
+  s$ = "Dragon Curve, Order " + Str$(i%)
+  Text 0, 0, s$, "", 2
+  s$ = "Press Q for Quit"
+  If i% < 19 Then s$ = s$ + ", or any other key for the next pattern"
+  Text 2, 25, s$, "", 1
 
   we.clear_keyboard_buffer()
+  k$ = ""
 
-  dord = dord - 1
+  dord = i% - 1
   dist = MM.HRES/2/(sqr(2)^dord)
 
-  cls
-  turtle reset
-  text 80, 0,"Dragon Curve","CT",2
-  text 80,20,"Order:" + str$(dord+1), "CT",2
-  turtle pen up   ' no line yet
+  turtle pen up
   turtle move MM.HRES * .25, MM.VRES * .55
   turtle pen down
 
@@ -38,11 +34,17 @@ do
   turtle pen colour rgb(green)
   DrawDragon(dord,1)
 
-loop
+  If k$ = "" Then we.wait_for_key()
+  If we.is_quit_key%(k$) Then we.quit% = 1
+  If we.quit% Then Exit For
+Next i%
 
 we.end_program()
 
 sub DrawDragon(ord, sig)
+  If k$ = "" Then k$ = Inkey$
+  If k$ <> "" Then Exit Sub
+
   if ord = 0 then
     turtle forward dist
   else

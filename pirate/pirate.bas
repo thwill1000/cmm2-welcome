@@ -2,7 +2,7 @@ Option Explicit On
 Option Default Integer
 Option Base 1
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 Mode 1
 Cls
@@ -11,17 +11,12 @@ Print
 Print "Scott Adams' Pirate Adventure"
 Print " ... still needs to be ported to CMM2"
 Print " ... perhaps you could do it?"
-
-If we.is_menu_launched%() Then
-  Print
-  Print "Press any key to return to the menu."
-  we.clear_keyboard_buffer()
-  we.wait_for_key()
-  we.quit% = 1
-  we.end_program()
-EndIf
-
-End
+Print
+Print "Press any key"
+we.clear_keyboard_buffer()
+we.wait_for_key()
+we.quit% = 1
+we.end_program()
 
 100 rem adventure 2
 110 rem by scott adams

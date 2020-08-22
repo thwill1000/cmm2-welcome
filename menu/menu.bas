@@ -4,7 +4,7 @@ Option Explicit
 Option Default Integer
 Option Base 1
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 Mode 1, 8
 Page Write 0
@@ -26,19 +26,13 @@ Function show_menu$(menu_label$)
 
   Cls
 
-'  Select Case menu_label$
-'    Case "menu_top"      : Restore menu_top
-'    Case "menu_turtle"   : Restore menu_turtle
-'    Case "menu_graphics" : Restore menu_graphics
-'    Case Else            : Error "Unknown menu: " + menu_label$
-'  End Select
   On Error Ignore
   Execute "Restore " + menu_label$
   On Error Abort
   If Mm.ErrNo <> 0 Then Error "Unknown menu: " + menu_label$
 
   Local items$(20, 3)
-  read_string_data(items$())
+  read_string_array(items$())
 
   Print
   Print "Welcome to the Colour Maximite 2"
@@ -58,7 +52,7 @@ Function show_menu$(menu_label$)
 
   Do
     k$ = ""
-    Do k$ = "" : k$ = LCase$(Inkey$) : Loop Until k$ <> ""
+    Do : k$ = LCase$(Inkey$) : Loop Until k$ <> ""
 
     For i = 1 To Bound(items$(), 1)
       If LCase$(items$(i, 1)) = k$ Then
@@ -82,7 +76,7 @@ Function show_menu$(menu_label$)
 
 End Function
 
-Sub read_string_data(a$())
+Sub read_string_array(a$())
   Local i = 1, j = 1, s$
   Do
     Read s$
@@ -93,10 +87,22 @@ Sub read_string_data(a$())
   Loop
 End Sub
 
+Sub dump_string_array(a$())
+  Local i, j
+  For i = 1 To Bound(a$(), 1)
+    Print "[" Str$(i) "] ";
+    For j = 1 To Bound(a$(), 2)
+      If j <> 1 Then Print ", ";
+      If a$(i, j) = "" Then Print "<empty>"; Else Print "{" a$(i, j) "}";
+    Next j
+    Print
+  Next i
+End Sub
+
 Sub show_credits()
   Local denizens$(20, 3)
   Restore denizens
-  read_string_data(denizens$())
+  read_string_array(denizens$())
 
   Cls
 
@@ -136,18 +142,6 @@ Function quit()
   Do While k$ = "" : k$ = Inkey$ : Loop
   If LCase$(k$) = "y" Then quit = 1
 End Function
-
-Sub dump_string_array_2d(a$())
-  Local i, j
-  For i = 1 To Bound(a$(), 1)
-    Print "[" Str$(i) "] ";
-    For j = 1 To Bound(a$(), 2)
-      If j <> 1 Then Print ", ";
-      If a$(i, j) = "" Then Print "<empty>"; Else Print "{" a$(i, j) "}";
-    Next j
-    Print
-  Next i
-End Sub
 
 menu_top:
 Data "1", "Lunar Lander", "lunar/LunarLander2v6.bas"

@@ -1,15 +1,14 @@
 ' Hilbert Curve using recursion
 ' Author:
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 Mode 1,8
-Cls
-we.clear_keyboard_buffer()
 
-Dim ch$
+Dim k$
 C = 1
 
+we.clear_keyboard_buffer()
 Turtle Reset
 Text 0, 0, "Hilbert Curve (1 of 2)", "", 2
 Text 2, 25, "Press Q to Quit, or any other key for the next pattern", "", 1
@@ -20,14 +19,12 @@ Hilbert(7,90,6)
 Text 0, 0, "Hilbert Curve (1 of 2)", "", 2
 Text 2, 25, "Press Q to Quit, or any other key for the next pattern", "", 1
 
-If ch$ = "" Then
-  we.wait_for_key()
-ElseIf LCase$(ch$) = "q" Then
-  we.quit% = 1
-EndIf
+If k$ = "" Then we.wait_for_key()
+If we.is_quit_key%(k$) Then we.quit% = 1
 If we.quit% Then we.end_program()
 
-ch$ = ""
+k$ = ""
+we.clear_keyboard_buffer()
 Turtle Reset
 Text 0, 0, "Hilbert Curve (2 of 2)", "", 2
 Text 2, 25, "Press Q to Quit", "", 1
@@ -36,12 +33,12 @@ Turtle Move 150,550
 Turtle Pen Down
 Hilbert(8,90,2)
 
-If LCase$(ch$) = "q" Then we.quit% = 1
+If we.is_quit_key%(k$) Then we.quit% = 1
 we.end_program()
 
 Sub Hilbert(Level,Angle,Length)
-  If ch$ = "" Then ch$ = Inkey$
-  If ch$ <> "" Then Exit Sub
+  If k$ = "" Then k$ = Inkey$
+  If k$ <> "" Then Exit Sub
 
   If Level = 0 Then Exit Sub
 

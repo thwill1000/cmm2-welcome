@@ -7,14 +7,10 @@ Option Base 1
 Option Explicit
 Option Default None
 
-#Include "../common/common.inc"
+#Include "../common/welcome.inc"
 
 Mode 1,8
 Cls
-we.clear_keyboard_buffer()
-
-Text 0, 0, "Spirals", "", 2
-Text 2, 25, "Press Q to Quit", "", 1
 
 Dim count%(11) = (400, 500, 600, 800, 900, 1000, 1000, 1000, 1000, 1000, 1000)
 Dim angle!(11) = (45.5, 55.5, 60.2, 89.5, 110, 119.9, 120.1, 135.1, 145, 176, 190)
@@ -27,7 +23,9 @@ For i% = 1 To 11
   s$ = "Press Q for Quit"
   If i% < 11 Then s$ = s$ + ", or any other key for the next pattern"
   Text 2, 25, s$, "", 1
+
   Draw(count%(i%), angle!(i%))
+
   we.clear_keyboard_buffer()
   we.wait_for_key()
   If we.quit% = 1 Then Exit For
