@@ -1,7 +1,9 @@
 ChangeLog
 ---------
 
+Release 0.2:
+ - Include missing Conway's Game of Life implementation.
+
 Release 0.1:
  - Initial release to The Back Shed.
  - Scott Adams' Pirate Adventure is included but doesn't work.
- 
