@@ -11,6 +11,15 @@ MODE 3,8
 CLS
 we.clear_keyboard_buffer()
 
+PRINT "Speech - Instructions"
+PRINT
+PRINT "Enter something for the computer to say, or one of these commands:"
+PRINT "Q - Quit"
+PRINT "*phonetic on|off"
+PRINT "*speed <value> - choose a speed from 1-255"
+PRINT "*pitch <value> - choose a pitch from 1-255"
+PRINT "*config - to list the current parameters"
+PRINT
 
 PLAY TTS Intro$ + " " + Prompt$
 PRINT Intro$
