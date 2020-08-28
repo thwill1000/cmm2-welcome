@@ -4,11 +4,6 @@ Prompt$="Please enter something for me to speak, or Q to exit"
 PhoneticOn=0
 Speed=72
 Pitch=64
-'Didn't find info about throat parameter at
-'http://www.retrobits.net/atari/sam.shtml#ch5.0
-'Mouth=
-'Throat=
-
 
 PLAY TTS Intro$ + " " + Prompt$
 PRINT Intro$
@@ -27,8 +22,6 @@ Test:   IF Answer$="Q" OR Answer$="q" THEN END
         ELSE IF LEFT$(UpAnswer$,6) = "*PITCH" THEN
           String2$=MID$(UpAnswer$,7)
           Pitch=VAL(String2$)
-        'ELSE IF LEFT$(UpAnswer$,6) = "*MOUTH" THEN
-        'ELSE IF LEFT$(UpAnswer$,6) = "*THROAT" THEN
         ELSE IF LEFT$(UpAnswer$,7) = "*CONFIG" THEN
           IF PhoneticOn THEN
             PRINT "Phonetic ON"
