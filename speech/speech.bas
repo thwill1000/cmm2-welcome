@@ -1,9 +1,16 @@
+#INCLUDE "../common/welcome.inc"
+
 Intro$="Welcome to the Colour Maximite 2"
 Prompt$="Please enter something for me to speak, or Q to exit"
 
 PhoneticOn=0
 Speed=72
 Pitch=64
+
+MODE 3,8
+CLS
+we.clear_keyboard_buffer()
+
 
 PLAY TTS Intro$ + " " + Prompt$
 PRINT Intro$
@@ -37,3 +44,5 @@ Test:   IF Answer$="Q" OR Answer$="q" THEN END
         ENDIF
 LOOP
 
+we.end_program()
+                                                
