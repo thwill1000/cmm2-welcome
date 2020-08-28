@@ -146,7 +146,7 @@ Function quit()
 End Function
 
 menu_top:
-Data "1", "Lunar Lander", "lunar/LunarLander2v6.bas"
+Data "1", "Lunar Lander", "lunar/lunar.bas"
 Data "2", "Turtle Graphics Demos", "menu_turtle"
 Data "3", "Graphics Primitives Demos", "menu_graphics"
 Data "4", "Conway's Game of Life", "life/life.bas"
