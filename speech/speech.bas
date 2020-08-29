@@ -55,7 +55,7 @@ PRINT Intro$
 DO
         INPUT "Please enter something for me to speak, or Q to exit";Answer$
 
-Test:   IF Answer$="Q" OR Answer$="q" THEN END
+Test:   IF Answer$="Q" OR Answer$="q" THEN we.quit% = 1 : we.end_program
 
         UpAnswer$ = UCASE$(Answer$)
         IF UpAnswer$ = "*PHONETIC ON" THEN
