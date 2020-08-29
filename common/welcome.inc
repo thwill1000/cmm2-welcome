@@ -53,7 +53,7 @@ Sub we.run_menu()
 End Sub
 
 Sub we.run_program(f$, cmdline$)
-  CLS
+  Cls
   Print : Print "Loading..."
   Execute("Run " + Chr$(34) + f$ + Chr$(34) + ", " + cmdline$)
 End Sub
