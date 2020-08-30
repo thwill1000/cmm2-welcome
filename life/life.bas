@@ -110,40 +110,30 @@ Sub init_matrix()
   x = 0
   rate = 0
   gen = 0
-  SELECT CASE k$
-    CASE "1" ' glider
-      RESTORE seed1
-    CASE "2" ' blinker
-      RESTORE seed2
-    CASE "3" ' toad
-      RESTORE seed3
-    CASE "4" ' beacon
-      RESTORE seed4
-    CASE "5" 'Penta-decathlon
-      RESTORE seed5
-    CASE "6" ' pulsar
-      RESTORE seed6
-    CASE "7" '
-      RESTORE seed7
-    CASE "8" '
-      RESTORE seed8
-    CASE "9" '
-      RESTORE seed9
-    CASE "0" ' diehard
-      RESTORE seed0
-    case "R","r" ' rerun
+  Select Case LCase$(k$)
+    Case "1" : Restore glider
+    Case "2" : Restore blinker
+    Case "3" : Restore toad
+    Case "4" : Restore beacon
+    Case "5" : Restore penta_decathlon
+    Case "6" : Restore pulsar
+    Case "7" : Restore lw_spaceship
+    Case "8" : Restore hw_spaceship
+    Case "9" : Restore hw_spaceship
+    Case "0" : Restore diehard
+    Case "r" ' rerun
       for x = 1 to MatX
         for y = 1 to MatY
           M(x,y,b) = Mx(x,y)
         next y
       next x
       dying = Mx(0,0)
-    case "E","e" ' enter your own set
+    Case "e" ' enter your own set
       edit_matrix()
       x = 1
-    CASE "Q","q" ' do nothing
+    Case "q" ' do nothing
       x = -1
-    CASE ELSE ' random set
+    Case Else ' random set
       FOR y = 2 TO MatY-1
         FOR x = 2 TO MatX-1
           IF RND() <= RandL THEN
@@ -154,7 +144,7 @@ Sub init_matrix()
         NEXT x
       NEXT y
       dying = 4
-  END SELECT
+  End Select
   IF x = 0 THEN ' we need to read a set configuration
     FOR y = 1 TO MatY
       FOR x = 1 TO MatX
@@ -355,31 +345,31 @@ Function bright(c, p)
 end function
 
 ' Seeds are pairs of x,y cells ending in -1 then 0 or 1 for coloured dying cells
-seed1: ' glider
+glider:
   DATA 4,7,5,7,6,7,6,6,5,5,-1,0
-seed2: ' blinker
+blinker:
   DATA 4,7,5,7,6,7,-1,0
-seed3: ' toad
+toad:
   DATA 5,7,6,7,7,7,4,8,5,8,6,8,-1,0
-seed4: ' beacon
+beacon:
   DATA 4,7,5,7,4,8,7,9,6,10,7,10,-1,0
-seed5: 'Penta-decathlon
+penta_decathlon:
   DATA 5, 7,6, 7,7, 7,5, 8,7, 8,5, 9,6, 9,7, 9
   DATA 5, 10,6, 10,7, 10,5, 11,6, 11,7, 11,5, 12
   DATA 6, 12,7, 12,5, 13,7, 13,5, 14,6, 14,7, 14,-1,1
-seed6: ' pulsar
+pulsar:
   DATA 5,3,6,3,7,3,11,3,12,3,13,3,3,5,8,5,10,5,15,5
   DATA 3,6,8,6,10,6,15,6,3,7,8,7,10,7,15,7
   DATA 5,8,6,8,7,8,11,8,12,8,13,8,5,10,6,10,7,10,11,10,12,10,13,10
   DATA 3,11,8,11,10,11,15,11,3,12,8,12,10,12,15,12
   DATA 3,13,8,13,10,13,15,13,5,15,6,15,7,15,11,15,12,15,13,15
   DATA -1, 1
-seed7: ' LW spaceship
+lw_spaceship:
   DATA 3,2,6,2,7,3,3,4,7,4,4,5,5,5,6,5,7,5,-1,1
-seed8: ' MW spaceship
+mw_spaceship:
   DATA 5,2,3,3,7,3,8,4,3,5,8,5,4,6,5,6,6,6,7,6,8,6,-1,1
-seed9: ' HW spaceship
+hw_spaceship:
   DATA 7,4,8,4,3,5,4,5,5,5,6,5,8,5,9,5,3,6,4,6,5,6,6,6,7,6,8,6
   DATA 4,7,5,7,6,7,7,7,-1,1
-seed0:  'diehard
+diehard:
   DATA 8,5,2,6,3,6,4,6,7,7,8,7,9,7,-1,1
