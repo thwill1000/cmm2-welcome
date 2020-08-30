@@ -1,5 +1,10 @@
 'option explicit
 
+#INCLUDE "../common/welcome.inc"
+
+we.clear_keyboard_buffer()
+
+
 'DIM BG=RGB(blue)
 DIM BG=RGB(black)
 DIM FG=RGB(white)
@@ -211,7 +216,7 @@ do
       params(p_index) = MAX(0,params(p_index) - pd(p_index))
       setparam
     end if
-    if k$="q" or k$="Q" then end
+    if we.is_quit_key%(k$) then we.quit% = 1 : we.end_program
   loop until k$=" "
   playsounds
 loop
