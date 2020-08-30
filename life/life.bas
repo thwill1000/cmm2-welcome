@@ -8,21 +8,21 @@ Option Base 0
 #Include "../common/welcome.inc"
 
 ' Things that can be changed:
-Dim MatX = 66   ' Matrix horizontal size
-Dim PT = 0    ' Pause time in mS between display updates
-Dim initialPause = 3000 ' time to display starting pattern
-Dim FLOAT RandL = 0.3 ' For random life. less than =< RandL means there is life
+Const MatX = 66   ' Matrix horizontal size
+Const PT = 0    ' Pause time in mS between display updates
+Const initialPause = 3000 ' time to display starting pattern
+Const RandL! = 0.3 ' For random life. less than =< RandL means there is life
 Dim states(4) = (0, RGB(Black), RGB(Yellow), RGB(Green), RGB(127, 0, 0))
 ' End of configurable values
 
-Dim MatY   ' Matrix vertical size - gets calculated later depending on screen size
-Dim DIAM, a, b, gen, wrap, alive
-Dim FLOAT rate, rateX
+Const DIAM = MM.HRES/matX
+Const MatY = INT(MatX * MM.VRES / MM.HRES) ' Matrix height
+
+Dim a, b, gen, wrap, alive
+Dim rate!, rateX!
+Dim k$
 Dim enhanced = 1
 Dim dead = 1, born = 2, mature = 3, dying = 4
-Dim k$
-DIAM = MM.HRES/matX
-MatY = INT( MatX *MM.VRES/MM.HRES)
 Dim M(MatX+1, MatY+1,2) ' The  matrix of life
 Dim Mx(MatX+1, MatY+1) ' copy of starting pattern
 
@@ -31,8 +31,8 @@ make_tiles()
 DO
   a = 0 : b = 1
   page write 0
-  show_intro()
-  IF LCASE$(k$) = "q" THEN EXIT DO
+  k$ = show_intro$()
+  If LCase$(k$) = "q" Then Exit Do
   page write 1
   CLS
   init_matrix()
@@ -51,19 +51,20 @@ DO
   initial_gen()
   PAUSE initialPause
   TIMER = 0     ' reset for next timer
-  rateX = 0
+  rateX! = 0.0
   DO            ' main Program loop
     next_gen()
     PAUSE PT
-    rate = Timer - rateX- PT
-    rateX = timer
+    rate! = Timer - rateX! - PT
+    rateX! = Timer
   LOOP UNTIL INKEY$ <> "" ' loop forever or until a keypress
 LOOP
 
 we.quit% = 1
 we.end_program()
 
-Sub show_intro()
+Function show_intro$()
+  Local k$
   Local x = 175
   Local on_off$(1) = ("OFF", "ON")
 
@@ -101,14 +102,16 @@ Sub show_intro()
         Exit Do
     End Select
   Loop
-End Sub
+
+  show_intro$ = k$
+End Function
 
 ' Initialises the matrix of life.
 Sub init_matrix()
   Local x, y
   a = 0 : b = 1
   x = 0
-  rate = 0
+  rate! = 0.0
   gen = 0
   Select Case LCase$(k$)
     Case "1" : Restore glider
@@ -136,7 +139,7 @@ Sub init_matrix()
     Case Else ' random set
       FOR y = 2 TO MatY-1
         FOR x = 2 TO MatX-1
-          IF RND() <= RandL THEN
+          IF RND() <= RandL! THEN
             M(x, y, b) = 1
           ELSE
             M(x, y, b) = 0
@@ -232,7 +235,7 @@ Sub next_gen()
       ENDIF
     NEXT x
   NEXT y
-  TEXT 10,1,"Gen: "+STR$(gen)+", "+str$(alive)+" cells in"+STR$(rate,5,0)+"mS  "
+  TEXT 10,1,"Gen: "+STR$(gen)+", "+str$(alive)+" cells in"+STR$(rate!,5,0)+"mS  "
   page copy 1 to 0
 End Sub
 
