@@ -1,5 +1,6 @@
 'option explicit
 
+
 #INCLUDE "../common/welcome.inc"
 
 we.clear_keyboard_buffer()
@@ -27,6 +28,23 @@ end sub
 sub inversevideo
   colour bg,fg
 end sub
+
+'May need padding if the layout is too small for the mode
+DIM toppadding=2
+DIM leftpadding=12
+DIM padspace$=space$(leftpadding)
+
+sub pad
+  print padspace$;
+end sub
+
+sub toppad
+  local n
+  for n=1 to toppadding
+    print
+  next n
+end sub
+
 
 dim steps=6
 dim f1=1000
@@ -126,10 +144,12 @@ end sub
 
 sub printinfo
   Colour RGB(Green)
-  Print "                 Chirps!"
+
+  Pad : Print "                 Chirps!"
   Colour FG
   Print
-  Print " Controls: ";
+  Pad : Print " Controls: ";
+
   printcontrol     "Up"
   print              ", ";
   printcontrol         "Down"
@@ -142,30 +162,34 @@ sub printinfo
   printcontrol("-") : print ".";
   Print
 
-  Print " Press ";
+
+  Pad : Print " Press ";
+
   printcontrol "Space"
   print             " to play the sounds, ";
   printcontrol                           "Q"
   print                                   " to quit"
   print 
-  print " Parameter ft, frequency change type:"
-  print "   1 - linear change of frequency."
-  print "   2 - exponential.
-  print "   3 - linear change of wave period."
-  print " Parameter rfn, round f to avoid partial waves."
+
+  Pad : Print " Parameter ft, frequency change type:"
+  Pad : Print "   1 - linear change of frequency."
+  Pad : Print "   2 - exponential.
+  Pad : Print "   3 - linear change of wave period."
+  Pad : Print " Parameter rfn, round f to avoid partial waves."
+  'Print
+  Pad : Print " Frequencies from 1-20000. Volumes from 1-25."
   'print
-  print " Frequencies from 1-20000. Volumes from 1-25."
-  'print
-  print " Suggestions: Try f2 higher, lower, or equal to f1."
+  Pad : Print " Suggestions: Try f2 higher, lower, or equal to f1."
+
 end sub
 
 sub printparams
 
   for i=1 to param_count
     colour parametercolour
-
+    Pad
     if i=p_index then inversevideo
-    print " ";pdescription$(i); TAB(37);" =";params(i);" "
+    Print " ";pdescription$(i); TAB(37+leftpadding);" =";params(i);" "
     normalvideo
   next
 end sub
@@ -194,6 +218,8 @@ do
     'CLS BG
     CLS
 
+    toppad
+
     Print
     printinfo
     print
@@ -216,7 +242,9 @@ do
       params(p_index) = MAX(0,params(p_index) - pd(p_index))
       setparam
     end if
+
     if we.is_quit_key%(k$) then we.quit% = 1 : we.end_program
+
   loop until k$=" "
   playsounds
 loop
@@ -376,3 +404,4 @@ sub interpolate2 a(),val1,val2,val3,num,num2
     next
   next
 end sub
+
