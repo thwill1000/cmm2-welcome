@@ -29,7 +29,6 @@ Dim Mx(MatX+1, MatY+1) ' copy of starting pattern
 make_tiles()
 
 DO
-  a = 0 : b = 1
   page write 0
   k$ = show_intro$()
   If LCase$(k$) = "q" Then Exit Do
@@ -51,7 +50,6 @@ DO
   initial_gen()
   PAUSE initialPause
   TIMER = 0     ' reset for next timer
-  rateX! = 0.0
   DO            ' main Program loop
     next_gen()
     PAUSE PT
@@ -108,12 +106,28 @@ End Function
 
 ' Initialises the matrix of life.
 Sub init_matrix()
-  Local x, y
-  a = 0 : b = 1
-  x = 0
+  a = 0
+  b = 1
   rate! = 0.0
+  rateX! = 0.0
   gen = 0
+
   Select Case LCase$(k$)
+    Case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" : read_matrix(k$)
+    Case "r" : restore_matrix()
+    Case "e" : edit_matrix()
+    Case "s" : random_matrix()
+    Case Else : Error "Unknown state: " + k$
+  End Select
+
+  backup_matrix()
+
+End Sub
+
+Sub read_matrix(seed$)
+  Local x, y
+
+  Select Case seed$
     Case "1" : Restore glider
     Case "2" : Restore blinker
     Case "3" : Restore toad
@@ -124,52 +138,59 @@ Sub init_matrix()
     Case "8" : Restore hw_spaceship
     Case "9" : Restore hw_spaceship
     Case "0" : Restore diehard
-    Case "r" ' rerun
-      for x = 1 to MatX
-        for y = 1 to MatY
-          M(x,y,b) = Mx(x,y)
-        next y
-      next x
-      dying = Mx(0,0)
-    Case "e" ' enter your own set
-      edit_matrix()
-      x = 1
-    Case "q" ' do nothing
-      x = -1
-    Case Else ' random set
-      FOR y = 2 TO MatY-1
-        FOR x = 2 TO MatX-1
-          IF RND() <= RandL! THEN
-            M(x, y, b) = 1
-          ELSE
-            M(x, y, b) = 0
-          ENDIF
-        NEXT x
-      NEXT y
-      dying = 4
+    Case Else : Error "Unknown seed"
   End Select
-  IF x = 0 THEN ' we need to read a set configuration
-    FOR y = 1 TO MatY
-      FOR x = 1 TO MatX
-        M(x, y, b) = 0
-      NEXT x
-    NEXT y
-    DO
-      READ x
-      READ y
-      IF x = -1 THEN EXIT DO
-      IF y = -1 THEN PRINT "Error in Data",x,y: EXIT DO
-      M(x, y, b) = 1
-    LOOP
-    dying = y*3+1 ' 1 or 4 depending on data
-  ENDIF
-  for x = 1 to MatX
-    for y = 1 to MatY
-      Mx(x,y) = M(x,y,b)
-      Mx(0,0)= dying
-    next y
-  next x
 
+  For y = 1 To MatY
+    For x = 1 To MatX
+      M(x, y, b) = 0
+    Next x
+  Next y
+
+  Do
+    Read x
+    Read y
+    If x = -1 Then Exit Do
+    If y = -1 Then Print "Error in Data", x, y : Exit Do
+    M(x, y, b) = 1
+  Loop
+
+  dying = y*3+1 ' 1 or 4 depending on data
+
+End Sub
+
+Sub restore_matrix()
+  Local x, y
+  For x = 1 To MatX
+    For y = 1 To MatY
+      M(x, y, b) = Mx(x, y)
+    Next y
+  Next x
+  dying = Mx(0,0)
+End Sub
+
+Sub random_matrix()
+  Local x, y
+  For y = 2 To MatY - 1
+    For x = 2 To MatX - 1
+      If Rnd() <= RandL! Then
+        M(x, y, b) = 1
+      Else
+        M(x, y, b) = 0
+      ENDIF
+    Next x
+  Next y
+  dying = 4
+End Sub
+
+Sub backup_matrix()
+  Local x, y
+  For x = 1 To MatX
+    For y = 1 To MatY
+      Mx(x, y) = M(x, y, b)
+      Mx(0, 0) = dying
+    Next y
+  Next x
 End Sub
 
 ' Shows the initial generation of life.
