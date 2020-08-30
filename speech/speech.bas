@@ -1,5 +1,6 @@
 #INCLUDE "../common/welcome.inc"
 
+
 PhoneticOn=0
 Speed=72
 Pitch=64
@@ -21,7 +22,7 @@ SUB Instructions1
 END SUB
 
 SUB Instructions2
-  PRINT "Commands and speech strings can use any capital or lowercase letters."
+  PRINT "Commands and speech strings can use capital or lowercase letters."
   PRINT 
   PRINT "In PHONETIC ON mode"
   PRINT 
@@ -35,27 +36,32 @@ SUB Instructions2
   PRINT "Stresses:"
   PRINT "1 2 3 4 5 6 7 8"
   PRINT
-  PRINT "an example is: WEL4LKUM tuw mae4ksihmay7t"
-  PRINT "(to say Welcome to Maximite)
+  PRINT "An example is:"
+  PRINT "  WEH4LKUM TUW MAE4KSIHMAY7T"
+  PRINT "This will say: Welcome to Maximite
+  PRINT
+  PRINT "You can type it in lowercase, and it will do the same thing:"
+  PRINT "  weh4lkum tuw mae4ksihmay7t"
   PRINT
 END SUB
 
 Instructions1
 
 Intro$="Welcome to the Colour Maximite 2.
-Prompt$="Please enter something for me to speak, or Q to exit"
+Prompt$="Please enter something for me to say, or Q to exit."
 
 'PLAY TTS doesn't say "Maximite" correctly, so the program uses the phonetic version
-IntroPhonetic$="Weh4lkum tuw thah kahlah mae4ksihmay7t tuw. Pliyz ehntah sahmthihnx fao miy tuw spiyk, ao kyuw tuw eh4ksiht."
+IntroPhonetic$="Weh4lkum tuw thah kahlah mae4ksihmay7t tuw. Pliyz ehntah sahmthihnx fao miy tuw sey, ao kyuw tuw eh4ksiht."
 
 'PLAY TTS Intro$ + " " + Prompt$
 PLAY TTS PHONETIC IntroPhonetic$
 
 PRINT Intro$
 DO
-        INPUT "Please enter something for me to speak, or Q to exit";Answer$
+        PRINT Prompt$
+        INPUT Answer$
 
-Test:   IF Answer$="Q" OR Answer$="q" THEN we.quit% = 1 : we.end_program
+Test:   IF we.is_quit_key%(Answer$) THEN we.quit% = 1 : we.end_program
 
         UpAnswer$ = UCASE$(Answer$)
         IF UpAnswer$ = "*PHONETIC ON" THEN
@@ -101,3 +107,4 @@ Test:   IF Answer$="Q" OR Answer$="q" THEN we.quit% = 1 : we.end_program
 LOOP
 
 we.end_program()
+                                                
