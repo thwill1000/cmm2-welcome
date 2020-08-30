@@ -1,5 +1,9 @@
 ' John Conway's Game of Life for Colour Maximite 2
-' Authors: Bill McKinley & TassyJim
+' Authors: Bill McKinley, TassyJim & Thomas Hugo Williams
+
+Option Explicit On
+Option Default None
+Option Base 0
 
 #Include "../common/welcome.inc"
 
@@ -14,12 +18,13 @@ dim integer states(4)= (0,rgb(black),rgb(yellow),rgb(green),RGB(127,0,0))
 DIM integer MatY   ' Matrix vertical size - gets calculated later depending on screen size
 DIM INTEGER DIAM, a, b, gen, wrap, alive
 DIM FLOAT rate, rateX
+Dim Integer enhanced = 1
 dim integer dead = 1, born = 2, mature = 3, dying = 4
 DIM k$
 DIAM = MM.HRES/matX
 MatY = INT( MatX *MM.VRES/MM.HRES)
-DIM M(MatX+1, MatY+1,2) ' The  matrix of life
-dim Mx(MatX+1, MatY+1) ' copy of starting pattern
+Dim Integer M(MatX+1, MatY+1,2) ' The  matrix of life
+Dim Integer Mx(MatX+1, MatY+1) ' copy of starting pattern
 
 makeTiles
 
@@ -31,6 +36,18 @@ DO
   page write 1
   CLS
   InitM         ' Initialize the matrix
+
+  If enhanced Then
+    ' With enhanced visualisation newly "born" cells, surviving "mature"
+    ' cells and cells that have just died are all shown in different
+    ' colours.
+    dead = 1 : born = 2 : mature = 3 : dying = 4
+  Else
+    ' With traditional visualisation cells that have just died are not
+    ' shown and there is no distinction between "born" and "mature" cells.
+    dead = 1 : born = 3 : mature = 3 : dying = 1
+  EndIf
+
   initial_gen
   PAUSE initialPause
   TIMER = 0     ' reset for next timer
@@ -47,29 +64,43 @@ we.quit% = 1
 we.end_program()
 
 SUB Intro ' Print intro
-  DO
-    CLS
-    text MM.HRES/2, 50,"CONWAY'S GAME OF LIFE",cm,5,1, rgb(yellow)
-    if wrap = 0 then
-      text MM.HRES/2,125,"W to wrap display edges",cm,3,1
-    else
-      text MM.HRES/2,125,"W to stop wrapping",cm,3,1
-    endif
-    text MM.HRES/2,150,"R to replay last set",cm,3,1
-    text MM.HRES/2,175,"0-9 for a preset demo",cm,3,1
-    text MM.HRES/2,200,"'e' to enter your own",cm,3,1
-    text MM.HRES/2,225,"(space to toggle, enter when done)",cm,1,1
-    text MM.HRES/2,250,"any other key for random start",cm,3,1
-    text MM.HRES/2,300,"Q to quit",cm,3,1
-    DO
-      k$ = INKEY$
-    LOOP UNTIL k$ <> ""
-    IF k$ = "W" OR k$ = "w" THEN ' toggle display wrapping
-      wrap = 1 - wrap
-    else
-      exit do
-    ENDIF
-  LOOP ' loop if last command was toggle wrap
+  Local x% = 175
+  Local on_off$(1) = ("OFF", "ON")
+
+  Cls
+
+  Do
+    Text MM.HRES/2, 50, "CONWAY'S GAME OF LIFE", cm, 5, 1, RGB(yellow)
+    Text x%, 125, "S    Random board", "", 3, 1
+    Text x%, 150, "R    Replay previous board", "", 3, 1
+    Text x%, 175, "0-9  Preset board", "", 3, 1
+    Text x%, 200, "E    Edit the board", "", 3, 1
+    Text x% + 90, 225, "- Arrow keys to navigate", "", 1, 1
+    Text x% + 90, 240, "- [Space] to toggle", "", 1, 1
+    Text x% + 90, 255, "- [Enter] when done", "", 1, 1
+    Text x%, 270, "W    Wrap display     [" + on_off$(wrap) + "] ", "", 3, 1
+    Text x%, 295, "V    Enhanced visuals [" + on_off$(enhanced) + "] ", "", 3, 1
+    If enhanced Then
+      Blit 2 * DIAM, 0, x% + 90, 320, DIAM, DIAM, 2
+      Text x% + 110, 320, "Neonate"
+      Blit 3 * DIAM, 0, x% + 185, 320, DIAM, DIAM, 2
+      Text x% + 205, 320, "Mature"
+      Blit 4 * DIAM, 0, x% + 270, 320, DIAM, DIAM, 2
+      Text x% + 290, 320, "Dying"
+    Else
+      Blit mature * DIAM, 0, x% + 90, 320, DIAM, DIAM, 2
+      Text x% + 110, 320, "Life                          "
+    EndIf
+    Text x%, 335, "Q    Quit", "", 3, 1
+
+    Do : k$ = Inkey$ : Loop Until k$ <> ""
+    Select Case LCase$(k$)
+      Case "w" : wrap = Not wrap
+      Case "v" : enhanced = Not enhanced
+      Case "r", "s", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "e", "q"
+        Exit Do
+    End Select
+  Loop
 END SUB
 
 SUB InitM ' Initialise the matrix of life
@@ -212,8 +243,8 @@ SUB NextGen ' Breed the next generation
   page copy 1 to 0
 END SUB
 
-SUB draw_cell(x, y, stage)
-  blit stage * DIAM,0,(x-1)* DIAM,(y-1)* DIAM, DIAM, DIAM,2
+SUB draw_cell(x%, y%, stage%)
+  blit stage% * DIAM, 0, (x%-1)*DIAM, (y%-1)*DIAM, DIAM, DIAM, 2
 END SUB
 
 sub homeBrew
