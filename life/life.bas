@@ -26,16 +26,16 @@ MatY = INT( MatX *MM.VRES/MM.HRES)
 Dim M(MatX+1, MatY+1,2) ' The  matrix of life
 Dim Mx(MatX+1, MatY+1) ' copy of starting pattern
 
-makeTiles
+make_tiles()
 
 DO
   a = 0 : b = 1
   page write 0
-  Intro         ' Print intro
+  show_intro()
   IF LCASE$(k$) = "q" THEN EXIT DO
   page write 1
   CLS
-  InitM         ' Initialize the matrix
+  init_matrix()
 
   If enhanced Then
     ' With enhanced visualisation newly "born" cells, surviving "mature"
@@ -48,12 +48,12 @@ DO
     dead = 1 : born = 3 : mature = 3 : dying = 1
   EndIf
 
-  initial_gen
+  initial_gen()
   PAUSE initialPause
   TIMER = 0     ' reset for next timer
   rateX = 0
   DO            ' main Program loop
-    NextGen     ' Calculate the next generation
+    next_gen()
     PAUSE PT
     rate = Timer - rateX- PT
     rateX = timer
@@ -63,7 +63,7 @@ LOOP
 we.quit% = 1
 we.end_program()
 
-SUB Intro ' Print intro
+Sub show_intro()
   Local x = 175
   Local on_off$(1) = ("OFF", "ON")
 
@@ -101,9 +101,10 @@ SUB Intro ' Print intro
         Exit Do
     End Select
   Loop
-END SUB
+End Sub
 
-SUB InitM ' Initialise the matrix of life
+' Initialises the matrix of life.
+Sub init_matrix()
   Local x, y
   a = 0 : b = 1
   x = 0
@@ -138,7 +139,7 @@ SUB InitM ' Initialise the matrix of life
       next x
       dying = Mx(0,0)
     case "E","e" ' enter your own set
-      homeBrew
+      edit_matrix()
       x = 1
     CASE "Q","q" ' do nothing
       x = -1
@@ -176,9 +177,10 @@ SUB InitM ' Initialise the matrix of life
     next y
   next x
 
-END SUB
+End Sub
 
-SUB initial_gen
+' Shows the initial generation of life.
+Sub initial_gen()
   Local x, y
   FOR y = 1 TO MatY
     FOR x = 1 TO MatX
@@ -189,9 +191,10 @@ SUB initial_gen
   NEXT y
   TEXT 10,1,"Initial Generation"
   page copy 1 to 0
-END SUB
+End Sub
 
-SUB NextGen ' Breed the next generation
+' Breeds and shows the next generation of life.
+Sub next_gen()
   Local x, y, d, i
   b = a : a = 1 - a ' swap a and b
   gen = gen + 1
@@ -241,13 +244,14 @@ SUB NextGen ' Breed the next generation
   NEXT y
   TEXT 10,1,"Gen: "+STR$(gen)+", "+str$(alive)+" cells in"+STR$(rate,5,0)+"mS  "
   page copy 1 to 0
-END SUB
+End Sub
 
-SUB draw_cell(x, y, stage)
+Sub draw_cell(x, y, stage)
   blit stage * DIAM, 0, (x-1)*DIAM, (y-1)*DIAM, DIAM, DIAM, 2
-END SUB
+End Sub
 
-sub homeBrew
+' Edits the initial matrix/generation of life.
+Sub edit_matrix()
   Local k$, x, y
   page write 0
   cls
@@ -276,7 +280,7 @@ sub homeBrew
   endif
   x = MatX\2
   y = MatY\2
-  highlightCell x,y
+  highlight_cell(x, y)
   do : loop until inkey$ = ""
   do
     DO
@@ -288,19 +292,19 @@ sub homeBrew
       case CHR$(130) ' left arrow
         x = x - 1
         if x < 1 then x = MatX
-        highlightCell x,y
+        highlight_cell(x, y)
       case CHR$(131) ' right arrow
         x = x + 1
         if x > MatX then x = 1
-        highlightCell x,y
+        highlight_cell(x, y)
       case CHR$(128) ' down arrow
         y = y - 1
         if y < 1 then y = MatY
-        highlightCell x,y
+        highlight_cell(x, y)
       case CHR$(129) ' up arrow
         y = y + 1
         if y > MatY then y = 1
-        highlightCell x,y
+        highlight_cell(x, y)
       case " " ' toggle cell
         IF M(x, y, b) = 0 THEN
           M(x, y, b) = 1
@@ -309,15 +313,15 @@ sub homeBrew
           M(x, y, b) = 0
           draw_cell(x, y, dead)
         ENDIF
-        highlightCell x,y
+        highlight_cell(x, y)
       case else
         '
     end select
   loop
   do : loop until inkey$ = ""
-end sub
+End Sub
 
-Sub highlightCell(x, y)
+Sub highlight_cell(x, y)
   page copy 1 to 0
   page write 0
   line (x-1)* DIAM,(y-1)* DIAM,(x)* DIAM,(y-1)* DIAM,1,rgb(red)
@@ -327,7 +331,8 @@ Sub highlightCell(x, y)
   page write 1
 End Sub
 
-sub makeTiles     ' prepare the blits
+' Prepare the images for blitting from page 2.
+Sub make_tiles()
   Local a, b
   page write 2
   box 0,0,diam*5,diam*2,1,0,0
@@ -336,7 +341,7 @@ sub makeTiles     ' prepare the blits
       CIRCLE (a+0.5)* DIAM, 0.5 * DIAM, DIAM/2 - b, 1,,bright(states(a),b*15), states(a)
     next b
   next a
-end sub
+End Sub
 
 Function bright(c, p)
   ' given colour and percent, returns adjusted colour
