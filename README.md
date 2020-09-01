@@ -24,7 +24,7 @@ computers of the early 80's such as the Tandy TRS-80, Commodore 64 and Apple II.
 
 While the concept of the Colour Maximite 2 is borrowed from the computers of the 80's the technology
 used is very much up to date.  Its CPU is an ARM Cortex-M7 32-bit RISC processor running at 480MHz
-and it generates a VGA output at resolutions up to 800x600 pixels with up 65,536 colours.
+and it generates a VGA output at resolutions up to 800x600 pixels with up to 65,536 colours.
 
 The power of the ARM processor means it is capable of running BASIC at speeds comparable to running
 native machine-code on an 8-bit home computer with the additional advantage of vastly more memory
