@@ -56,7 +56,7 @@ Sub we.run_program(f$, cmdline$)
   Mode 1,8
   Page Write 0
   Cls
-  Print : Print "Loading..."
+  Print : Print "Loading '"; f$; "'..."
   Execute("Run " + Chr$(34) + f$ + Chr$(34) + ", " + cmdline$)
 End Sub
 
