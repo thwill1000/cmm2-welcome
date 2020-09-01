@@ -13,8 +13,9 @@ Release 0.2:
  - Updated Lunar Lander to v7.2
    - by "vegipete"
  - Changed menu framework to display "Loading <file>..." message
-   - you may not always see it if your monitor has to change VGA mode
-     when changing program.
+   - due to the delay whilst the VGA monitor switches resolution/frequency you
+     may not always see this when transitioning to the menu from a program that
+     was not using Mode 1.
 
 Release 0.1:
  - Initial release to The Back Shed.
