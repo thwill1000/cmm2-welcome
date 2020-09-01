@@ -1,5 +1,6 @@
-#INCLUDE "../common/welcome.inc"
+' Author: "capsikin"
 
+#Include "../common/welcome.inc"
 
 PhoneticOn=0
 Speed=72
@@ -23,22 +24,22 @@ END SUB
 
 SUB Instructions2
   PRINT "Commands and speech strings can use capital or lowercase letters."
-  PRINT 
+  PRINT
   PRINT "In PHONETIC ON mode"
-  PRINT 
+  PRINT
   PRINT "Phonetic codes:"
   PRINT "  Vowel sounds: IY IH EH AE AA AH AO OH UH UX ER AX IX"
   PRINT "  Dipthongs:    EY AY OY AW OW UW"
   PRINT "  Consonants:   R L W WH Y M N NX B D G J Z ZH V DH"
-  PRINT "                S SH F TH P T K CH /H
-  PRINT "  Other:        YX WX RX LX /X DX UL UM UN
+  PRINT "                S SH F TH P T K CH /H"
+  PRINT "  Other:        YX WX RX LX /X DX UL UM UN"
   PRINT
   PRINT "Stresses:"
   PRINT "1 2 3 4 5 6 7 8"
   PRINT
   PRINT "An example is:"
   PRINT "  WEH4LKUM TUW MAE4KSIHMAY7T"
-  PRINT "This will say: Welcome to Maximite
+  PRINT "This will say: Welcome to Maximite"
   PRINT
   PRINT "You can type it in lowercase, and it will do the same thing:"
   PRINT "  weh4lkum tuw mae4ksihmay7t"
@@ -47,7 +48,7 @@ END SUB
 
 Instructions1
 
-Intro$="Welcome to the Colour Maximite 2.
+Intro$="Welcome to the Colour Maximite 2."
 Prompt$="Please enter something for me to say, or Q to exit."
 
 'PLAY TTS doesn't say "Maximite" correctly, so the program uses the phonetic version
@@ -107,4 +108,3 @@ Test:   IF we.is_quit_key%(Answer$) THEN we.quit% = 1 : we.end_program
 LOOP
 
 we.end_program()
-                                                

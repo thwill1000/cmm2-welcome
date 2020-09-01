@@ -1,10 +1,8 @@
-'option explicit
+' Author: "capsikin"
 
-
-#INCLUDE "../common/welcome.inc"
+#Include "../common/welcome.inc"
 
 we.clear_keyboard_buffer()
-
 
 'DIM BG=RGB(blue)
 DIM BG=RGB(black)
@@ -45,7 +43,6 @@ sub toppad
   next n
 end sub
 
-
 dim steps=6
 dim f1=1000
 dim f2=2000
@@ -65,14 +62,12 @@ dim params(param_count)
 dim pname$(param_count)
 dim pdescription$(param_count)
 
-
 dim pd(param_count)
 'if the parameter goes up and down in steps bigger than one.
 
 dim max_freq=20000
 dim min_freq=1
 dim max_param=max_freq
-
 
 dim max_vol=25
 dim min_vol=1
@@ -105,12 +100,6 @@ pdescription$(10) = "Number of sets             (sets)"
 'pdescription$(8)  = "freq change type - 1 - linear. 2 - exponential. 3 - linear wavelength - ft"
 'pdescription$(9)  = "round frequency to avoid partial wavelengths (Y=1/N=other) - rfn"
 
-
-
-
-
-
-
 params(1)=steps
 params(2)=f1
 params(3)=f2
@@ -122,19 +111,18 @@ params(8)=ft
 params(9)=rfn
 params(10)=sets
 
- 
 sub setparam
- 
- steps=params(1) 
- f1=params(2) 
- f2=params(3) 
- f3=params(4) 
- v1=params(5) 
- v2=params(6) 
- steptime=params(7) 
- ft=params(8) 
- rfn=params(9) 
- sets=params(10) 
+
+ steps=params(1)
+ f1=params(2)
+ f2=params(3)
+ f3=params(4)
+ v1=params(5)
+ v2=params(6)
+ steptime=params(7)
+ ft=params(8)
+ rfn=params(9)
+ sets=params(10)
 
 end sub
 
@@ -162,23 +150,20 @@ sub printinfo
   printcontrol("-") : print ".";
   Print
 
-
   Pad : Print " Press ";
 
   printcontrol "Space"
   print             " to play the sounds, ";
   printcontrol                           "Q"
   print                                   " to quit"
-  print 
+  print
 
   Pad : Print " Parameter ft, frequency change type:"
   Pad : Print "   1 - linear change of frequency."
-  Pad : Print "   2 - exponential.
+  Pad : Print "   2 - exponential."
   Pad : Print "   3 - linear change of wave period."
   Pad : Print " Parameter rfn, round f to avoid partial waves."
-  'Print
   Pad : Print " Frequencies from 1-20000. Volumes from 1-25."
-  'print
   Pad : Print " Suggestions: Try f2 higher, lower, or equal to f1."
 
 end sub
@@ -293,7 +278,6 @@ end if
   static  f_comp2
   static  f_comp3
 
-
 f1=MIN(max_freq,f1)
 f2=MIN(max_freq,f2)
 f3=MIN(max_freq,f3)
@@ -310,7 +294,7 @@ else
   f_comp1=f1
   f_comp2=f2
   f_comp3=f3
-end if  
+end if
 
 'no, change with f_comp1
 interpolate2 fss_comp(),f_comp1,f_comp2,f_comp3,steps,sets
@@ -322,7 +306,7 @@ for j=1 to sets
         fss_comp(j,i) = 1/max_freq
       endif
 
-      fss(j,i)=1/fss_comp(j,i)      
+      fss(j,i)=1/fss_comp(j,i)
 
     else if ft=2 then
       fss(j,i)=EXP(fss_comp(j,i))
@@ -335,7 +319,6 @@ for j=1 to sets
     fss(j,i)=MIN(max_freq,fss(j,i))
   next
 next
-
 
 if rfn=1 then
   for i=1 to steps
@@ -352,7 +335,7 @@ if rfn=1 then
 end if
 
 'for i=1 to steps
-'    play sound 1,B,q,fs(i),vs(i) 
+'    play sound 1,B,q,fs(i),vs(i)
 '    pause steptime
 'next
 'play sound 1,B,O,300
@@ -364,7 +347,7 @@ end if
 
 for j=1 to sets
   for i=1 to steps
-    play sound 1,B,q,fss(j,i),vs(i) 
+    play sound 1,B,q,fss(j,i),vs(i)
     pause steptime
   next
 next
@@ -377,7 +360,6 @@ play sound 1,B,O,300
 end sub
 
 end
-
 
 function fixcycles(freq,t)
   'new value for freq that gives a whole number of cycles in time t.
@@ -407,4 +389,3 @@ sub interpolate2 a(),val1,val2,val3,num,num2
     next
   next
 end sub
-
