@@ -7,7 +7,7 @@ It is a collaborative effort by the denizens of [The Back Shed](http://www.theba
 ## How do I run it?
 
  - **IMPORTANT: Requires firmware version 5.05.05 or later**
- - Download the latest release: https://github.com/thwill1000/cmm2-welcome/releases/download/r0.1/welcome-r0.1.zip
+ - Download the latest release: https://github.com/thwill1000/cmm2-welcome/releases/download/r0.2/welcome-r0.2.zip
     - or clone/download the latest work in progress: https://github.com/thwill1000/cmm2-welcome
  - Extract all the files to ```A:\welcome\```
  - ```RUN "\welcome\welcome.bas"```
