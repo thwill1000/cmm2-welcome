@@ -1,7 +1,21 @@
 ChangeLog
 ---------
 
+Release 0.2:
+ - Added missing 'Conway's Game of Life' implementation
+   - by Bill McKinley & "TassyJim"
+ - Added 'Speech Demo'
+   - by "capsikin"
+ - Added 'Chirps, an interactive sound effect demo'
+   - by "capsikin"
+ - Added new graphical welcome/splash screen
+   - by "vegipete"
+ - Updated Lunar Lander to v7.2
+   - by "vegipete"
+ - Changed menu framework to display "Loading <file>..." message
+   - you may not always see it if your monitor has to change VGA mode
+     when changing program.
+
 Release 0.1:
  - Initial release to The Back Shed.
  - Scott Adams' Pirate Adventure is included but doesn't work.
- 

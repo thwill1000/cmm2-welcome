@@ -146,12 +146,14 @@ Function quit()
 End Function
 
 menu_top:
-Data "1", "Lunar Lander", "lunar/LunarLander2v6.bas"
+Data "1", "Lunar Lander", "lunar/lunar.bas"
 Data "2", "Turtle Graphics Demos", "menu_turtle"
 Data "3", "Graphics Primitives Demos", "menu_graphics"
 Data "4", "Conway's Game of Life", "life/life.bas"
 Data "5", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
 Data "6", "Scott Adams' Pirate Adventure [COMING SOON]", "pirate/pirate.bas"
+Data "7", "Speech Demo", "speech/speech.bas"
+Data "8", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
 Data "C", "Show credits", "credits"
 Data "Q", "Quit", "quit"
 Data "end"
