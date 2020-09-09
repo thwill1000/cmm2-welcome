@@ -1,9 +1,13 @@
+' Author: "vegipete"
 ' Short demo code to display playing cards.
 ' Card graphics suit mode 1, 800x600
 '
 ' Base images taken from Wikipedia and massaged slightly
 ' to suit the CMM2 colours and transparency and resolution.
 
+#Include "../common/welcome.inc"
+
+dim k$
 dim source(52,2)  ' hold x,y coords of each card source image
 dim shuffle(52)   ' shuffled cards
 for i = 1 to 52 : shuffle(i) = i : next i
@@ -14,7 +18,7 @@ for i = 1 to 52 : shuffle(i) = i : next i
 ' card graphics are 74 wide by 94 tall
 page write 1
 cls
-load png "playing_cards_deck.png",0,0
+load png WE.PROG_DIR$ + "/playing_cards_deck.png",0,0
 
 ' fill source(x,y) with coordinates for each card on page 1 buffer
 for i = 0 to 9
@@ -72,8 +76,12 @@ blit 9*80+3,4*100+3,470,250,cwidth,cheight,1,4
 
 ' show each card one by one, left/right arrow to change
 text 400,350,"Change card with left/right arrows.","CT",1,1,0,-1
+text 400,370,"Press 'Q' to Quit.","CT",1,1,0,-1
 text 400,420,"Type 'page copy 1,0' at command prompt","CT",1,1,0,-1
 text 400,435,"to see image file.","CT",1,1,0,-1
+
+do while inkey$ <> "" : loop ' clear keyboard buffer
+
 card = 1
 nc = 1
 do
@@ -81,25 +89,30 @@ do
     sprite show card, 360,250,0
     nc = 0
   endif
-  k = asc(inkey$) ' look for arrow keys to change displayed card
-  if k = 130 then
+  k$ = inkey$ ' look for arrow keys to change displayed card
+  if asc(k$) = 130 then
     card = card - 1
     nc = 1
     if card < 1 then card = 52
-  elseif k = 131 then
+  elseif asc(k$) = 131 then
     card = card + 1
     nc = 1
     if card > 52 then card = 1
+  elseif lcase$(k$) = "q" then
+    exit do
   endif
 loop
 
+we.quit% = 1
+we.end_program()
+
 ' splat the deck randomly on screen
-do
-  for i = 1 to 52
-    sprite show i,360,250,0 'rnd*700,rnd*480,0
-    pause 500
-  next i
-loop
+'do
+'  for i = 1 to 52
+'    sprite show i,360,250,0 'rnd*700,rnd*480,0
+'    pause 500
+'  next i
+'loop
 
 ' Shuffle the deck by swapping each position with a random position.
 sub ShuffleDeck
@@ -110,6 +123,3 @@ sub ShuffleDeck
     shuffle(c1) = tmp
   next i
 end sub
-
-
-

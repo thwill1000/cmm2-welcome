@@ -4,6 +4,8 @@ ChangeLog
 Release 0.3:
  - Added "Mandelbrot Explorer"
   - by "Sasquatch"
+ - Added "Playing Cards" demo
+  - by "vegipete"
 
 Release 0.2:
  - Added missing 'Conway's Game of Life' implementation
