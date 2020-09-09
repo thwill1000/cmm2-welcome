@@ -1,6 +1,8 @@
 ChangeLog
 ---------
 
+Release 0.3:
+
 Release 0.2:
  - Added missing 'Conway's Game of Life' implementation
    - by Bill McKinley & "TassyJim"
