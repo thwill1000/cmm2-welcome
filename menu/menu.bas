@@ -146,15 +146,36 @@ Function quit()
 End Function
 
 menu_top:
-Data "1", "Lunar Lander", "lunar/lunar.bas"
-Data "2", "Turtle Graphics Demos", "menu_turtle"
-Data "3", "Graphics Primitives Demos", "menu_graphics"
-Data "4", "Conway's Game of Life", "life/life.bas"
-Data "5", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
-Data "6", "Scott Adams' Pirate Adventure [COMING SOON]", "pirate/pirate.bas"
-Data "7", "Speech Demo", "speech/speech.bas"
-Data "8", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
+Data "1", "WHAT'S NEW?", "menu_new"
+Data "2", "Lunar Lander", "lunar/lunar.bas"
+Data "3", "Graphics Demos - 3D", "menu_3d"
+Data "4", "Graphics Demos - Fractals", "menu_fractals"
+Data "5", "Graphics Demos - Turtle", "menu_turtle"
+Data "6", "Conway's Game of Life", "life/life.bas"
+Data "7", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
+Data "8", "Scott Adams' Pirate Adventure [COMING SOON]", "pirate/pirate.bas"
+Data "9", "Speech Demo", "speech/speech.bas"
+Data "A", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
+Data "B", "CSUB Demos", "menu_csub"
 Data "C", "Show credits", "credits"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_csub:
+Data "1", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_fractals:
+Data "1", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_new:
+Data "1", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
+Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
@@ -174,7 +195,7 @@ Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_graphics:
+menu_3d:
 Data "1", "Rotating Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
 Data "2", "Rotating Dodecahedron", "graphics/dodecahedron.bas"
 Data "3", "Rotating Football", "graphics/football.bas"

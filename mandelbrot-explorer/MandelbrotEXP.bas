@@ -3,6 +3,8 @@
 'with thanks to matherp, vegipete, and yock1960 for your contributions
 'www.thebackshed.com
 
+#Include "../common/welcome.inc"
+
 Setup:
   'Screen Resolution set here, Should work at any reasonable resolution
   Mode 1,8  '800 X 600 for compatabliliy with MMBasic V5.05.04
@@ -404,10 +406,10 @@ Loop While Not Done  'End of Main Loop
 Map Reset
 If HaveChuk Then Wii Nunchuk Close
 If HaveClassic Then Wii Classic Close
-CLS
+Cls
 
-END
-
+we.quit% = 1
+we.end_program()
 
 Sub PushUndo
    For i = 98 to 1 step -1
@@ -466,7 +468,7 @@ Sub FileMenu
   Print:Print
   Print "File Menu"
   Print:Print
-  FName$ = Dir$("*.Dat",FILE)
+  FName$ = Dir$(WE.PROG_DIR$ + "/*.Dat",FILE)
   Do While FName$ <> ""
     IF Left$(FName$,1) <> "." Then Print FName$
     FName$ = Dir$()
@@ -485,7 +487,7 @@ Sub FileMenu
       if FileName$ = "" Then FileName$ = OldFileName$
       if Instr(1,FileName$,".") = 0 Then FileName$ = FileName$ + ".Dat"
       On Error Skip 1
-        Open FileName$ for Input As #1
+        Open WE.PROG_DIR$ + "/" + FileName$ for Input As #1
       If MM.ERRNO = 0 Then
         Print "Loading: ";FileName$
         Input #1, XCenter!
@@ -506,7 +508,7 @@ Sub FileMenu
       if FileName$ = "" Then FileName$ = OldFileName$
       If Instr(1,FileName$,".") = 0 Then FileName$ = FileName$ + ".Dat"
       On Error Skip 1
-        Open FileName$ for Output As #1
+        Open WE.PROG_DIR$ + "/" + FileName$ for Output As #1
       If  MM.ERRNO = 0 Then
         Print "Saving: ";FileName$
         Print #1,STR$(XCenter!,0,15)
@@ -573,7 +575,7 @@ Sub HelpScreen
   Print "Note: Press <Enter> at any prompt to retain current value"
   Print : Print
   On Error Skip 1
-  Load JPG "Mandelbrotaxes.jpg",XMax-351,200
+  Load JPG WE.PROG_DIR$ + "/Mandelbrotaxes.jpg",XMax-351,200
   Print "Press any key to Continue"
   Pause(100)
   Do While Inkey$ = ""
