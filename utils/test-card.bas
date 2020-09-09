@@ -1,8 +1,11 @@
- ' test card for CMM2
- ' TassyJim August 2020
+ ' Author: "TassyJim", August 2020
+ ' Test card for CMM2
 
  OPTION EXPLICIT
  OPTION DEFAULT NONE
+
+ #Include "../common/welcome.inc"
+
  DIM INTEGER wd, ht, wbox, sh, x, w, n, nn, m, cd, maxMode, keepMode
  DIM FLOAT a, defaultMode
  DIM k$, imgtitle$, fname$, imgRes$
@@ -90,11 +93,11 @@
      ' show the new image
      PAGE COPY 1 TO 0 ,B
    ENDIF
-   ' wait for keypress
-   DO
-     k$ = INKEY$
-   LOOP UNTIL k$<>""
-   '
+
+   Do While Inkey$ <> "" : Loop ' clear keyboard buffer
+
+   Do : k$ = Inkey$ : Loop Until k$ <> "" ' wait for keypress
+
    SELECT CASE k$
      CASE "Q","q"
        EXIT DO
@@ -136,7 +139,8 @@
  PAGE WRITE 0
  CLS
 
-END
+we.quit% = 1
+we.end_program()
 
 SUB setmode dotMode AS FLOAT
  LOCAL INTEGER mm, md
