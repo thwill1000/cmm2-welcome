@@ -170,7 +170,7 @@ Data "end"
 
 menu_fractals:
 Data "1", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
-Data "2", "Barnsley's Fern", "turtle/barnsleys-fern.bas"
+Data "2", "Barnsley's Fern", "fractals/barnsleys-fern.bas"
 Data "3", "Dragon Curve", "turtle/dragon-curve.bas"
 Data "4", "Hex Gasket", "turtle/hex-gasket.bas"
 Data "5", "Hilbert Curve", "turtle/hilbert-curve.bas"
