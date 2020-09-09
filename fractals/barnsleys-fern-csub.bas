@@ -1,41 +1,55 @@
-'CSUB demo of Barnsley's fern
-'Renders ~150X faster than pure MMBasic version
-'This demo will render continuously until Q)uit
-'Press I key to Zoom in
-'Press O key to Zoom out
-'Press Q key to Quit
+' CSUB demo of Barnsley's Fern
+' Author: Sasquatch
+'
+' Renders ~150X faster than pure MMBasic version
+' This demo will render continuously until Q)uit
+
+#Include "../common/welcome.inc"
 
 Mode 1,8
+
+init_screen()
 
 Zoom = 1.0
 Seed% = &hAAAAAAAA
 
-CLS
-'Draw a white pixel in the cente of the screen
-Pixel 400,300,RGB(white)
+Do While Inkey$ <> "" : Loop ' clear keyboard buffer
 
 Do
  Fern(40000,Zoom,Seed%)
- K$ = Inkey$
+ K$ = LCase$(Inkey$)
  If K$ <> "" Then
-   If K$ = "i" or K$ = "I" Then Zoom = Zoom * 2 : CLS : Pixel 400,300,RGB(white)
-   If K$ = "o" or K$ = "O" Then Zoom = Zoom / 2 : CLS : Pixel 400,300,RGB(white)
-   If K$ = "q" or K$ = "Q" then END
+   If K$ = "i" Then Zoom = Zoom * 2 : init_screen()
+   If K$ = "o" Then Zoom = Zoom / 2 : init_screen()
+   If K$ = "q" Then Exit Do
  EndIf
 Loop
 
-End
+we.quit% = 1
+we.end_program()
 
-'CSUB version of Barnsley's Fern
+Sub init_screen()
+  Cls
+
+  Text 0, 0, "Barnsley's Fern using CSUB", "", 2
+  Text 2, 25, "Press 'I' to Zoom in", "", 1
+  Text 2, 40, "Press 'O' to Zoom out", "", 1
+  Text 2, 55, "Press 'Q' to Quit", "", 1
+
+  'Draw a white pixel in the cente of the screen
+  Pixel 400,300,RGB(white)
+End Sub
+
+' CSUB version of Barnsley's Fern
 '
-'Fern(Iterations%,Zoom!,Seed%)
+' Fern(Iterations%,Zoom!,Seed%)
 '
-'Note that this Sub stores it's state in Seed and can be called repeatedly -
-'  it will continue to render as long as the Seed is not the same on each call.
-'Caution:  I have found that calling for more than 40,000 iterations -
-'  can interfere with MMBasic background functions such as reading keyboard
-'Higher Zoom factor will take some time to render
-'File fern.bas written 10-08-2020 13:11:17
+' Note that this Sub stores it's state in Seed and can be called repeatedly -
+'   it will continue to render as long as the Seed is not the same on each call.
+' Caution:  I have found that calling for more than 40,000 iterations -
+'   can interfere with MMBasic background functions such as reading keyboard
+' Higher Zoom factor will take some time to render
+' File fern.bas written 10-08-2020 13:11:17
 CSUB fern
  00000000
  'Fern
