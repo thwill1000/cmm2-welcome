@@ -1,6 +1,16 @@
 ChangeLog
 ---------
 
+Release 0.3:
+ - Added "Mandelbrot Explorer"
+  - by "Sasquatch"
+ - Added "Playing Cards" demo
+  - by "vegipete"
+ - Added "Graphic Test Card" utility
+  - by "TassyJim"
+ - Added "Barnsley's Fern using CSUB"
+  - by "Sasquatch"
+
 Release 0.2:
  - Added missing 'Conway's Game of Life' implementation
    - by Bill McKinley & "TassyJim"

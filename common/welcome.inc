@@ -1,6 +1,6 @@
 ' Author: Thomas Hugo Williams
 
-Const WE.VERSION$ = "Version 0.2"
+Const WE.VERSION$ = "Version 0.3"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
 Const WE.QUIT_KEY$ = "Q"

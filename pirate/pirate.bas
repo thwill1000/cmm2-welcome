@@ -11,8 +11,8 @@ Cls
 
 Print
 Print "Scott Adams' Pirate Adventure"
-Print " ... still needs to be ported to CMM2"
-Print " ... perhaps you could do it?"
+Print " ... is currently being ported to the CMM2"
+Print " ... it's taking a while, have you seen how many GOTOs it contains?"
 Print
 Print "Press any key"
 we.clear_keyboard_buffer()

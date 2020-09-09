@@ -146,35 +146,96 @@ Function quit()
 End Function
 
 menu_top:
-Data "1", "Lunar Lander", "lunar/lunar.bas"
-Data "2", "Turtle Graphics Demos", "menu_turtle"
-Data "3", "Graphics Primitives Demos", "menu_graphics"
-Data "4", "Conway's Game of Life", "life/life.bas"
-Data "5", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
-Data "6", "Scott Adams' Pirate Adventure [COMING SOON]", "pirate/pirate.bas"
-Data "7", "Speech Demo", "speech/speech.bas"
-Data "8", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
+Data "1", "WHAT'S NEW?", "menu_new"
+Data "2", "Lunar Lander", "lunar/lunar.bas"
+Data "3", "Conway's Game of Life", "life/life.bas"
+Data "4", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
+Data "5", "Graphics Demos - 3D", "menu_3d"
+Data "6", "Graphics Demos - Fractals", "menu_fractals"
+Data "7", "Graphics Demos - Sprites", "menu_sprites"
+Data "8", "Graphics Demos - Turtle", "menu_turtle"
+Data "9", "Sound Demos", "menu_sound"
+Data "A", "CSUB Demos", "menu_csub"
+Data "B", "Utilities", "menu_utils"
 Data "C", "Show credits", "credits"
+Data "D", "COMING SOON", "menu_next"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_turtle:
-Data "1", "Barnsley's Fern", "turtle/barnsleys-fern.bas"
-Data "2", "Dragon Curve", "turtle/dragon-curve.bas"
-Data "3", "Spirals", "turtle/spirals.bas"
-Data "4", "Hilbert Curve", "turtle/hilbert-curve.bas"
-Data "5", "Recursive Fractal Tree", "turtle/tree.bas"
-Data "6", "Random Recursive Fractal Tree", "turtle/random-tree.bas"
-Data "7", "Sierpinski Triangle", "turtle/sierpinskis-triangle.bas"
-Data "8", "Square Nautilus", "turtle/square-nautilus.bas"
-Data "9", "Recursive Fractal Pine Tree", "turtle/pine-tree.bas"
-Data "A", "Random Recursive Fractal Pine Tree", "turtle/random-pine-tree.bas"
-Data "B", "Hex Gasket", "turtle/hex-gasket.bas"
+menu_csub:
+Data "1", "Barnsley's Fern using CSUB", "fractals/barnsleys-fern-csub.bas"
+Data "2", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_graphics:
+menu_fractals:
+Data "1", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
+Data "2", "Barnsley's Fern", "fractals/barnsleys-fern.bas"
+Data "3", "Barnsley's Fern using CSUB", "fractals/barnsleys-fern-csub.bas"
+Data "4", "Dragon Curve", "turtle/dragon-curve.bas"
+Data "5", "Hex Gasket", "turtle/hex-gasket.bas"
+Data "6", "Hilbert Curve", "turtle/hilbert-curve.bas"
+Data "7", "Sierpinski Triangle", "turtle/sierpinskis-triangle.bas"
+Data "8", "Square Nautilus", "turtle/square-nautilus.bas"
+Data "9", "Tree - Recursive", "turtle/tree.bas"
+Data "A", "Tree - Random Recursive", "turtle/random-tree.bas"
+Data "B", "Tree - Pine, Recursive", "turtle/pine-tree.bas"
+Data "C", "Tree - Pine, Random Recursive", "turtle/random-pine-tree.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_new:
+Data "1", "Barnsley's Fern using CSUB", "fractals/barnsleys-fern-csub.bas"
+Data "2", "Graphics Test Card", "utils/test-card.bas"
+Data "3", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
+Data "4", "Playing Cards", "playing-cards/showcards.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_next:
+Data "1", "Scott Adams' Pirate Adventure", "pirate/pirate.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_sound:
+Data "1", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
+Data "2", "Speech Demo", "speech/speech.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_sprites:
+Data "1", "Playing Cards", "playing-cards/showcards.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_turtle:
+Data "1", "Dragon Curve", "turtle/dragon-curve.bas"
+Data "2", "Hex Gasket", "turtle/hex-gasket.bas"
+Data "3", "Hilbert Curve", "turtle/hilbert-curve.bas"
+Data "4", "Sierpinski Triangle", "turtle/sierpinskis-triangle.bas"
+Data "5", "Spirals", "turtle/spirals.bas"
+Data "6", "Square Nautilus", "turtle/square-nautilus.bas"
+Data "7", "Tree - Recursive", "turtle/tree.bas"
+Data "8", "Tree - Random Recursive", "turtle/random-tree.bas"
+Data "9", "Tree - Pine, Recursive", "turtle/pine-tree.bas"
+Data "A", "Tree - Pine, Random Recursive", "turtle/random-pine-tree.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_utils:
+Data "1", "Graphics Test Card", "utils/test-card.bas"
+Data "M", "Back to main menu", "menu_top"
+Data "Q", "Quit", "quit"
+Data "end"
+
+menu_3d:
 Data "1", "Rotating Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
 Data "2", "Rotating Dodecahedron", "graphics/dodecahedron.bas"
 Data "3", "Rotating Football", "graphics/football.bas"
