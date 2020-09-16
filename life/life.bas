@@ -60,7 +60,6 @@ DO
   LOOP UNTIL INKEY$ <> "" ' loop forever or until a keypress
 LOOP
 
-we.quit% = 1
 we.end_program()
 
 SUB Intro ' Print intro

@@ -6,6 +6,8 @@ Release 0.3.1:
    as Release 0.3.
  - Updated "Mandelbrot Explorer" to version 1.2
    - by "Sasquatch"
+ - Changed how returning from a program to the menu is implemented,
+   this should not cause any visible difference.
 
 Release 0.3:
  - Added "Mandelbrot Explorer"

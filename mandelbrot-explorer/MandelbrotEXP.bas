@@ -397,7 +397,6 @@ If HaveChuk Then Wii Nunchuk Close
 If HaveClassic Then Wii Classic Close
 Cls
 
-we.quit% = 1
 we.end_program()
 
 Sub move_cursor(k)
@@ -604,7 +603,6 @@ Sub HelpScreen
   Loop While R$ = ""
   If R$ = "Q" or R$ = "q" Then
     Cls
-    we.quit% = 1
     we.end_program()
   End If
   If R$ = "F" or R$ = "f" Then FileMenu

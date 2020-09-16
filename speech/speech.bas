@@ -62,7 +62,7 @@ DO
         PRINT Prompt$
         INPUT Answer$
 
-Test:   IF we.is_quit_key%(Answer$) THEN we.quit% = 1 : we.end_program
+Test:   IF we.is_quit_key%(Answer$) THEN Exit Do
 
         UpAnswer$ = UCASE$(Answer$)
         IF UpAnswer$ = "*PHONETIC ON" THEN

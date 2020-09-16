@@ -15,6 +15,7 @@ Turtle Move 400,600
 Turtle Pen Down
 Tree(120)
 
+we.wait_for_quit()
 we.end_program()
 
 Sub Tree(Length)

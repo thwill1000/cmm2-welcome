@@ -139,7 +139,6 @@
  PAGE WRITE 0
  CLS
 
-we.quit% = 1
 we.end_program()
 
 SUB setmode dotMode AS FLOAT

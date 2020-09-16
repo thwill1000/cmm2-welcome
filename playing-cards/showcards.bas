@@ -103,7 +103,6 @@ do
   endif
 loop
 
-we.quit% = 1
 we.end_program()
 
 ' splat the deck randomly on screen

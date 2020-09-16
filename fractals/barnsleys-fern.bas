@@ -38,4 +38,5 @@ For i = 1 to 1000000
 
 Next i
 
+we.wait_for_quit()
 we.end_program()

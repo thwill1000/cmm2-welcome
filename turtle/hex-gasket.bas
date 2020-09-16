@@ -16,6 +16,7 @@ Turtle Turn Right 90
 Turtle Pen Down
 Gasket(650,10)
 
+we.wait_for_quit()
 we.end_program()
 
 Sub Gasket(Length,Level)

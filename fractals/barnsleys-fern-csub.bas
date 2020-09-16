@@ -13,7 +13,7 @@ init_screen()
 Zoom = 1.0
 Seed% = &hAAAAAAAA
 
-Do While Inkey$ <> "" : Loop ' clear keyboard buffer
+we.clear_keyboard_buffer()
 
 Do
  Fern(40000,Zoom,Seed%)
@@ -25,7 +25,7 @@ Do
  EndIf
 Loop
 
-we.quit% = 1
+we.wait_for_quit()
 we.end_program()
 
 Sub init_screen()
