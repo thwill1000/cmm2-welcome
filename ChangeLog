@@ -6,6 +6,14 @@ Release 0.3.1:
    as Release 0.3.
  - Updated "Mandelbrot Explorer" to version 1.2
    - by "Sasquatch"
+   - fixed responsiveness to both USB keyboard and serial console.
+   - added source for pure MMBasic version of Mandelbrot subroutine to the
+     bottom of the program.
+   - changed hotkeys on file and help screens for better integration with the
+     "Welcome Tape".
+ - Updated "Barnsley's Fern using CSUB"
+   - by "Sasquatch"
+   - fixed responsiveness to both USB keyboard and serial console.
  - Changed how returning from a program to the menu is implemented,
    this should not cause any visible difference.
 
