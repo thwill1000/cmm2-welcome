@@ -1,6 +1,6 @@
 ' Author: Thomas Hugo Williams
 
-Const WE.VERSION$ = "Version 0.3"
+Const WE.VERSION$ = "Version 0.3.1"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
 Const WE.QUIT_KEY$ = "Q"
@@ -60,15 +60,18 @@ Sub we.run_program(f$, cmdline$)
   Execute("Run " + Chr$(34) + f$ + Chr$(34) + ", " + cmdline$)
 End Sub
 
-Sub we.clear_keyboard_buffer()
-  Do While Inkey$ <> "" : Loop
-End Sub
-
 Sub we.end_program()
-  Do While Not we.is_quit_pressed%() : Loop
   Page Write 0
   If we.is_menu_launched%() Then we.run_menu()
   End
+End Sub
+
+Function we.is_menu_launched%()
+  we.is_menu_launched% = InStr(Mm.CmdLine$, "--menu") > 0
+End Function
+
+Sub we.clear_keyboard_buffer()
+  Do While Inkey$ <> "" : Loop
 End Sub
 
 Function we.is_quit_pressed%()
@@ -80,12 +83,16 @@ Function we.is_quit_key%(k$)
   we.is_quit_key% = UCase$(k$) = WE.QUIT_KEY$
 End Function
 
-Function we.is_menu_launched%()
-  we.is_menu_launched% = InStr(Mm.CmdLine$, "--menu") > 0
-End Function
-
-Sub we.wait_for_key()
+Function we.wait_for_key$()
   Local k$
   Do While k$ = "" : k$ = Inkey$ : Loop
   If we.is_quit_key%(k$) Then we.quit% = 1
+  we.wait_for_key$ = k$
+End Function
+
+Sub we.wait_for_quit()
+  Local k$
+  Do While Not we.quit%
+    k$ = we.wait_for_key$()
+  Loop
 End Sub

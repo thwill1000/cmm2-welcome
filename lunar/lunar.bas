@@ -319,10 +319,7 @@ Paused:
             Help
           END IF
         END IF
-        IF we.is_quit_key%(Tmp$) Then
-          we.quit% = 1
-          we.end_program()
-        END IF
+        IF we.is_quit_key%(Tmp$) Then we.end_program()
         IF ASC(Tmp$) = 13 THEN EXIT DO  ' Return key, go again
       END IF
     LOOP

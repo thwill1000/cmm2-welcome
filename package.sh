@@ -1,6 +1,6 @@
 #!/bin/bash
 
-release=0.3
+release=0.3.1
 release_dir="welcome-r$release"
 base="$release_dir/welcome"
 

@@ -15,6 +15,7 @@ Turtle Move 400,500
 Turtle Pen Down
 PineTree(100,19)
 
+we.wait_for_quit()
 we.end_program()
 
 Sub PineTree(Length,Depth)

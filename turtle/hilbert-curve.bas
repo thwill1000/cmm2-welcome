@@ -19,9 +19,8 @@ Hilbert(7,90,6)
 Text 0, 0, "Hilbert Curve (1 of 2)", "", 2
 Text 2, 25, "Press Q to Quit, or any other key for the next pattern", "", 1
 
-If k$ = "" Then we.wait_for_key()
-If we.is_quit_key%(k$) Then we.quit% = 1
-If we.quit% Then we.end_program()
+If k$ = "" Then k$ = we.wait_for_key$()
+If we.is_quit_key%(k$) Then we.end_program()
 
 k$ = ""
 we.clear_keyboard_buffer()
@@ -33,7 +32,7 @@ Turtle Move 150,550
 Turtle Pen Down
 Hilbert(8,90,2)
 
-If we.is_quit_key%(k$) Then we.quit% = 1
+If Not we.is_quit_key%(k$) Then we.wait_for_quit()
 we.end_program()
 
 Sub Hilbert(Level,Angle,Length)

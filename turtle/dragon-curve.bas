@@ -34,11 +34,11 @@ For i% = 1 To 19
   turtle pen colour rgb(green)
   DrawDragon(dord,1)
 
-  If k$ = "" Then we.wait_for_key()
-  If we.is_quit_key%(k$) Then we.quit% = 1
-  If we.quit% Then Exit For
+  If k$ = "" Then k$ = we.wait_for_key$()
+  If we.is_quit_key%(k$) Then Exit For
 Next i%
 
+we.wait_for_quit()
 we.end_program()
 
 sub DrawDragon(ord, sig)

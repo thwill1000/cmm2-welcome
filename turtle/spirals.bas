@@ -26,10 +26,11 @@ For i% = 1 To 11
   Draw(count%(i%), angle!(i%))
 
   we.clear_keyboard_buffer()
-  we.wait_for_key()
-  If we.quit% = 1 Then Exit For
+  s$ = we.wait_for_key$()
+  If we.is_quit_key%(s$) Then Exit For
 Next i%
 
+we.wait_for_quit()
 we.end_program()
 
 Sub Draw(count%, angle!)

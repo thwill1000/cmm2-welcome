@@ -228,7 +228,7 @@ do
       setparam
     end if
 
-    if we.is_quit_key%(k$) then we.quit% = 1 : we.end_program
+    if we.is_quit_key%(k$) then we.end_program()
 
   loop until k$=" "
   playsounds

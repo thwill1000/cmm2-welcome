@@ -20,6 +20,7 @@ For X = 1 to 5
   If we.is_quit_pressed%() Then Exit For
 Next X
 
+we.wait_for_quit()
 we.end_program()
 
 Sub Tree(Length)

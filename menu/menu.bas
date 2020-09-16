@@ -134,15 +134,13 @@ Sub show_credits()
   Print
   Print "Press any key to return to the menu."
 
-  we.wait_for_key()
+  Local k$ = we.wait_for_key$()
 End Sub
 
 Function quit()
-  Local k$
   Print
   Print "Are you sure you want to Quit [y|N] ?"
-  Do While k$ = "" : k$ = Inkey$ : Loop
-  If LCase$(k$) = "y" Then quit = 1
+  If LCase$(we.wait_for_key$()) = "y" Then quit = 1
 End Function
 
 menu_top:

@@ -16,8 +16,7 @@ Print " ... it's taking a while, have you seen how many GOTOs it contains?"
 Print
 Print "Press any key"
 we.clear_keyboard_buffer()
-we.wait_for_key()
-we.quit% = 1
+Local k$ = we.wait_for_key$()
 we.end_program()
 
 100 rem adventure 2

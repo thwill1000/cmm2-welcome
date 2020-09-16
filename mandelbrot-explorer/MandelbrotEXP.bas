@@ -1,7 +1,7 @@
-'Mandelbrot Explorer V1.1 for Color Maximite 2
-'By the Sasquatch
-'with thanks to matherp, vegipete, and yock1960 for your contributions
-'www.thebackshed.com
+' Mandelbrot Explorer V1.2 for Color Maximite 2  9/12/2020
+' By the Sasquatch
+' with thanks to matherp, vegipete, and yock1960 for your contributions
+' www.thebackshed.com
 
 #Include "../common/welcome.inc"
 
@@ -25,7 +25,7 @@ Setup:
   FileName$ = "MandelBrot.dat"
 
   Zoom = 2.0
-  Depth% = 64 
+  Depth% = 64
   Scale! = 1.0
   XCenter! = -0.7
   YCenter! = 0.0
@@ -48,6 +48,9 @@ Setup:
   HaveChuk = False
   HaveClassic = False
   ZoomMode = False
+  RefreshCursor = False
+
+  Dim cursor_visible = False
 
   T = Timer
 
@@ -57,68 +60,57 @@ Setup:
 
   'Check for Wii Nunchuk
   On Error Skip 1
-    Wii Nunchuk Open 
+    Wii Nunchuk Open
   If MM.ERRNO = 0 Then
-   If Nunchuk(T) = &HA4200000 Then  'Check for original style nunchuk 
+   If Nunchuk(T) = &HA4200000 Then  'Check for original style nunchuk
      HaveChuk = True
-   Else 
+   Else
      Wii Nunchuk Close
    End If
   End If
 
-  If Not HaveChuk Then 
+  If Not HaveChuk Then
     'Check for Wii Classic Controller
     On Error Skip 1
-      Wii Classic Open 
+      Wii Classic Open
     If MM.ERRNO = 0 Then
-     If Classic(T) = &HA4200101 Then  'Check for Classic 
+     If Classic(T) = &HA4200101 Then  'Check for Classic
        HaveClassic = True
-     Else 
+     Else
        Wii Classic Close
      End If
     End If
-  End If  
+  End If
 
 
 MainLoop:
 Do  'Main Loop Starts Here
-
+  Key$ = Inkey$              'Read Key from console buffer
   'Process Cursor Keys
-  If KeyDown(0) Then
+  If KeyDown(0) Then         'Read Key on USB keyboard
     For X = 1 to KeyDown(0)
       K = KeyDown(X)
-      Select case K
-        case 128  'Up Arrow  
-          YCursor = YCursor - 1
-          If YCursor < 0 Then YCursor = 0
-        case 129  'Down Arrow
-          YCursor = YCursor + 1
-          If YCursor > YMax Then YCursor = YMax
-        case 130  'Left Arrow
-          XCursor = XCursor - 1
-          If XCursor < 0 Then XCursor = 0
-        case 131  'Right Arrow
-          XCursor = XCursor + 1
-          If XCursor > XMax Then XCursor = XMax
-      End Select
+      move_cursor(K)
     Next X
 
-    ' Refresh Cursor Sprite
-    If K >= 128 And K <= 131 Then
-       RefreshCursor = True
-
-      'Make the cursor move faster if key held down
+    ' Make the cursor move faster if movement key held down
+    ' (which will have set 'RefreshCursor').
+    If RefreshCursor Then
       KeyCount = KeyCount + 1
       If KeyCount > 18 Then KeyCount = 18
       Pause(190 - KeyCount * 10)
     EndIf
+
+  Else If Key$ <> "" Then   'Key from Console buffer
+    K = Asc(Key$)
+    move_cursor(K)
 
   Else
     ' If Key not pressed, reset key held count
     KeyCount = 1
     K = 0
   EndIf
- 
+
   If HaveChuk Then
      If Nunchuk(Z) = 1 Then K = 73 'Zoom in
      If Nunchuk(C) = 1 Then K = 67 'Re-Center
@@ -131,7 +123,7 @@ Do  'Main Loop Starts Here
      if (ClassB AND 1024) Then K = 73 'X button Zoom in
      if (ClassB AND 8192) Then K = 67 'B button re-Center
      XChuk = Classic(LX)
-     YChuk = Classic(LY)    
+     YChuk = Classic(LY)
   End IF
 
   If HaveChuk Or HaveClassic Then
@@ -152,7 +144,7 @@ Do  'Main Loop Starts Here
    End If
 
   'Now Check for other Key Commands
-  If K <> 0 Then 
+  If K <> 0 Then
 
     If K = 134 Then               '<Home>
     'Home Key Reset everything
@@ -166,7 +158,7 @@ Do  'Main Loop Starts Here
       Map Reset
 
     Else IF K = 67 or K = 99 Then  'C or c
-      'Re center at cursor    
+      'Re center at cursor
       UpdateToCursor
       Refresh = True
 
@@ -188,7 +180,7 @@ Do  'Main Loop Starts Here
         Zoom = NewZoom
         BoxW = 0
         Page Copy 1,0
-      Else  
+      Else
       'Turn Zoom mode on
         Page Write 2
         CLS
@@ -210,10 +202,9 @@ Do  'Main Loop Starts Here
       Print "File name for Save [";SFileName$;"]";
       Input ;Res$
       If Res$ <> "" Then
-          SFileName$ = Res$    
+          SFileName$ = Res$
       EndIf
-      'Hide the cursor Sprite
-      If Sprite(X,1) > -1 Then Sprite Hide 1
+      hide_cursor()
       'Refresh the Image
       Page Copy 1 To 0,B
       'Now save to file
@@ -231,11 +222,11 @@ Do  'Main Loop Starts Here
         Refresh = True
       Else
         Page Copy 1 To 0,B
-        Pause(200)  
+        Pause(200)
       EndIf
 
     Else IF K = 69 Or K = 101 Then  'E or e
-     'Propmt for new coordinates
+     'Prompt for new coordinates
      Page Copy 1 To 0,B
      Print @(0,0) "Enter Scale ["+STR$(Scale!)+"]";
      Input ;Res$
@@ -259,20 +250,20 @@ Do  'Main Loop Starts Here
        Page Copy 1 To 0,B
        Pause(200)
      EndIf
-    
+
     Else IF K = 76 Or K = 108 Then  'L or l
       'List Current Coordinates On/Off
       If CList Then
         CList = False
         Page Copy 1 To 0,B
-      Else 
+      Else
         CList = True
       End If
       Pause(200)
 
     Else IF K = 72 Or K = 104 Or K = 63 Then 'H or h or ?
       'Show Help Screen
-      If Sprite(X,1) > -1 Then Sprite Hide 1
+      hide_cursor()
       HelpScreen
       Page Copy 1 To 0,B
       RefreshCursor = True
@@ -280,7 +271,7 @@ Do  'Main Loop Starts Here
 
     Else IF K = 70 Or K = 102 Then  'F or f
       'File Menu???
-      If Sprite(X,1) > -1 Then Sprite Hide 1
+      hide_cursor()
       FileMenu
       Page Copy 1 To 0,B
       RefreshCursor = True
@@ -296,12 +287,12 @@ Do  'Main Loop Starts Here
       Pause(200)
 
     Else IF K = 77 Or K = 109 Then  'M or m
-      'Reset Color Map 
+      'Reset Color Map
        RollColors = False
        Map Reset
 
     Else IF K = 85 Or K = 117 Then  'U or u
-      'Undo last coordinate change 
+      'Undo last coordinate change
        PopUndo 'Get previous coordinates from the undo buffer
        Push = False
        Pause(200)
@@ -341,21 +332,20 @@ Do  'Main Loop Starts Here
   EndIf  'If K <> 0 Then
 
   If Refresh Then
-    'Hide the cursor sprite
-    If Sprite(X,1) > -1 Then Sprite Hide 1
+    hide_cursor()
     'Call the Mandelbrot CSUB to render the image
-    S = Timer
+'    S = Timer
     Mandelbrot Depth%,Scale!,XCenter!,YCenter!
-    Print @(0,0) Timer - S
+'    Print @(0,0) Timer - S
     Page Copy 0 TO 1
     XCursor = XMax / 2
-    YCursor = YMax / 2 
+    YCursor = YMax / 2
     If Push Then PushUndo ' Push the new coordinates into the undo buffer
     Push = True
     Refresh = False
-'    Pause(400)
-    'Show the cursor sprite
-    Sprite Show 1,XCursor-15,YCursor-15,1    
+    show_cursor()
+    Do While Inkey$ <> "" : Loop
+
   EndIf
 
   If CList Then
@@ -368,7 +358,6 @@ Do  'Main Loop Starts Here
   EndIf
 
   If RefreshCursor Then
-
     If ZoomMode Then
       Page Write 2
 '      CLS
@@ -377,14 +366,14 @@ Do  'Main Loop Starts Here
       BoxY = YCursor-(YMax/NewZoom)/2
       BoxW = Xmax/NewZoom
       BoxH = YMax/NewZoom
-      Box BoxX,BoxY,BoxW,BoxH 
+      Box BoxX,BoxY,BoxW,BoxH
       Page Write 0
-      Page XOR_PIXELS 1,2,0   
+      Page XOR_PIXELS 1,2,0
       If Not CList Then
         Print @(0,0) "Zoom Factor ["+STR$(Zoom)+"]"; NewZoom;" "
       End If
     End If
-    Sprite Show 1, XCursor-15,YCursor-15,1
+    show_cursor()
 
     RefreshCursor = False
   End If
@@ -408,9 +397,40 @@ If HaveChuk Then Wii Nunchuk Close
 If HaveClassic Then Wii Classic Close
 Cls
 
-we.quit% = 1
 we.end_program()
 
+Sub move_cursor(k)
+  Select Case k
+    Case 128 ' Up Arrow
+      YCursor = YCursor - 1
+      If YCursor < 0 Then YCursor = 0
+    Case 129 ' Down Arrow
+      YCursor = YCursor + 1
+      If YCursor > YMax Then YCursor = YMax
+    Case 130 ' Left Arrow
+      XCursor = XCursor - 1
+      If XCursor < 0 Then XCursor = 0
+    Case 131 ' Right Arrow
+      XCursor = XCursor + 1
+      If XCursor > XMax Then XCursor = XMax
+    Case Else
+      Exit Sub
+  End Select
+
+  RefreshCursor = True
+End Sub
+
+Sub show_cursor()
+  Sprite Show 1,XCursor-15,YCursor-15,1
+  cursor_visible = True
+End Sub
+
+Sub hide_cursor()
+  If cursor_visible Then Sprite Hide 1
+  cursor_visible = False
+End Sub
+
+'Push current coordinates into Undo buffer
 Sub PushUndo
    For i = 98 to 1 step -1
      XUndo(i) = XUndo(i-1)
@@ -425,7 +445,7 @@ Sub PushUndo
    DUndo(0) = Depth%
 End Sub
 
-
+'Pop coordinates from Undo buffer
 Sub PopUndo
   For i = 0 to 99
     XUndo(i) = XUndo(i+1)
@@ -450,7 +470,6 @@ Sub UpdateToCursor
   YCenter! = YCenter! + (YMax / 2 - YCursor) / YMax * 3 / Scale!
 End Sub
 
-
 SUB MakeSprite
   'Draw the cursor sprite and then read from screen
   CLS
@@ -462,8 +481,8 @@ SUB MakeSprite
   CLS
 End Sub
 
-
 Sub FileMenu
+  Do While Inkey$ <> "" : Loop
   CLS
   Print:Print
   Print "File Menu"
@@ -474,11 +493,11 @@ Sub FileMenu
     FName$ = Dir$()
   Loop
   Print:Print
-  Print "L)oad   S)ave   Q)uit :"
+  Print "Press   L)oad   S)ave   D)one :"
   FileDone = False
   Do
     R$ = Inkey$
-    If R$ = "Q" Or R$ = "q" Then
+    If R$ = "D" Or R$ = "d" Then
       FileDone = True
     Else If R$ = "L" Or R$ = "l" Then
       Pause(400)
@@ -519,12 +538,12 @@ Sub FileMenu
       Else
         Print "File Error: ";MM.ERRNO
         Pause 2000
-      End IF        
+      End IF
       FileDone = True
     End If
         Pause(400)
   Loop While Not FileDone
-  
+  Do While Inkey$ <> "" : Loop
   CLS
 End Sub
 
@@ -532,9 +551,9 @@ End Sub
 Sub HelpScreen
   'Because we all need a little help sometimes :)
   CLS
-  Print 
-  Print "Mandelbrot Explorer V1.1 for Color Maximite 2"
-  Print 
+  Print
+  Print "Mandelbrot Explorer V1.2 for Color Maximite 2   9/12/2020"
+  Print
   Print "By the Sasquatch"
   Print " With thanks to matherp, vegipete, and yock1960 for your contributions"
   Print "www.thebackshed.com"
@@ -555,55 +574,104 @@ Sub HelpScreen
   Print "                  <Esc> - Abort Zoom Mode"
   Print "                <Enter> - Zoom to current cursor"
   Print "                    <Z> - Set Zoom Factor and exit"
-  Print 
+  Print
   Print "Color Command Keys:"
   Print "              R - toggle Roll Colors on/off"
   Print "              M - reset color Map"
-  Print 
+  Print
   Print "Coordinate Command Keys:"
   Print "              D - change Depth (iterations)"
   Print "              E - Enter new coordinates"
   Print "              L - Toggle coordinates List On/Off"
   Print "              U - Undo the last coordinate change"
-  Print  
+  Print
   Print "System Command Keys:"
   Print "              F - File Menu
   Print "            H,? - Help screen"
   Print "              S - Save bitmap file"
   Print "              Q - Quit program"
-  Print 
+  Print
   Print "Note: Press <Enter> at any prompt to retain current value"
   Print : Print
   On Error Skip 1
   Load JPG WE.PROG_DIR$ + "/Mandelbrotaxes.jpg",XMax-351,200
-  Print "Press any key to Continue"
+  Print "Press Q)uit F)ile or any key to Continue"
   Pause(100)
-  Do While Inkey$ = ""
+  Do
+    R$ = Inkey$
     Pause(100)
-  Loop
+  Loop While R$ = ""
+  If R$ = "Q" or R$ = "q" Then
+    Cls
+    we.end_program()
+  End If
+  If R$ = "F" or R$ = "f" Then FileMenu
   CLS
+  Do While Inkey$ <> "" : Loop
 End Sub
 
 
-'Mandelbrot CSub 
+'Mandelbrot CSub
 'Mandelbrot(Depth,Scale,XCenter,YCenter)
 'File mandelbrot.bas written 08-09-2020 12:39:16
-CSUB mandelbrot
+CSUB Mandelbrot
   00000000
-  B096B580 60F8AF00 607A60B9 4B73603B 2000681B 46034798 4B7163BB 681B681B 
-  4B70637B 681B681B 6B3B633B E0CC63FB EE076BFB EEF83A90 6B3B6AE7 3A90EE07 
-  7AE7EEB8 7A87EEC6 7AE7EEB7 6B00EEB6 5B46EE37 ED9368BB EE856B00 EEB07B06 
-  EE276B08 683B6B06 7B00ED93 7B47EE36 7B0AED87 643B6B7B 6C3BE0A0 033FF003 
-  D1022B00 681B4B58 6C3B4798 3A90EE07 6AE7EEF8 EE076B7B EEB83A90 EEC67AE7 
-  EEB77A87 EEB67AE7 EE376B00 68BB5B46 6B00ED93 7B06EE85 6B08EEB0 6B06EE27 
-  ED93687B EE367B00 ED877B07 F04F7B08 F04F0200 E9C70300 F04F2314 F04F0200 
-  E9C70300 23012312 E035647B 7B14ED97 7B07EE27 7B06ED87 7B12ED97 7B07EE27 
-  7B04ED87 7B14ED97 6B07EE37 7B12ED97 7B07EE26 6B0AED97 7B07EE36 7B12ED87 
-  6B06ED97 7B04ED97 7B47EE36 6B08ED97 7B07EE36 7B14ED87 6B06ED97 7B04ED97 
-  7B07EE36 6B00EEB1 7BC6EEB4 FA10EEF1 6C7BDC08 647B3301 681B68FB 429A6C7A 
-  E000DBC4 68FBBF00 6C7A681B D10D429A 3B016BFB FB026B7A 461AF303 44136C3B 
-  6BBA3B01 22004413 E014701A 425A6C7B 033FF003 023FF002 4253BF58 3A016BFA 
-  FB016B79 4611F202 440A6C3A 6BB93A01 B2DB440A 6C3B7013 643B3B01 2B006C3B 
-  AF5BF73F 3B016BFB 6BFB63FB F73F2B00 BF00AF2F 3758BF00 BD8046BD 08000340 
-  080002EC 080002F0 0800033C 
+  B096B580 60F8AF00 607A60B9 4B73603B 2000681B 46034798 4B7163BB 681B681B
+  4B70637B 681B681B 6B3B633B E0CC63FB EE076BFB EEF83A90 6B3B6AE7 3A90EE07
+  7AE7EEB8 7A87EEC6 7AE7EEB7 6B00EEB6 5B46EE37 ED9368BB EE856B00 EEB07B06
+  EE276B08 683B6B06 7B00ED93 7B47EE36 7B0AED87 643B6B7B 6C3BE0A0 033FF003
+  D1022B00 681B4B58 6C3B4798 3A90EE07 6AE7EEF8 EE076B7B EEB83A90 EEC67AE7
+  EEB77A87 EEB67AE7 EE376B00 68BB5B46 6B00ED93 7B06EE85 6B08EEB0 6B06EE27
+  ED93687B EE367B00 ED877B07 F04F7B08 F04F0200 E9C70300 F04F2314 F04F0200
+  E9C70300 23012312 E035647B 7B14ED97 7B07EE27 7B06ED87 7B12ED97 7B07EE27
+  7B04ED87 7B14ED97 6B07EE37 7B12ED97 7B07EE26 6B0AED97 7B07EE36 7B12ED87
+  6B06ED97 7B04ED97 7B47EE36 6B08ED97 7B07EE36 7B14ED87 6B06ED97 7B04ED97
+  7B07EE36 6B00EEB1 7BC6EEB4 FA10EEF1 6C7BDC08 647B3301 681B68FB 429A6C7A
+  E000DBC4 68FBBF00 6C7A681B D10D429A 3B016BFB FB026B7A 461AF303 44136C3B
+  6BBA3B01 22004413 E014701A 425A6C7B 033FF003 023FF002 4253BF58 3A016BFA
+  FB016B79 4611F202 440A6C3A 6BB93A01 B2DB440A 6C3B7013 643B3B01 2B006C3B
+  AF5BF73F 3B016BFB 6BFB63FB F73F2B00 BF00AF2F 3758BF00 BD8046BD 08000340
+  080002EC 080002F0 0800033C
 End CSUB
+
+
+'To use the function below, rename the CSUB version above to MandelbrotC
+'And rename the function below to Mandelbrot (without the B)
+
+'Pure MMBASCIC version of the Mandelbrot Sub
+'Fully compatable with the CSUB version
+'Runs about 270,000 times slower than CSUB
+'Useful for education and experimentation
+'Mandelbrot(Depth,Scale,XCenter,YCenter)
+'Variable names shortened for efficiency
+Sub MandelbrotB(IMax%,Mag!,XCen!,YCen!)  'Maximum Iterations (Depth), Magnification (Scale)
+                                         'X-Center, Y-Center
+  For HY = YMax To 1 Step - 1    'Step through each Row (Line) of pixels (Y-Axis)
+    CY = (HY / YMax - 0.5) / Mag! * 3.0 - YCen!
+
+    For HX = XMax TO 1 Step - 1   'Step through each Pixel in the Row (X-Axis)
+      CX = (HX / XMax - 0.5) / Mag! * 3.0 + XCen!
+
+      X = 0.0 : Y = 0.0
+
+      For Iter = 1 to IMax%      'Step from 1 to Maximum Iterations
+        XSqr = X * X
+        YSqr = Y * Y
+
+        Y = 2.0 * X * Y + CY     'Iterate next value
+        X = XSqr - YSqr + CX
+
+        If XSqr + YSqr > 4.0 Then Exit For  'If "radius" greater than escape value stop
+                                            'C^2 = A^2 + B^2 or R^2 = X^2 + Y^2
+      Next Iter
+
+      If Iter - 1 < IMax% Then   'If we didn't reach the Maximum number of iterations (Depth)
+        Pixel HX - 1, HY - 1, map(Iter Mod 64) 'color the pixel based on number of Iterations
+      Else
+        Pixel HX - 1, HY - 1, 0  'Otherwise Make the Pixel black
+      End If
+
+    Next HX
+
+  Next HY
+End Sub

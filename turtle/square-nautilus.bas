@@ -29,4 +29,5 @@ For i = 1 to N
 
 Next i
 
+we.wait_for_quit()
 we.end_program()

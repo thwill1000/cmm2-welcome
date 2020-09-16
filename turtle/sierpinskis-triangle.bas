@@ -16,6 +16,7 @@ Turtle Turn Right 90
 Turtle Pen Down
 Sierpinski(650,7)
 
+we.wait_for_quit()
 we.end_program()
 
 Sub Sierpinski(Length,Level)
