@@ -1,6 +1,26 @@
 ChangeLog
 ---------
 
+Release 0.4:
+ - Added "Hunt the Wumpus"
+  - by William Leue
+ - Added "Minesweeper"
+  - by William Leue
+ - Added "Scott Adams' Pirate Adventure"
+  - by kind permission of Scott Adams
+  - ported to CMM2 by "thwill"
+ - Updated "Graphic Test Card" utility
+  - by "TassyJim"
+  - added support for Modes 10, 11 and 12.
+ - Updated "Lunar Lander" to v7.3
+   - by "vegipete"
+   - added workaround for difference in direction of IMAGE ROTATE between
+     firmware 5.05.05 and 5.05.06.
+ - Updated "Mandelbrot Explorer" to version 1.3
+   - by "Sasquatch"
+   - CSUB now renders the Base image in under 1 second on a 400MHz CMM2 due to
+     changes in compiler and linker/library settings.
+
 Release 0.3.1:
  - This is a maintenance release, it contains the same inventory of programs
    as Release 0.3.

@@ -1,12 +1,14 @@
-' Mandelbrot Explorer V1.2 for Color Maximite 2  9/12/2020
-' By the Sasquatch
-' with thanks to matherp, vegipete, and yock1960 for your contributions
-' www.thebackshed.com
+'Mandelbrot Explorer V1.3 for Color Maximite 2  9/20/2020
+'By the Sasquatch
+'with thanks to matherp, vegipete, thwill and yock1960 for your contributions
+'www.thebackshed.com
 
 #Include "../common/welcome.inc"
 
 Setup:
-  'Screen Resolution set here, Should work at any reasonable resolution
+  'Screen Resolution set here,
+  'Should work at any reasonable resolution with at least 3 graphics pages
+  'Z)oom cursor requires 3 pages, everything else should work with 2
   Mode 1,8  '800 X 600 for compatabliliy with MMBasic V5.05.04
 '  Mode 9,8  '1024 X 768 Nice but a bit slower to render
   CLS
@@ -151,8 +153,8 @@ Do  'Main Loop Starts Here
       Zoom = 2.0
       Depth% = 64
       Scale! = 1.0
-      XCenter = -0.70
-      YCenter = 0.0
+      XCenter! = -0.70
+      YCenter! = 0.0
       Refresh = True
       RollColors = False
       Map Reset
@@ -217,7 +219,7 @@ Do  'Main Loop Starts Here
       Page Copy 1 To 0,B
       Print @(0,0) "Enter Depth (Iterations) ["+STR$(Depth%)+"]";
       Input ;Res$
-      If Res$ <> "" And Val(Res$) > 0 And Val(Res$) < 1025 Then
+      If Res$ <> "" And Val(Res$) > 0 And Val(Res$) <= 5000 Then
         Depth% = Val(Res$)
         Refresh = True
       Else
@@ -230,7 +232,7 @@ Do  'Main Loop Starts Here
      Page Copy 1 To 0,B
      Print @(0,0) "Enter Scale ["+STR$(Scale!)+"]";
      Input ;Res$
-      If Res$ <> "" And Val(Res$) > 0.0 And Val(Res$) < 1E10 Then
+      If Res$ <> "" And Val(Res$) > 0.0 And Val(Res$) <= 1E13 Then
         SCALE! = Val(Res$)
         Refresh = True
       EndIf
@@ -357,6 +359,7 @@ Do  'Main Loop Starts Here
       Print "Depth = [";Depth%;"] "
   EndIf
 
+
   If RefreshCursor Then
     If ZoomMode Then
       Page Write 2
@@ -378,6 +381,7 @@ Do  'Main Loop Starts Here
     RefreshCursor = False
   End If
 
+
   If RollColors And Timer - T > 750 Then
     T = Timer
     Temp = Clut(0)
@@ -395,7 +399,7 @@ Loop While Not Done  'End of Main Loop
 Map Reset
 If HaveChuk Then Wii Nunchuk Close
 If HaveClassic Then Wii Classic Close
-Cls
+CLS
 
 we.end_program()
 
@@ -470,6 +474,7 @@ Sub UpdateToCursor
   YCenter! = YCenter! + (YMax / 2 - YCursor) / YMax * 3 / Scale!
 End Sub
 
+
 SUB MakeSprite
   'Draw the cursor sprite and then read from screen
   CLS
@@ -480,6 +485,7 @@ SUB MakeSprite
   Sprite Read 1,0,0,30,30
   CLS
 End Sub
+
 
 Sub FileMenu
   Do While Inkey$ <> "" : Loop
@@ -506,7 +512,7 @@ Sub FileMenu
       if FileName$ = "" Then FileName$ = OldFileName$
       if Instr(1,FileName$,".") = 0 Then FileName$ = FileName$ + ".Dat"
       On Error Skip 1
-        Open WE.PROG_DIR$ + "/" + FileName$ for Input As #1
+       Open WE.PROG_DIR$ + "/" + FileName$ for Input As #1
       If MM.ERRNO = 0 Then
         Print "Loading: ";FileName$
         Input #1, XCenter!
@@ -551,11 +557,12 @@ End Sub
 Sub HelpScreen
   'Because we all need a little help sometimes :)
   CLS
+  Do While Inkey$ <> "" : Loop
   Print
-  Print "Mandelbrot Explorer V1.2 for Color Maximite 2   9/12/2020"
+  Print "Mandelbrot Explorer V1.3 for Color Maximite 2
   Print
   Print "By the Sasquatch"
-  Print " With thanks to matherp, vegipete, and yock1960 for your contributions"
+  Print " With thanks to matherp, vegipete, thwill and yock1960 for your contributions"
   Print "www.thebackshed.com"
   Print : Print
   Print "Nunchuk Controls:                                 Wii Classic Controls:"
@@ -602,7 +609,7 @@ Sub HelpScreen
     Pause(100)
   Loop While R$ = ""
   If R$ = "Q" or R$ = "q" Then
-    Cls
+    CLS
     we.end_program()
   End If
   If R$ = "F" or R$ = "f" Then FileMenu
@@ -613,25 +620,22 @@ End Sub
 
 'Mandelbrot CSub
 'Mandelbrot(Depth,Scale,XCenter,YCenter)
-'File mandelbrot.bas written 08-09-2020 12:39:16
-CSUB Mandelbrot
+'File mandelbrot.bas written 20-09-2020 13:23:23
+CSUB mandelbrot
   00000000
-  B096B580 60F8AF00 607A60B9 4B73603B 2000681B 46034798 4B7163BB 681B681B
-  4B70637B 681B681B 6B3B633B E0CC63FB EE076BFB EEF83A90 6B3B6AE7 3A90EE07
-  7AE7EEB8 7A87EEC6 7AE7EEB7 6B00EEB6 5B46EE37 ED9368BB EE856B00 EEB07B06
-  EE276B08 683B6B06 7B00ED93 7B47EE36 7B0AED87 643B6B7B 6C3BE0A0 033FF003
-  D1022B00 681B4B58 6C3B4798 3A90EE07 6AE7EEF8 EE076B7B EEB83A90 EEC67AE7
-  EEB77A87 EEB67AE7 EE376B00 68BB5B46 6B00ED93 7B06EE85 6B08EEB0 6B06EE27
-  ED93687B EE367B00 ED877B07 F04F7B08 F04F0200 E9C70300 F04F2314 F04F0200
-  E9C70300 23012312 E035647B 7B14ED97 7B07EE27 7B06ED87 7B12ED97 7B07EE27
-  7B04ED87 7B14ED97 6B07EE37 7B12ED97 7B07EE26 6B0AED97 7B07EE36 7B12ED87
-  6B06ED97 7B04ED97 7B47EE36 6B08ED97 7B07EE36 7B14ED87 6B06ED97 7B04ED97
-  7B07EE36 6B00EEB1 7BC6EEB4 FA10EEF1 6C7BDC08 647B3301 681B68FB 429A6C7A
-  E000DBC4 68FBBF00 6C7A681B D10D429A 3B016BFB FB026B7A 461AF303 44136C3B
-  6BBA3B01 22004413 E014701A 425A6C7B 033FF003 023FF002 4253BF58 3A016BFA
-  FB016B79 4611F202 440A6C3A 6BB93A01 B2DB440A 6C3B7013 643B3B01 2B006C3B
-  AF5BF73F 3B016BFB 6BFB63FB F73F2B00 BF00AF2F 3758BF00 BD8046BD 08000340
-  080002EC 080002F0 0800033C
+  'mandelbrot
+  4FF0E92D 46834C54 460F2000 46916824 8B08ED2D 9301B083 4B5047A0 681B4950
+  681B6809 2B00680A F3409200 EE07808A EE063A90 EEB72A90 2A007A00 7AE7EEF8
+  6AE6EEF8 BA27EE87 BA26EEC7 F103DD79 F8DF38FF 4615A110 0608FB02 AB00EEB6
+  9B3BED9F 6A8BEE27 EEB09B01 EEB75B08 ED976AC6 EE367B00 ED936B4A EE868B00
+  EE944B07 06AB8B05 F8DAD102 47983000 5A90EE07 3000F8DB 5B08EEB0 6AE7EEB8
+  ED972B01 EE267B00 ED996A2B EEB72B00 EE366AC6 EE866B4A EEA44B07 DD3D2B05
+  EEB02401 EEB11B00 EEB00B00 EEB05B49 EEB07B49 EEB06B49 EE274B49 34017B05
+  EE32429C EEB06B46 EEA75B48 EE365B01 D01E7B04 4B07EE27 6B05EE25 3B04EE36
+  3BC0EEB4 FA10EEF1 F004DDE7 19AB043F 4C01F803 D1B63D01 1AF69B00 0F00F1B8
+  EE07D00F 461D8A90 38FFF108 7AE7EEF8 19ABE798 F8032000 E7EB0C01 2401D0F9
+  B003E7E3 8B08ECBD 8FF0E8BD 8000F3AF 00000000 00000000 08000340 080002F0
+  080002EC 0800033C
 End CSUB
 
 
@@ -640,8 +644,8 @@ End CSUB
 
 'Pure MMBASCIC version of the Mandelbrot Sub
 'Fully compatable with the CSUB version
-'Runs about 270,000 times slower than CSUB
-'Useful for education and experimentation
+'Runs about 400 times slower than CSUB
+'Useful for educaton and experimentation
 'Mandelbrot(Depth,Scale,XCenter,YCenter)
 'Variable names shortened for efficiency
 Sub MandelbrotB(IMax%,Mag!,XCen!,YCen!)  'Maximum Iterations (Depth), Magnification (Scale)
@@ -658,11 +662,12 @@ Sub MandelbrotB(IMax%,Mag!,XCen!,YCen!)  'Maximum Iterations (Depth), Magnificat
         XSqr = X * X
         YSqr = Y * Y
 
+        If XSqr + YSqr > 4.0 Then Exit For  'If "radius" greater than escape value stop
+                                            'C^2 = A^2 + B^2 or R^2 = X^2 + Y^2
+
         Y = 2.0 * X * Y + CY     'Iterate next value
         X = XSqr - YSqr + CX
 
-        If XSqr + YSqr > 4.0 Then Exit For  'If "radius" greater than escape value stop
-                                            'C^2 = A^2 + B^2 or R^2 = X^2 + Y^2
       Next Iter
 
       If Iter - 1 < IMax% Then   'If we didn't reach the Maximum number of iterations (Depth)
