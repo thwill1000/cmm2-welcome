@@ -109,7 +109,7 @@ Sub show_credits()
   Cls
 
   Print
-  Print "This Welcome Disk was brought to you by the Denizens of The Back Shed:"
+  Print "This 'Welcome Tape' was brought to you by the Denizens of The Back Shed:"
   Print
 
   Local i = 1
@@ -186,13 +186,15 @@ Data "end"
 
 menu_games:
 Data "1", "Lunar Lander", "lunar/lunar.bas"
-Data "2", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
+Data "2", "Minesweeper", "games/minesweeper.bas"
+Data "3", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
 menu_new:
-Data "1", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
+Data "1", "Minesweeper", "games/minesweeper.bas"
+Data "2", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
@@ -258,4 +260,5 @@ Data "TassyJim", "Jim", "Hiley"
 Data "thwill", "Thomas Hugo", "Williams"
 Data "Turbo46", "Bill", "McKinley"
 Data "vegipete", "", ""
+Data "William Leue", "", ""
 Data "end"

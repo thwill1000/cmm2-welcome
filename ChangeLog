@@ -2,6 +2,8 @@ ChangeLog
 ---------
 
 Release 0.4:
+ - Added "Minesweeper"
+  - by William Leue
  - Added "Scott Adams' Pirate Adventure"
   - by kind permission of Scott Adams
   - ported to CMM2 by "thwill"
