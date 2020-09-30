@@ -1,28 +1,34 @@
-  ' LunarLander2v72.BAS
+  ' LunarLander2v73.BAS
   ' Lunar Lander For Nostalganauts
-  ' Written for the Colour Maximite 2 by Vegipete
-  '   v3 Sound added by BigMik
-  '   v4 to v6 by Andrew_G
-  '   v7 by Vegipete
-  '   August 2020
+  ' Written for the Colour Maximite 2 by Vegipete, August 2020
   '
-  ' v72 - added introduction screen
-  ' v7  - sound tweaks, stuttering engine repaired, crumple landing added
+  ' v73 - Vegipete:
+  '     - added workaround for difference in direction of IMAGE ROTATE
+  '       between firmware 5.05.05 and 5.05.06.
+  ' v72 - Vegipete:
+  '     - added introduction screen
+  ' v7  - Vegipete:
+  '     - sound tweaks, stuttering engine repaired, crumple landing added
   '     - gauges moved to subroutine and altered
   '     - exploding shrapnel when crashed
-  ' v6  - fixed over-writing of "Press [H|h] for Help" text
+  ' v6  - Andrew_G:
+  '     - fixed over-writing of "Press [H|h] for Help" text
   '     - tidied up with MMBASIC keywords in uppercase
-  ' v5  - added help (of sorts)
+  ' v5  - Andrew_G:
+  '     - added help (of sorts)
   '     - added sun to moonscape
   '     - added up arrow as a panic stop/start/pause
   '     - added guages
   '     - made Landed.MOD louder
-  ' v4  - added adjustment of sound volume and green landing pad
+  ' v4  - Andrew_G:
+  '     - added adjustment of sound volume and green landing pad
   '     - changed the 'Success' sound file to Landed.MOD
-  ' v3  - added sound - by BigMik
+  ' v3  - BigMik
+  '     - added sound
   ' v2  - Vegipete:
   '     - bug fix, allow high altitude, add pointer arrow, constants for parameters
-  ' v1  - First try
+  ' v1  - Vegipete:
+  '     - initial version
 
   'The program needs:
   'Font #8 = CHR$ 128-131, ^ < \/ > Arrows (Defined below)
@@ -102,12 +108,25 @@
   ' Finally, the 38 total sprites are then yanked from the page.
   PAGE WRITE 2
   CLS
+
+  ' The CMM2 5.05.06 firmware fixes a "bug" present in the direction of rotation
+  ' produced by the IMAGE ROTATE command of the 5.05.05 firmware. This code is
+  ' intended to identify and use the correct rotation.
+  PIXEL 0,1  ' draw one white pixel, left edge middle of a 3x3 region
+  IMAGE ROTATE 0,0,3,3,0,0,90
+  IF PEEK(byte mm.info(page address 2) + 1) = 255 THEN ' test for pixel top center
+    rotfactor = -1
+  ELSE
+    rotfactor = 1
+  ENDIF
+  CLS
+
   LOAD PNG WE.PROG_DIR$ + "/LanderPict.png"
 
   ' generate the rotations
   FOR i = 1 TO 18
-    IMAGE ROTATE 0, 0,40,40,i*40, 0,i*5
-    IMAGE ROTATE 0,40,40,40,i*40,40,i*5
+    IMAGE ROTATE 0, 0,40,40,i*40, 0,i*5*rotfactor
+    IMAGE ROTATE 0,40,40,40,i*40,40,i*5*rotfactor
   NEXT i
 
   ' populate the sprites

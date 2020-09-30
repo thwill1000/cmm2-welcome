@@ -9,6 +9,10 @@ Release 0.4:
  - Added "Scott Adams' Pirate Adventure"
   - by kind permission of Scott Adams
   - ported to CMM2 by "thwill"
+ - Updated "Lunar Lander" to v7.3
+   - by "vegipete"
+   - added workaround for difference in direction of IMAGE ROTATE between
+     firmware 5.05.05 and 5.05.06.
  - Updated "Mandelbrot Explorer" to version 1.3
    - by "Sasquatch"
    - CSUB now renders the Base image in under 1 second on a 400MHz CMM2 due to
