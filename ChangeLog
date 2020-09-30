@@ -9,6 +9,9 @@ Release 0.4:
  - Added "Scott Adams' Pirate Adventure"
   - by kind permission of Scott Adams
   - ported to CMM2 by "thwill"
+ - Updated "Graphic Test Card" utility
+  - by "TassyJim"
+  - added support for Modes 10, 11 and 12.
  - Updated "Lunar Lander" to v7.3
    - by "vegipete"
    - added workaround for difference in direction of IMAGE ROTATE between
