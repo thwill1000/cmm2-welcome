@@ -185,16 +185,18 @@ Data "Q", "Quit", "quit"
 Data "end"
 
 menu_games:
-Data "1", "Lunar Lander", "lunar/lunar.bas"
-Data "2", "Minesweeper", "games/minesweeper.bas"
-Data "3", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
+Data "1", "Hunt the Wumpus", "games/wumpus.bas"
+Data "2", "Lunar Lander", "lunar/lunar.bas"
+Data "3", "Minesweeper", "games/minesweeper.bas"
+Data "4", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
 menu_new:
-Data "1", "Minesweeper", "games/minesweeper.bas"
-Data "2", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
+Data "1", "Hunt the Wumpus", "games/wumpus.bas"
+Data "2", "Minesweeper", "games/minesweeper.bas"
+Data "3", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
