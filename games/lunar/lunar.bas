@@ -35,7 +35,7 @@
   ' "Crumple.wav"
   ' "LunarLander2v7.bas"  this file
 
-#Include "../common/welcome.inc"
+#Include "../../common/welcome.inc"
 
   MODE 1,8  ' default but still...
   CLS

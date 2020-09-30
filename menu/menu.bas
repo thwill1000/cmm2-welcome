@@ -186,7 +186,7 @@ Data "end"
 
 menu_games:
 Data "1", "Hunt the Wumpus", "games/wumpus.bas"
-Data "2", "Lunar Lander", "lunar/lunar.bas"
+Data "2", "Lunar Lander", "games/lunar/lunar.bas"
 Data "3", "Minesweeper", "games/minesweeper.bas"
 Data "4", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
