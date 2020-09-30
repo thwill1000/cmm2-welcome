@@ -2,7 +2,9 @@ ChangeLog
 ---------
 
 Release 0.4:
- - TODO
+ - Added "Scott Adams' Pirate Adventure"
+  - by kind permission of Scott Adams
+  - ported to CMM2 by "thwill"
 
 Release 0.3.1:
  - This is a maintenance release, it contains the same inventory of programs

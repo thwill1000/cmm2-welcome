@@ -1,0 +1,25 @@
+"Pirate Adventure" is (c) Scott Adams 1978 and is distributed with his
+kind permission.
+
+The adventure data "pirate.dat" is a lightly edited version of that
+published in Level II BASIC for the TRS-80 in:
+
+     BYTE Magazine Volume 05 Number 12 - December 1980
+
+The interpreter program "interp.bas" for the Colour Maximite 2 was
+written by Thomas Hugo Williams 2020. Although it consists almost
+entirely of new code it is derived from:
+
+ - the work of Scott Adams published in the above BYTE Magazine, and
+
+ - source-code for a BASIC version of "Adventureland" provided to the
+   author by Scott Adams, and
+
+ - the work of Alan Moluf and Bruce Hanson to document the data file
+   format used by Scott Adams' adventure games:
+
+     https://github.com/pdxiv/LuaScott/blob/master/doc/
+       The_ADVENTURE_Data_Base_Format_(1980).md
+
+Please read the LICENSE file for more details before distributing this
+program outside of the context of the Colour Maximite 2 "Welcome Tape".

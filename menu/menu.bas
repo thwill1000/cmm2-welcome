@@ -145,7 +145,7 @@ End Function
 
 menu_top:
 Data "1", "WHAT'S NEW?", "menu_new"
-Data "2", "Lunar Lander", "lunar/lunar.bas"
+Data "2", "Games", "menu_games"
 Data "3", "Conway's Game of Life", "life/life.bas"
 Data "4", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
 Data "5", "Graphics Demos - 3D", "menu_3d"
@@ -156,7 +156,7 @@ Data "9", "Sound Demos", "menu_sound"
 Data "A", "CSUB Demos", "menu_csub"
 Data "B", "Utilities", "menu_utils"
 Data "C", "Show credits", "credits"
-Data "D", "COMING SOON", "menu_next"
+'Data "D", "COMING SOON", "menu_next"
 Data "Q", "Quit", "quit"
 Data "end"
 
@@ -184,20 +184,24 @@ Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_new:
-Data "1", "Barnsley's Fern using CSUB", "fractals/barnsleys-fern-csub.bas"
-Data "2", "Graphics Test Card", "utils/test-card.bas"
-Data "3", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
-Data "4", "Playing Cards", "playing-cards/showcards.bas"
+menu_games:
+Data "1", "Lunar Lander", "lunar/lunar.bas"
+Data "2", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_next:
-Data "1", "Scott Adams' Pirate Adventure", "pirate/pirate.bas"
+menu_new:
+Data "1", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "M", "Back to main menu", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
+
+'menu_next:
+'Data "1", "Scott Adams' Pirate Adventure", "pirate/pirate.bas"
+'Data "M", "Back to main menu", "menu_top"
+'Data "Q", "Quit", "quit"
+'Data "end"
 
 menu_sound:
 Data "1", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
