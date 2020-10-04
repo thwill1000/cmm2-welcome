@@ -2,7 +2,10 @@ ChangeLog
 ---------
 
 Release 0.5:
- - TODO
+ - Updated menu-system
+   - by "thwill".
+   - prettier output for VGA display.
+   - other cosmetic and organisational tweaks.
 
 Release 0.4:
  - Added "Hunt the Wumpus"
