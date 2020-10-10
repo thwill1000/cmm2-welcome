@@ -2,6 +2,8 @@ ChangeLog
 ---------
 
 Release 0.5:
+ - Added "GPIO Pin Tester"
+   - by "TassyJim" with edits by "BigMik".
  - Updated menu-system
    - by "thwill".
    - prettier output for VGA display.
