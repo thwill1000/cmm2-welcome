@@ -2,6 +2,8 @@ ChangeLog
 ---------
 
 Release 0.5:
+ - Added "Bouncing Balls" sprite demo
+   - by Markus Mangold.
  - Added "Composition #1 (Passacaglia in 32 Bits)"
    - generative music demo by William Leue.
  - Added "GPIO Pin Tester"

@@ -294,8 +294,9 @@ Data "end"
 
 menu_new:
 Data "What's New?"
-Data "1", "Composition #1 (Passacaglia in 32 bits)", "sound/gen-music/GenMusic1.bas"
-Data "2", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
+Data "1", "Bouncing Balls", "sprites/bouncing-balls/balls.bas"
+Data "2", "Composition #1 (Passacaglia in 32 bits)", "sound/gen-music/GenMusic1.bas"
+Data "3", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
@@ -311,7 +312,8 @@ Data "end"
 
 menu_sprites:
 Data "Sprites"
-Data "1", "Playing Cards", "sprites/playing-cards/showcards.bas"
+Data "1", "Bouncing Balls", "sprites/bouncing-balls/balls.bas"
+Data "2", "Playing Cards", "sprites/playing-cards/showcards.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
