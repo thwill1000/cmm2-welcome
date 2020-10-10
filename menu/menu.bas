@@ -294,9 +294,7 @@ Data "end"
 
 menu_new:
 Data "What's New?"
-Data "1", "Hunt the Wumpus", "games/wumpus.bas"
-Data "2", "Minesweeper", "games/minesweeper.bas"
-Data "3", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
+Data "1", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
@@ -335,6 +333,7 @@ Data "end"
 menu_utils:
 Data "Utilities"
 Data "1", "Graphics Test Card", "utils/test-card.bas"
+Data "2", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
@@ -353,7 +352,7 @@ Data "end"
 ' Note that Scott Adams will be listed separately as he is not a denizen of the TBS.
 denizens:
 Data "Andrew_G", "", ""
-Data "bigmik", "Mick", ""
+Data "Bigmik", "Mick", "Gulovsen"
 Data "capsikin", "", ""
 Data "matherp", "Peter", "Mather"
 Data "", "Markus", "Mangold"
