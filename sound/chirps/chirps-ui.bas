@@ -1,6 +1,6 @@
 ' Author: "capsikin"
 
-#Include "../common/welcome.inc"
+#Include "../../common/welcome.inc"
 
 we.clear_keyboard_buffer()
 
