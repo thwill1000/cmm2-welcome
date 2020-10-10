@@ -1,5 +1,9 @@
+'----------------------------------------------------------
 ' Minesweeper for CMM2
 ' Rev 1.0.0 William M Leue 9/17/2020
+' Rev 1.0.1 10/6/2020
+'  centered board, fixed a bug in navigation key detection
+'-----------------------------------------------------------
 
 option default integer
 option base 1
@@ -27,9 +31,6 @@ const SDISW = CSIZE-3
 const SDISH = 2*SDISW-7
 const SEGW = 3
 const SS = 2
-
-const HMARGIN = 50
-const VMARGIN = 20
 
 const LCOLOR = RGB(70, 70, 70)
 const BGCOLOR = RGB(150, 150, 150)
@@ -78,6 +79,8 @@ dim WCOLORS(7) = (RGB(BLUE), RGB(GREEN), RGB(RED), RGB(YELLOW), RGB(200, 0, 200)
 dim difficulty = 0
 dim numh = 0
 dim numv = 0
+dim hmargin = 0
+dim vmargin = 0
 dim num_mines = 0
 dim num_flagged = 0
 dim running
@@ -171,8 +174,9 @@ function MapKey(key)
 end function
 
 ' Get the difficulty level from the user
+' This also determines the board size and centering margins
 sub GetDifficulty
-  local ok
+  local ok, bdwidth, bdheight
 
   cls
   do
@@ -193,7 +197,10 @@ sub GetDifficulty
       ok = 0
     end if
   loop until ok = 1
-
+  bdwidth = numh*CSIZE
+  bdheight = DBH + 2*BWIDTH + numv*CSIZE
+  hmargin = (MM.HRES - bdwidth)\2
+  vmargin = (MM.VRES - bdheight)\2
 end sub
 
 ' build a new game
@@ -315,15 +322,15 @@ end sub
 sub DrawGrid
   local row, col, x, y
 
-  x = HMARGIN
-  y = VMARGIN
+  x = hmargin
+  y = vmargin
   box x, y, 2*BWIDTH + numh*CSIZE, DBH+2*BWIDTH+numv*CSIZE,, LCOLOR, BGCOLOR
   for row = 1 to numv
     for col = 1 to numh
       DrawCell col, row, UNMARKED
     next col
   next row
-  DrawMainBorder HMARGIN+BWIDTH,  VMARGIN+DBH+BWIDTH, numh*CSIZE, numv*CSIZE, HLWIDTH, BWIDTH
+  DrawMainBorder hmargin+BWIDTH,  vmargin+DBH+BWIDTH, numh*CSIZE, numv*CSIZE, HLWIDTH, BWIDTH
 end sub
 
 ' Draw a Board Cell
@@ -338,8 +345,8 @@ sub DrawCell col, row, mark
   UnpackCell cell, fv, downv, cnt
 
   ' draw cell main features
-  x = HMARGIN + col*CSIZE
-  y = VMARGIN + DBH + row*CSIZE
+  x = hmargin + col*CSIZE
+  y = vmargin + DBH + row*CSIZE
   c = LCOLOR
   if mark = MARKED then
     c = RGB(YELLOW)
@@ -484,8 +491,8 @@ sub DrawWarning col, row
   nw = board(col, row) mod 10
   if nw > 0 then
     c = WCOLORS(nw)
-    x = HMARGIN + BWIDTH + (col-1)*CSIZE + 5
-    y = VMARGIN + DBH + BWIDTH + (row-1)*CSIZE + 5
+    x = hmargin + BWIDTH + (col-1)*CSIZE + 5
+    y = vmargin + DBH + BWIDTH + (row-1)*CSIZE + 5
     text x, y, str$(nw),,,, c, BGCOLOR
   end if
 end sub
@@ -504,27 +511,27 @@ end sub
 ' draw the dashboard at the top
 sub DrawDashboard
   local xv(5), yv(5)
-  xv(1) = HMARGIN+numh*CSIZE+2*BWIDTH-HLWIDTH-4
-  yv(1) = VMARGIN+HLWIDTH
-  xv(2) = xv(1) : yv(2) = VMARGIN+DBH+DBM+4
+  xv(1) = hmargin+numh*CSIZE+2*BWIDTH-HLWIDTH-4
+  yv(1) = vmargin+HLWIDTH
+  xv(2) = xv(1) : yv(2) = vmargin+DBH+DBM+4
   xv(3) = xv(1)-DBM : yv(3) = yv(2)-DBM
   xv(4) = xv(3): yv(4) = yv(1)+DBM
   xv(5) = xv(1): yv(5) = yv(4)
   polygon 5, xv(), yv(), HLCOLOR, HLCOLOR
-  xv(1) = HMARGIN+HLWIDTH+DBM : yv(1) = VMARGIN+HLWIDTH+DBM
-  xv(2) = HMARGIN+numh*CSIZE+2*BWIDTH-HLWIDTH-4 : yv(2) = yv(1)
+  xv(1) = hmargin+HLWIDTH+DBM : yv(1) = vmargin+HLWIDTH+DBM
+  xv(2) = hmargin+numh*CSIZE+2*BWIDTH-HLWIDTH-4 : yv(2) = yv(1)
   xv(3) = xv(2)-DBM : yv(3) = yv(2) + 4
   xv(4) = xv(1) : yv(4) = yv(3)
   xv(5) = xv(1) : yv(5) = yv(1)
   polygon 5, xv(), yv(), LCOLOR, LCOLOR
-  yv(1) = VMARGIN+DBH+DBM+4
+  yv(1) = vmargin+DBH+DBM+4
   yv(2) = yv(1)
   yv(3) = yv(2) - 4
   yv(4) = yv(3)
   yv(5) = yv(1)
   polygon 5, xv(), yv(), HLCOLOR, HLCOLOR
-  xv(1) = HMARGIN+HLWIDTH+DBM : yv(1) = VMARGIN+HLWIDTH+DBM
-  xv(2) = xv(1) : yv(2) = VMARGIN+DBH+DBM+4
+  xv(1) = hmargin+HLWIDTH+DBM : yv(1) = vmargin+HLWIDTH+DBM
+  xv(2) = xv(1) : yv(2) = vmargin+DBH+DBM+4
   xv(3) = xv(1)+DBM : yv(3) = yv(2)-DBM
   xv(4) = xv(3) : yv(4) = yv(1)+DBM
   xv(5) = xv(1) : yv(5) = yv(1)
@@ -557,7 +564,7 @@ sub Navigate key
     dir = SOUTH
     nrow = curr_row+1
     if nrow > numv then nrow = 1
-  else if key = 68 or key = 100 or key = 131 or key = 54 then
+  else if key = 68 or key = 100 or key = 131 or key = 52 then
     dir = EAST
     ncol = curr_col+1
     if ncol > numh then ncol = 1
@@ -631,7 +638,7 @@ sub LowerCell col, row
       running = 0
       settick 0, TickIntr
       DrawFace SAD, RGB(BLUE)
-      text HMARGIN+(numh+1)*CSIZE\2, VMARGIN+DBH+2, "You Lose!", "CB",,, RGB(BLUE), BGCOLOR
+      text hmargin+(numh+1)*CSIZE\2, vmargin+DBH+2, "You Lose!", "CB",,, RGB(BLUE), BGCOLOR
       ShowAllMines
       ShowIncorrectFlags
     end if
@@ -831,7 +838,7 @@ sub CheckWin
     running = 0
     settick 0, TickIntr
     DrawFace HAPPY, RGB(GREEN)
-    text HMARGIN+(numh+1)*CSIZE\2, VMARGIN+DBH+2, "You Win!", "CB",,, RGB(GREEN), BGCOLOR
+    text hmargin+(numh+1)*CSIZE\2, vmargin+DBH+2, "You Win!", "CB",,, RGB(GREEN), BGCOLOR
   else if fcnt = num_mines then
     'print #1, "win by all mines flagged"
     for col = 1 to numh
@@ -878,8 +885,8 @@ sub ShowIncorrectFlags
       cell = board(col, row)
       UnpackCell cell, fv, downv, cnt
       if fv = FLAGGED and cnt <> MINE then
-        xc = HMARGIN + col*CSIZE + CSIZE\2
-        yc = VMARGIN + DBH + row*CSIZE + CSIZE\2
+        xc = hmargin + col*CSIZE + CSIZE\2
+        yc = vmargin + DBH + row*CSIZE + CSIZE\2
         line xc-5, yc-5, xc+5, yc+5,, RGB(BLUE)
         line xc+5, yc-5, xc-5, yc+5,, RGB(BLUE)
       end if
@@ -900,11 +907,11 @@ sub DrawSevenSegNumber which, num
   end if
   c = RGB(RED)
   if which = 1 then
-    x = HMARGIN+18
+    x = hmargin+18
   else
-    x = HMARGIN+(numh-1)*CSIZE-25
+    x = hmargin+(numh-1)*CSIZE-25
   end if
-  y = VMARGIN+19
+  y = vmargin+19
   box x, y, ndigs*SDISW, SDISH,, RGB(BLACK), RGB(BLACK)
 
   if num < 1000 then digs(4) = 0 else digs(4) = num\1000
@@ -933,8 +940,8 @@ end sub
 sub DrawFace hors, c
   local x, y, xc, yc, e1x, e2x, ey, my
 
-  x = HMARGIN+(numh*CSIZE)\2 - 7
-  y = VMARGIN+17
+  x = hmargin+(numh*CSIZE)\2 - 7
+  y = vmargin+17
   box x, y, 2*(CSIZE-3), 2*(CSIZE-3),, BGCOLOR, BGCOLOR
   xc = x + CSIZE-3 : yc = y + CSIZE-3
   circle xc, yc, CSIZE-6,,, c, c
@@ -1192,4 +1199,3 @@ data 1, 1, 0, 1, 1, 1, 1
 data 1, 0, 1, 0, 0, 1, 0
 data 1, 1, 1, 1, 1, 1, 1
 data 1, 1, 1, 1, 0, 1, 1
-
