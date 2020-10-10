@@ -5,7 +5,7 @@
 ' Base images taken from Wikipedia and massaged slightly
 ' to suit the CMM2 colours and transparency and resolution.
 
-#Include "../common/welcome.inc"
+#Include "../../common/welcome.inc"
 
 dim k$
 dim source(52,2)  ' hold x,y coords of each card source image

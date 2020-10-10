@@ -311,7 +311,7 @@ Data "end"
 
 menu_sprites:
 Data "Sprites"
-Data "1", "Playing Cards", "playing-cards/showcards.bas"
+Data "1", "Playing Cards", "sprites/playing-cards/showcards.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
