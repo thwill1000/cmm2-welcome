@@ -302,9 +302,9 @@ Data "end"
 
 menu_sound:
 Data "Sound"
-Data "1", "Chirps, an interactive sound effect demo", "chirps/chirps-ui.bas"
+Data "1", "Chirps, an interactive sound effect demo", "sound/chirps/chirps-ui.bas"
 Data "2", "Composition #1 (Passacaglia in 32 bits)", "sound/gen-music/GenMusic1.bas"
-Data "3", "Speech Demo", "speech/speech.bas"
+Data "3", "Speech Demo", "sound/speech/speech.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
