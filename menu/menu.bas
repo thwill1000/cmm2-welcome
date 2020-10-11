@@ -214,7 +214,7 @@ End Sub
 Function quit()
   Local s$ = "Are you sure you want to Quit [y|N] ?"
   Text Mm.HRes \ 2, Mm.Info(VPos), s$, C, 3, 1, RGB(YELLOW)
-  Option Console Serial  
+  Option Console Serial
   Print
   Print s$
   Option Console Both
@@ -224,7 +224,7 @@ End Function
 Sub goodbye()
   Text Mm.HRes \ 2, Mm.Info(VPos), Space$(Mm.HRes \ 16), C, 3
   Text Mm.HRes \ 2, Mm.Info(VPos), "Goodbye!", C, 3, 1, RGB(YELLOW)
-  Option Console Serial  
+  Option Console Serial
   Print
   Print "Goodbye!"
   Option Console Both
@@ -295,9 +295,10 @@ Data "end"
 menu_new:
 Data "What's New?"
 Data "1", "Bouncing Balls", "sprites/bouncing-balls/balls.bas"
-Data "2", "Composition #1 (Passacaglia in 32 bits)", "sound/gen-music/GenMusic1.bas"
-Data "3", "Ghost, sprite with transparency", "sprites/ghost/ghost.bas"
-Data "4", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
+Data "2", "Brownian Motion", "sprites/brownian-motion/brownian.bas"
+Data "3", "Composition #1 (Passacaglia in 32 bits)", "sound/gen-music/GenMusic1.bas"
+Data "4", "Ghost, sprite with transparency", "sprites/ghost/ghost.bas"
+Data "5", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
@@ -314,8 +315,9 @@ Data "end"
 menu_sprites:
 Data "Sprites"
 Data "1", "Bouncing Balls", "sprites/bouncing-balls/balls.bas"
-Data "2", "Ghost, sprite with transparency", "sprites/ghost/ghost.bas"
-Data "3", "Playing Cards", "sprites/playing-cards/showcards.bas"
+Data "2", "Brownian Motion", "sprites/brownian-motion/brownian.bas"
+Data "3", "Ghost, sprite with transparency", "sprites/ghost/ghost.bas"
+Data "4", "Playing Cards", "sprites/playing-cards/showcards.bas"
 Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"

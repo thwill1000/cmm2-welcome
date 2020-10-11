@@ -4,6 +4,9 @@ ChangeLog
 Release 0.5:
  - Added "Bouncing Balls" sprite demo
    - by Markus Mangold.
+ - Added "Brownian Motion" sprite demo
+   - by Peter Mather.
+   - requires firmware 5.05.06.
  - Added "Composition #1 (Passacaglia in 32 Bits)"
    - generative music demo by William Leue.
  - Added "Ghost" sprite demo
