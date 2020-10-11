@@ -14,8 +14,9 @@ Release 0.5:
  - Added "GPIO Pin Tester"
    - by "TassyJim" with edits by "BigMik".
  - Updated menu-system
-   - by "thwill".
+   - by "thwill" and "vegipete".
    - prettier output for VGA display.
+   - added cursor key navigation.
    - other cosmetic and organisational tweaks.
  - Updated "Minesweeper" to v1.0.1
    - by William Leue.

@@ -1,4 +1,6 @@
-' Author: Thomas Hugo Williams
+' CMM2 "Welcome Tape" Menu
+' By Thomas Hugo Williams "thwill" 2020
+' With UI polishing by "vegipete"
 
 Option Explicit
 Option Default Integer
@@ -8,7 +10,17 @@ Option Base 1
 
 we.check_firmware_version()
 
+const TOPLINE = 106
+const TITLE$ = "WELCOME TAPE"
+
 Mode 1, 8
+
+' Load CMM2 logo.
+Page Write 2
+Cls
+Load PNG WE.PROG_DIR$ + "/CMM2_247px.png", 276, 10
+Text MM.HRes / 2, 70, TITLE$, C, 3, 1, RGB(Yellow)
+Text MM.HRes - 16, MM.VRes - 16, WE.VERSION$, R, 1, 1, RGB(White)
 Page Write 0
 
 Dim menu_label$ = Mm.CmdLine$
@@ -30,28 +42,42 @@ Function show_menu$(menu_label$)
   Local menu_name$
   Read menu_name$
   Local items$(20, 3)
-  read_string_array(items$())
+  Local items_sz = read_string_array(items$())
 
   Local i, width
-  For i = Bound(items$(), 0) To Bound(items$(), 1)
+  For i = 1 To items_sz
     width = Max(width, Len(items$(i, 2)))
   Next i
-  For i = Bound(items$(), 0) To Bound(items$(), 1)
+  For i = 1 To items_sz
     items$(i, 2) = items$(i, 2) + Space$(width - Len(items$(i, 2)))
   Next i
 
-  Local title$ = "Colour Maximite 2 " + Chr$(34) + "Welcome Tape" + Chr$(34)
-  show_menu_vga(title$, menu_name$, items$())
-  show_menu_serial(title$, menu_name$, items$())
+  draw_menu(menu_name$, items$(), items_sz)
 
   we.clear_keyboard_buffer()
 
   Local k$
+  Local selected = 0
+  Local old_selected
   Do
-    Do : k$ = LCase$(Inkey$) : Loop Until k$ <> ""
-    If k$ = "m" Then k$ = "b" ' For backward compatibility [M] does same as [B].
+    k$ = wait_for_key$()
 
-    For i = Bound(items$(), 0) To Bound(items$(), 1)
+    old_selected = selected
+    Select Case k$
+      Case "down"
+        ' Move selection down if not at bottom.
+        If selected < items_sz Then selected = selected + 1
+      Case "select"
+        If selected > 0 Then k$ = LCase$(items$(selected, 1))
+      Case "up" :
+        ' Move selection up if not at top.
+        If selected = 0 Then selected = 1
+        If selected > 1 Then selected = selected - 1
+    End Select
+
+    If old_selected <> selected Then draw_menu(menu_name$, items$(), items_sz, selected)
+
+    For i = 1 To items_sz
       If LCase$(items$(i, 1)) = k$ Then
         If items$(i, 3) = "credits" Then
           show_credits()
@@ -73,7 +99,8 @@ Function show_menu$(menu_label$)
 
 End Function
 
-Sub read_string_array(a$())
+' @return  number of elements (of first index) read.
+Function read_string_array(a$())
   Local i = 1, j = 1, s$
   Do
     Read s$
@@ -82,7 +109,8 @@ Sub read_string_array(a$())
     j = j + 1
     If j = Bound(a$(), 2) + 1 Then j = 1 : i = i + 1
   Loop
-End Sub
+  read_string_array = i - 1
+End Function
 
 Sub dump_string_array(a$())
   Local i, j
@@ -96,58 +124,113 @@ Sub dump_string_array(a$())
   Next i
 End Sub
 
-Sub show_menu_vga(title$, menu$, items$())
-  Local i
+Function wait_for_key$()
+  Local k$ = we.wait_for_key$()
+  Select Case Asc(k$)
+    Case 13       : k$ = "select" ' enter
+    Case 27       : k$ = "q"      ' escape
+    Case Asc("m") : k$ = "b"      ' for backward compatibility [M] does same as [B]
+    Case 128      : k$ = "up"     ' up arrow
+    Case 129      : k$ = "down"   ' down arrow
+    Case 130      : k$ = "b"      ' left arrow
+    Case 131      : k$ = "select" ' right arrow
+    Case Else     : k$ = LCase$(k$)
+  End Select
+  wait_for_key$ = k$
+End Function
 
-  Page Write 1
-  Cls ' Note this will also clear the serial console.
-  Local x = Mm.HRes \ 2
-  Local y = 48
-  Text x, y, title$, C, 3, 1, RGB(Yellow)
-  y = y + 24
-  Text x, y, WE.VERSION$, C, 1, 1, RGB(Yellow)
-  y = y + 36
-  Text x, y, UCase$(menu$), C, 3, 1, RGB(White)
-  y = y + 48
-  For i = Bound(items$(), 0) To Bound(items$(), 1)
-    If items$(i, 1) <> "" Then
-      Text x, y, "[" + items$(i, 1) + "] " + items$(i, 2), C, 3, 1, RGB(White)
-      y = y + 24
-    EndIf
-  Next i
-  y = y + 24
-  Text x, y, "Press a key to select an option", C, 3, 1, RGB(Yellow)
-  Page Copy 1 To 0, B
-  Page Write 0
+Sub draw_menu(menu$, items$(), items_sz, sel)
+  draw_menu_vga(menu$, items$(), items_sz, sel)
+  draw_menu_serial(menu$, items$(), items_sz, sel)
 End Sub
 
-Sub show_menu_serial(title$, menu$, items$())
+Sub draw_menu_vga(menu$, items$(), items_sz, sel)
   Local i
+  Local x = Mm.HRes \ 2
+  Local y = TOPLINE
 
-  Option Console Serial
-  print_centered(title$)
-  print_centered(WE.VERSION$)
-  Print
-  print_centered(UCase$(menu$))
-  Print
-  For i = Bound(items$(), 0) To Bound(items$(), 1)
-    If items$(i, 1) <> "" Then
-      print_centered("  [" + items$(i, 1) + "] " + items$(i, 2))
-    EndIf
+  Option Console Screen
+  Page Write 1
+  Page Copy 2, 1
+
+  Text x, y, UCase$(menu$), C, 3, 1, RGB(White) : y = y + 36
+  For i = 1 To items_sz
+    Text x, y, format_item$(items$(), i), C, 2, 1, RGB(White) * (i <> sel), RGB(White) * (i = sel)
+    y = y + 20
   Next i
-  Print
-  print_centered("Press a key to select an option")
+  y = y + 12
+  Text x, y, "Press a key to select an option", C, 2, 1, RGB(Yellow) : y = y + 20
+  Local s$ = "Or use " + Chr$(146) + ", " + Chr$(147) + ", [Enter] to select, "
+  s$ = s$ + Chr$(149) + " to go back, [Esc] to quit"
+  Text x, y, s$, C, 1, 1, RGB(Yellow)
+
+  Page Copy 1 To 0, B
+  Page Write 0
   Option Console Both
 End Sub
 
-Sub print_centered(s$)
-  Print Space$((100 - Len(s$)) \ 2) s$
+Function format_item$(items$(), i)
+  format_item$ = "[" + items$(i, 1) + "] " + items$(i, 2)
+End Function
+
+Sub draw_menu_serial(menu$, items$(), items_sz, sel)
+  Local i
+
+  Option Console Serial
+  vt100("H") ' cursor home
+
+  If sel > 0 Then
+
+    ' Just redraw the selection.
+    vt100(Str$(sel + 3) + "B") ' cursor down n lines
+    For i = sel - 1 To sel + 1
+      If i < 1 Then
+        Print
+      ElseIf i > items_sz Then
+        Print
+      Else
+        print_centered(format_item$(items$(), i), i = sel)
+      EndIf
+    Next i
+    vt100(Str$(items_sz + 8) + ";0H") ' move cursor to screen location
+  Else
+
+    ' Redraw the whole menu.
+    vt100("2J") ' clear screen
+    print_centered("Colour Maximite 2 " + Chr$(34) + TITLE$ + CHr$(34))
+    print_centered(WE.VERSION$)
+    Print
+    print_centered(UCase$(menu$))
+    Print
+    For i = 1 To items_sz
+      print_centered(format_item$(items$(), i), i = sel)
+    Next i
+    Print
+    print_centered("Press a key to select an option")
+    print_centered("Or use [Up], [Down], [Enter] to select, [Left] to go back, [Esc] to quit")
+  EndIf
+
+  Option Console Both
+End Sub
+
+Sub vt100(s$)
+  Print Chr$(27) "[" s$;
+End Sub
+
+Sub print_centered(s$, reverse)
+  Print Space$((100 - Len(s$)) \ 2);
+  If reverse Then vt100("7m")
+  Print s$;
+  If reverse Then vt100("0m")
+  Print
 End Sub
 
 Sub show_credits()
   Local denizens$(20, 3), i, s$, sz
   Restore denizens
-  read_string_array(denizens$())
+  i = read_string_array(denizens$())
+
+  we.clear_keyboard_buffer()
 
   ' Format credits.
   Local credits$(Bound(denizens$(), 1))
@@ -171,29 +254,38 @@ End Sub
 Sub show_credits_vga(credits$(), sz, url$)
   Local i, s$
 
+  Option Console Screen
   Page Write 1
-  Cls ' Note this will also clear the serial console.
+  Page Copy 2, 1
+
   Local x = Mm.HRes \ 2
-  Text x, Mm.Info(VPOS) + 48, "Brought to you by the", C, 3, 1, RGB(Yellow)
-  Text x, Mm.Info(VPOS) + 24, "Denizens of The Back Shed", C, 3, 1, RGB(Yellow)
+  Text x, TOPLINE, "Brought to you by the", C, 3, 1, RGB(White)
+  Text x, Mm.Info(VPOS) + 24, "Denizens of The Back Shed", C, 3, 1, RGB(White)
   Text x, Mm.Info(VPOS) + 16, ""
   For i = Bound(credits$(), 0) To sz \ 2
     s$ = credits$(i) + "  " + credits$(i + sz \ 2)
-    Text x, Mm.Info(VPOS) + 20, s$, C, 2, 1, RGB(White)
+    Text x, Mm.Info(VPOS) + 20, s$, C, 2, 1, RGB(Yellow)
   Next i
   Text x, Mm.Info(VPOS) + 36, url$, C, 1, 1, RGB(Cyan)
-  Text x, Mm.Info(VPOS) + 48, "Additional thanks to", C, 3, 1, RGB(Yellow)
-  Text x, Mm.Info(VPOS) + 36, "Geoff Graham, Peter Mather & 'The CMM2 Team'", C, 2
-  Text x, Mm.Info(VPOS) + 24, "Scott Adams for 'Pirate Adventure'", C, 2
-  Text x, Mm.Info(VPOS) + 48, "Press any key to return to the menu", C, 3, 1, RGB(Yellow)
+  Text x, Mm.Info(VPOS) + 36, "Additional thanks to", C, 3, 1, RGB(White)
+  Text x, Mm.Info(VPOS) + 36, "Geoff Graham, Peter Mather & 'The CMM2 Team'", C, 2, 1, RGB(Yellow)
+  Text x, Mm.Info(VPOS) + 24, "Scott Adams for 'Pirate Adventure'", C, 2, 1, RGB(Yellow)
+  Text x, Mm.Info(VPOS) + 48, "Press any key to return to the menu", C, 2, 1, RGB(White)
+
   Page Copy 1 To 0, B
   Page Write 0
+  Option Console Both
 End Sub
 
 Sub show_credits_serial(credits$(), sz, url$)
   Local i, s$
 
   Option Console Serial
+  vt100("H")  ' cursor home
+  vt100("2J") ' clear screen
+  print_centered("Colour Maximite 2 " + Chr$(34) + TITLE$ + CHr$(34))
+  print_centered(WE.VERSION$)
+  Print
   print_centered("Brought to you by the Denizens of The Back Shed")
   Print
   For i = Bound(credits$(), 0) To sz \ 2
@@ -207,16 +299,18 @@ Sub show_credits_serial(credits$(), sz, url$)
   print_centered("Geoff Graham, Peter Mather & 'The CMM2 Team'")
   print_centered("Scott Adams - for 'Pirate Adventure'")
   Print
-  Print_centered("Press any key to return to the menu.")
+  print_centered("Press any key to return to the menu")
   Option Console Both
 End Sub
 
 Function quit()
+  we.clear_keyboard_buffer()
+
   Local s$ = "Are you sure you want to Quit [y|N] ?"
-  Text Mm.HRes \ 2, Mm.Info(VPos), s$, C, 3, 1, RGB(YELLOW)
+  Text Mm.HRes \ 2, Mm.Info(VPos) + 20, s$, C, 3, 1, RGB(YELLOW)
   Option Console Serial
   Print
-  Print s$
+  print_centered(s$)
   Option Console Both
   If LCase$(we.wait_for_key$()) = "y" Then quit = 1
 End Function
@@ -226,7 +320,7 @@ Sub goodbye()
   Text Mm.HRes \ 2, Mm.Info(VPos), "Goodbye!", C, 3, 1, RGB(YELLOW)
   Option Console Serial
   Print
-  Print "Goodbye!"
+  print_centered("Goodbye!")
   Option Console Both
 End Sub
 
