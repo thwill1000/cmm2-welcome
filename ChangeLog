@@ -2,11 +2,11 @@ ChangeLog
 ---------
 
 Release 0.5:
+ - IMPORTANT: requires firmware 5.05.06 or later.
  - Added "Bouncing Balls" sprite demo
    - by Markus Mangold.
  - Added "Brownian Motion" sprite demo
    - by Peter Mather.
-   - requires firmware 5.05.06.
  - Added "Composition #1 (Passacaglia in 32 Bits)"
    - generative music demo by William Leue.
  - Added "Ghost" sprite demo
@@ -24,9 +24,11 @@ Release 0.5:
    - by "TweakerRay".
  - Added "Scrolling Text" demo
    - by "vegipete" and the "Sasquatch".
- - Updated menu-system
-   - by "thwill" and "vegipete".
-   - prettier output for VGA display.
+ - Updated splash-screen and menu-system
+   - code by "thwill" and "vegipete", music by "Tweaker Ray".
+   - simpler more "professional" splash screen.
+   - great soundtrack.
+   - prettier menu optimised for VGA and Serial display.
    - added cursor key navigation.
    - other cosmetic and organisational tweaks.
  - Updated "Minesweeper" to v1.0.1

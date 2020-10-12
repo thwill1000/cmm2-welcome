@@ -6,12 +6,7 @@ option default none
 
 #Include "../../common/welcome.inc"
 
-If Mm.Info(Version) < 5.0506 Then
-  Print "Requires firmware version 5.05.06 or later."
-  Print "Press any key to exit"
-  Dim k$ = we.wait_for_key$()
-  we.end_program()
-End If
+we.check_firmware_version()
 
 option console serial
 

@@ -7,9 +7,30 @@ Const WE.QUIT_KEY$ = "Q"
 
 Dim we.quit% = 0
 
-Sub we.check_firmware_version()
-  If Mm.Info(Version) < (5.0505-0.0001) Then Error "Requires firmware version 5.05.05 or later"
+Sub we.check_firmware_version(v$)
+  If v$ = "" Then v$ = "5.05.06"
+
+  Local actual$ = we.sanitise_firmware_version$(Str$(Mm.Info(Version)))
+  Local desired$ = we.sanitise_firmware_version$(v$)
+
+  If actual$ < desired$ Then
+    Cls
+    Print "Requires firmware version " v$ " or later."
+    Print "Press any key to exit"
+    Local k$ = we.wait_for_key$()
+    we.end_program()
+  EndIf
 End Sub
+
+Function we.sanitise_firmware_version$(v$)
+  Local i, s$
+  For i = 1 To Len(v$)
+    If InStr("0123456789", Mid$(v$, i, 1)) > 0 Then s$ = s$ + Mid$(v$, i, 1)
+  Next i
+  Do While Len(s$) < 5 : s$ = s$ + "0" : Loop
+  If Len(s$) > 5 Then Error "Unexpected firmware version format: " + v$
+  we.sanitise_firmware_version$ = s$
+End Function
 
 Function we.get_install_dir$()
   Local d$ = WE.PROG_DIR$
