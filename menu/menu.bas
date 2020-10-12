@@ -1,36 +1,44 @@
 ' CMM2 "Welcome Tape" Menu
 ' By Thomas Hugo Williams "thwill" 2020
 ' With UI polishing by "vegipete"
+' And soundtrack by "TweakerRay"
 
 Option Explicit
-Option Default Integer
-Option Base 1
+Option Default Float
+Option Base 0
 
 #Include "../common/welcome.inc"
+#Include "splash.inc"
 
 we.check_firmware_version()
 
-const TOPLINE = 106
-const TITLE$ = "WELCOME TAPE"
+Const TOPLINE = 106
+Const TITLE$ = "WELCOME TAPE"
 
 Mode 1, 8
+
+Play MP3 WE.PROG_DIR$ + "/TweakerRaySpaceFlight-160kb.mp3"
+
+Dim menu_label$ = Mm.CmdLine$
+If menu_label$ = "" Then
+  menu_label$ = "menu_top"
+  splash()
+EndIf
 
 ' Load CMM2 logo.
 Page Write 2
 Cls
-Load PNG WE.PROG_DIR$ + "/CMM2_247px.png", 276, 10
+Load PNG WE.PROG_DIR$ + "/logo-small.png", 276, 10
 Text MM.HRes / 2, 70, TITLE$, C, 3, 1, RGB(Yellow)
 Text MM.HRes - 16, MM.VRes - 16, WE.VERSION$, R, 1, 1, RGB(White)
 Page Write 0
-
-Dim menu_label$ = Mm.CmdLine$
-If menu_label$ = "" Then menu_label$ = "menu_top"
 
 Do While menu_label$ <> ""
   menu_label$ = show_menu$(menu_label$)
 Loop
 
 goodbye()
+Play Stop
 End
 
 Function show_menu$(menu_label$)
@@ -41,23 +49,23 @@ Function show_menu$(menu_label$)
 
   Local menu_name$
   Read menu_name$
-  Local items$(20, 3)
+  Local items$(20, 2)
   Local items_sz = read_string_array(items$())
 
   Local i, width
-  For i = 1 To items_sz
-    width = Max(width, Len(items$(i, 2)))
+  For i = 0 To items_sz - 1
+    width = Max(width, Len(items$(i, 1)))
   Next i
-  For i = 1 To items_sz
-    items$(i, 2) = items$(i, 2) + Space$(width - Len(items$(i, 2)))
+  For i = 0 To items_sz - 1
+    items$(i, 1) = items$(i, 1) + Space$(width - Len(items$(i, 1)))
   Next i
 
-  draw_menu(menu_name$, items$(), items_sz)
+  draw_menu(menu_name$, items$(), items_sz, -1)
 
   we.clear_keyboard_buffer()
 
   Local k$
-  Local selected = 0
+  Local selected = -1
   Local old_selected
   Do
     k$ = wait_for_key$()
@@ -66,31 +74,32 @@ Function show_menu$(menu_label$)
     Select Case k$
       Case "down"
         ' Move selection down if not at bottom.
-        If selected < items_sz Then selected = selected + 1
+        If selected < items_sz - 1 Then selected = selected + 1
       Case "select"
-        If selected > 0 Then k$ = LCase$(items$(selected, 1))
+        If selected > -1 Then k$ = LCase$(items$(selected, 0))
       Case "up" :
         ' Move selection up if not at top.
-        If selected = 0 Then selected = 1
-        If selected > 1 Then selected = selected - 1
+        If selected = -1 Then selected = 0
+        If selected > 0 Then selected = selected - 1
     End Select
 
     If old_selected <> selected Then draw_menu(menu_name$, items$(), items_sz, selected)
 
-    For i = 1 To items_sz
-      If LCase$(items$(i, 1)) = k$ Then
-        If items$(i, 3) = "credits" Then
+    For i = 0 To items_sz - 1
+      If LCase$(items$(i, 0)) = k$ Then
+        If items$(i, 2) = "credits" Then
           show_credits()
           show_menu$ = menu_label$
           Exit Function
-        Else If items$(i, 3) = "quit" Then
+        Else If items$(i, 2) = "quit" Then
           If Not quit() Then show_menu$ = menu_label$
           Exit Function
-        Else If Left$(items$(i, 3), 5) = "menu_" Then
-          show_menu$ = items$(i, 3)
+        Else If Left$(items$(i, 2), 5) = "menu_" Then
+          show_menu$ = items$(i, 2)
           Exit Function
         Else
-          we.run_program(WE.INSTALL_DIR$ + "/" + items$(i, 3), "--menu " + menu_label$)
+          Play Stop
+          we.run_program(WE.INSTALL_DIR$ + "/" + items$(i, 2), "--menu " + menu_label$)
           Error "Should never get here"
         EndIf
       EndIf
@@ -101,23 +110,25 @@ End Function
 
 ' @return  number of elements (of first index) read.
 Function read_string_array(a$())
-  Local i = 1, j = 1, s$
+  Local lbound = Bound(a$(), 0)
+  Local i = lbound, j = lbound, s$
   Do
     Read s$
     If s$ = "end" Then Exit Do
     a$(i, j) = s$
     j = j + 1
-    If j = Bound(a$(), 2) + 1 Then j = 1 : i = i + 1
+    If j = Bound(a$(), 2) + 1 Then j = lbound : i = i + 1
   Loop
-  read_string_array = i - 1
+  read_string_array = i - lbound
 End Function
 
 Sub dump_string_array(a$())
+  Local lbound = Bound(a$(), 0)
   Local i, j
-  For i = Bound(a$(), 0) To Bound(a$(), 1)
+  For i = lbound To Bound(a$(), 1)
     Print "[" Str$(i) "] ";
-    For j = Bound(a$(), 0) To Bound(a$(), 2)
-      If j <> 1 Then Print ", ";
+    For j = lbound To Bound(a$(), 2)
+      If j <> lbound Then Print ", ";
       If a$(i, j) = "" Then Print "<empty>"; Else Print "{" a$(i, j) "}";
     Next j
     Print
@@ -154,7 +165,7 @@ Sub draw_menu_vga(menu$, items$(), items_sz, sel)
   Page Copy 2, 1
 
   Text x, y, UCase$(menu$), C, 3, 1, RGB(White) : y = y + 36
-  For i = 1 To items_sz
+  For i = 0 To items_sz - 1
     Text x, y, format_item$(items$(), i), C, 2, 1, RGB(White) * (i <> sel), RGB(White) * (i = sel)
     y = y + 20
   Next i
@@ -170,7 +181,7 @@ Sub draw_menu_vga(menu$, items$(), items_sz, sel)
 End Sub
 
 Function format_item$(items$(), i)
-  format_item$ = "[" + items$(i, 1) + "] " + items$(i, 2)
+  format_item$ = "[" + items$(i, 0) + "] " + items$(i, 1)
 End Function
 
 Sub draw_menu_serial(menu$, items$(), items_sz, sel)
@@ -182,11 +193,11 @@ Sub draw_menu_serial(menu$, items$(), items_sz, sel)
   If sel > 0 Then
 
     ' Just redraw the selection.
-    vt100(Str$(sel + 3) + "B") ' cursor down n lines
+    vt100(Str$(sel + 4) + "B") ' cursor down n lines
     For i = sel - 1 To sel + 1
-      If i < 1 Then
+      If i < 0 Then
         Print
-      ElseIf i > items_sz Then
+      ElseIf i > items_sz - 1 Then
         Print
       Else
         print_centered(format_item$(items$(), i), i = sel)
@@ -202,7 +213,7 @@ Sub draw_menu_serial(menu$, items$(), items_sz, sel)
     Print
     print_centered(UCase$(menu$))
     Print
-    For i = 1 To items_sz
+    For i = 0 To items_sz - 1
       print_centered(format_item$(items$(), i), i = sel)
     Next i
     Print
@@ -226,33 +237,39 @@ Sub print_centered(s$, reverse)
 End Sub
 
 Sub show_credits()
-  Local denizens$(20, 3), i, s$, sz
+  Local denizens$(20, 2), i, s$, sz
   Restore denizens
-  i = read_string_array(denizens$())
+  sz = read_string_array(denizens$())
 
   we.clear_keyboard_buffer()
 
   ' Format credits.
-  Local credits$(Bound(denizens$(), 1))
-  For i = Bound(denizens$(), 0) To Bound(denizens$(), 1)
-    s$ = denizens$(i, 1)
-    If s$ = "" Then s$ = denizens$(i, 2) + " " + denizens$(i, 3)
+  If sz Mod 2 = 1 Then sz = sz + 1
+  Local credits$(sz - 1)
+  For i = 0 To sz - 1
+    s$ = denizens$(i, 0)
+    If s$ = "" Then s$ = denizens$(i, 1) + " " + denizens$(i, 2)
     s$ = Space$((15 - Len(s$)) \ 2) + s$
-    s$ = s$ + Space$(15 - Len(s$))
-    If s$ <> Space$(15) Then sz = sz + 1 : credits$(sz) = s$
+    credits$(i) = s$ + Space$(15 - Len(s$))
   Next i
-  If sz Mod 2 = 1 Then sz = sz + 1 : credits$(sz) = Space$(15)
 
-  Local url$ = "http://www.thebackshed.com/forum/ViewForum.php?FID=16"
+  Local txt$(6)
+  txt$(0) = "Soundtrack: 'SPACEFLIGHT' from the Album 'Distance'"
+  txt$(1) = "available for FREE download at https://tweakerray.bandcamp.com"
+  txt$(2) = "composed by TweakerRay (www.tweakerray.de)"
+  txt$(3) = "Geoff Graham, Peter Mather & 'The CMM2 Team'"
+  txt$(4) = "Scott Adams for 'Pirate Adventure'"
+  txt$(5) = "Comment at: http://www.thebackshed.com/forum/ViewForum.php?FID=16"
+  txt$(6) = "Updates from: https://github.com/thwill1000/cmm2-welcome/releases"
 
-  show_credits_vga(credits$(), sz, url$)
-  show_credits_serial(credits$(), sz, url$)
+  show_credits_vga(credits$(), txt$())
+  show_credits_serial(credits$(), txt$())
 
   Local k$ = we.wait_for_key$()
 End Sub
 
-Sub show_credits_vga(credits$(), sz, url$)
-  Local i, s$
+Sub show_credits_vga(credits$(), txt$())
+  Local i, s$, sz = Bound(credits$(), 1) + 1
 
   Option Console Screen
   Page Write 1
@@ -262,23 +279,27 @@ Sub show_credits_vga(credits$(), sz, url$)
   Text x, TOPLINE, "Brought to you by the", C, 3, 1, RGB(White)
   Text x, Mm.Info(VPOS) + 24, "Denizens of The Back Shed", C, 3, 1, RGB(White)
   Text x, Mm.Info(VPOS) + 16, ""
-  For i = Bound(credits$(), 0) To sz \ 2
+  For i = 0 To sz \ 2 - 1
     s$ = credits$(i) + "  " + credits$(i + sz \ 2)
     Text x, Mm.Info(VPOS) + 20, s$, C, 2, 1, RGB(Yellow)
   Next i
-  Text x, Mm.Info(VPOS) + 36, url$, C, 1, 1, RGB(Cyan)
+  Text x, Mm.Info(VPOS) + 36, txt$(0), C, 1, 1, RGB(Cyan)
+  Text x, Mm.Info(VPOS) + 16, txt$(1), C, 1, 1, RGB(Cyan)
+  Text x, Mm.Info(VPOS) + 16, txt$(2), C, 1, 1, RGB(Cyan)
   Text x, Mm.Info(VPOS) + 36, "Additional thanks to", C, 3, 1, RGB(White)
-  Text x, Mm.Info(VPOS) + 36, "Geoff Graham, Peter Mather & 'The CMM2 Team'", C, 2, 1, RGB(Yellow)
-  Text x, Mm.Info(VPOS) + 24, "Scott Adams for 'Pirate Adventure'", C, 2, 1, RGB(Yellow)
-  Text x, Mm.Info(VPOS) + 48, "Press any key to return to the menu", C, 2, 1, RGB(White)
+  Text x, Mm.Info(VPOS) + 36, txt$(3), C, 2, 1, RGB(Yellow)
+  Text x, Mm.Info(VPOS) + 24, txt$(4), C, 2, 1, RGB(Yellow)
+  Text x, Mm.Info(VPOS) + 36, txt$(5), C, 1, 1, RGB(Cyan)
+  Text x, Mm.Info(VPOS) + 16, txt$(6), C, 1, 1, RGB(Cyan)
+  Text x, Mm.Info(VPOS) + 36, "Press any key to return to the menu", C, 2, 1, RGB(White)
 
   Page Copy 1 To 0, B
   Page Write 0
   Option Console Both
 End Sub
 
-Sub show_credits_serial(credits$(), sz, url$)
-  Local i, s$
+Sub show_credits_serial(credits$(), txt$())
+  Local i, s$, sz = Bound(credits$(), 1) + 1
 
   Option Console Serial
   vt100("H")  ' cursor home
@@ -288,16 +309,21 @@ Sub show_credits_serial(credits$(), sz, url$)
   Print
   print_centered("Brought to you by the Denizens of The Back Shed")
   Print
-  For i = Bound(credits$(), 0) To sz \ 2
+  For i = 0 To sz \ 2 - 1
     print_centered(credits$(i) + "  " + credits$(i + sz \ 2))
   Next i
   Print
-  print_centered(url$)
+  print_centered(txt$(0))
+  print_centered(txt$(1))
+  print_centered(txt$(2))
   Print
   print_centered("Additional thanks to")
   Print
-  print_centered("Geoff Graham, Peter Mather & 'The CMM2 Team'")
-  print_centered("Scott Adams - for 'Pirate Adventure'")
+  print_centered(txt$(3))
+  print_centered(txt$(4))
+  Print
+  print_centered(txt$(5))
+  print_centered(txt$(6))
   Print
   print_centered("Press any key to return to the menu")
   Option Console Both
