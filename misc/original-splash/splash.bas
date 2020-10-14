@@ -15,7 +15,7 @@
 ' filled with magic numbers. However, perhaps there are nuggets within
 ' that are interesting and of some value.
 
-#Include "../common/welcome.inc"
+#Include "../../common/welcome.inc"
 
 ' factors to fit original CNC letter path to screen
 offsetx = 1650
@@ -67,8 +67,10 @@ page copy 5,0
 
 ' paint text onto display, plus work copies on pages 3 and 4
 page write 0
-Text 400, 570, " Press any key to skip ", "C", 2
+' Text 400, 570, " Press any key to skip ", "C", 2
+Text 400, 570, " Press Q to Quit ", "C", 2
 PaintTitle(offsetx,offsety,SCALE,OURCOLOUR)
+If we.is_quit_pressed%() Then we.end_program()
 
 ' draw ground on source image page
 page write 4
@@ -81,9 +83,10 @@ Text 400, 285, "Welcome Tape " + WE.VERSION$, "C", 2
 
 for i = 599 to 306 step -1
   blit 0,306,0,i,MM.HRES,306,4
-  Text 400, 570, " Press any key to skip ", "C", 2
+'  Text 400, 570, " Press any key to skip ", "C", 2
+  Text 400, 570, " Press Q to Quit ", "C", 2
   pause 10
-  If Inkey$ <> "" Then we.run_menu()
+  If we.is_quit_pressed%() Then we.end_program()
 next i
 
 angle = 4   ' starting sun angle in the sky
@@ -111,7 +114,8 @@ do
   DrawGrid
 
   Text 400, 285, "Welcome Tape " + WE.VERSION$, "C", 2
-  Text 400, 570, " Press any key to skip ", "C", 2
+'  Text 400, 570, " Press any key to skip ", "C", 2
+  Text 400, 570, " Press Q to Quit ", "C", 2
 
   ' copy image to display page
   page copy flip_page,0,D
@@ -121,16 +125,15 @@ do
 
   ' advance the sun
   angle = angle + 0.33
-'  if angle > 179 then angle = 4
-  if angle > 179 then we.run_menu()
+  if angle <= 179 then
+    ' flip to other page
+    flip_page = 1 + (flip_page = 1)
+  endif
 
-  ' flip to other page
-  flip_page = 1 + (flip_page = 1)
+loop until (angle > 179) Or we.is_quit_pressed%()
 
-  If Inkey$ <> "" Then we.run_menu()
-loop until angle > 179
-
-end
+we.wait_for_quit()
+we.end_program()
 
 ' draw grid lines on the ground
 sub DrawGrid
@@ -197,7 +200,7 @@ sub PaintTitle(x,y,scale,colr)
     loop
     if y2 = 0 then exit do  ' all done
     pause y2
-    if Inkey$ <> "" Then we.run_menu()
+    if we.is_quit_pressed%() Then Exit Do
   loop
 end sub
 
