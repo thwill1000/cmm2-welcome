@@ -17,6 +17,10 @@ for d in ${sub_dirs[@]}; do
   cp -R $d/* $base/$d
 done
 
+rm -rf $base/pirate/src/pirate.dmp
+rm -rf $base/pirate/src/saves
+rm -rf $base/pirate/src/scripts
+
 cd $release_dir
 zip -r ../$release_dir.zip welcome
 cd ..
