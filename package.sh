@@ -11,7 +11,7 @@ cp LICENSE $base
 cp README.md $base
 cp welcome.bas $base
 
-sub_dirs=("chirps" "common" "eliza" "fractals" "games" "graphics" "life" "mandelbrot-explorer" "menu" "pirate" "playing-cards" "speech" "splash" "turtle" "utils")
+sub_dirs=("common" "eliza" "fractals" "games" "graphics" "life" "mandelbrot-explorer" "menu" "other" "pirate" "sound" "splash" "sprites" "turtle" "utils")
 for d in ${sub_dirs[@]}; do
   mkdir -p $base/$d
   cp -R $d/* $base/$d
