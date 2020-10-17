@@ -1,83 +1,81 @@
-cls
+' Matrix Text v1.1
+' Code by "TweakerRay"
+' Messed about with for the CMM2 Welcome Tape by "thwill"
 
-start:
-'randomize some y values for the chars
-  y=int(rnd(1)*800)
- y2=int(rnd(1)*800)
- y3=int(rnd(1)*800)
- y4=int(rnd(1)*800)
- y5=int(rnd(1)*800)
- y6=int(rnd(1)*800)
- y7=int(rnd(1)*800)
- y8=int(rnd(1)*800)
- y9=int(rnd(1)*800)
-y10=int(rnd(1)*800)
-y11=int(rnd(1)*800)
-y12=int(rnd(1)*800)
-y13=int(rnd(1)*800)
-y14=int(rnd(1)*800)
-y15=int(rnd(1)*800)
-y16=int(rnd(1)*800)
-y17=int(rnd(1)*800)
-y18=int(rnd(1)*800)
-y19=int(rnd(1)*800)
-y20=int(rnd(1)*800)
+Option Explicit
+Option Default Integer
+Option Base 0
 
-for x=1 to 560 step 8
-color rgb(0,255,40)
-'randomize chars from 32-255
+#Include "../../common/welcome.inc"
 
-r1=int(rnd(1)*255-32)+32
-r2=int(rnd(1)*255-32)+32
-r3=int(rnd(1)*255-32)+32
-r4=int(rnd(1)*255-32)+32
-r5=int(rnd(1)*255-32)+32
-r6=int(rnd(1)*255-32)+32
-r7=int(rnd(1)*255-32)+32
-r8=int(rnd(1)*255-32)+32
-r9=int(rnd(1)*255-32)+32
+Cls
 
-'write the chars
-if x>230 then color rgb(0,((-1*x)/570*255)+255+20,40)
-if x<230 then color rgb(0,255,0)
-?@(y,x);chr$(r1)
-?@(y2,x*0.5);chr$(r1)
-?@(y3,x*0.7);chr$(r2)
-?@(y4,x*0.6);chr$(r3)
-?@(y5,x*0.9);chr$(r4)
-?@(y6,x);chr$(r5)
-?@(y7,x*0.5);chr$(r6)
-?@(y8,x*0.7);chr$(r7)
-?@(y9,x*0.6);chr$(r8)
-?@(y10,x*0.9);chr$(r9)
+Dim i, y
+Dim r$(10)
+Dim x(19)
 
-'erase the chars
-color rgb (0,0,0)
-?@(y11,x*0.5);"_"
-?@(y12,x*0.7);"-"
-?@(y13,x);"_"
-?@(y14,x*0.9);"_-_"
-?@(y15,x*0.5);"-_-_"
-?@(y16,x*0.7);chr$(r6)
-?@(y17,x*0.6);chr$(r7)
-?@(y18,x*0.9);chr$(r8)
-?@(y19,x);chr$(r9)
-?@(y20,x);chr$(r1)
+Color RGB(White)
+Print @(0, 588) "Press Q to Quit"
 
-?@(y11,x);"---"
-?@(y12,x);"---"
-?@(y13,x);"----"
-?@(y14,x);"---"
-?@(y15,x*0.7);"----"
-?@(y16,x);"---"
-?@(y17,x*0.2);"-_-_-"
-?@(y18,x);"---"
-?@(y19,x*0.8);"-_-_-"
-?@(y20,x);"-_-_-"
+Do
+  ' Randomize some x values for the chars
+  For i = 0 To 19
+    x(i) = Int(Rnd() * 800)
+  Next i
 
-next x
-taste:
-ta$=inkey$
-if ta$=" " then end
-goto start
+  For y=1 To 560 Step 8
+
+    ' Randomize chars from 32-255
+    For i = 0 To 9
+      r$(i) = Chr$(Int(Rnd()*223)+32)
+    Next i
+
+    ' Write characters.
+    If y>230 Then
+      Color RGB(0,((-1*y)/570*255)+255+20,40)
+    Else
+      Color RGB(0,255,0)
+    EndIf
+
+    Print @(x(0),y*1.0) r$(0)
+    Print @(x(1),y*0.5) r$(1)
+    Print @(x(2),y*0.7) r$(2)
+    Print @(x(3),y*0.6) r$(3)
+    Print @(x(4),y*0.9) r$(4)
+    Print @(x(5),y*1.0) r$(5)
+    Print @(x(6),y*0.5) r$(6)
+    Print @(x(7),y*0.7) r$(7)
+    Print @(x(8),y*0.6) r$(8)
+    Print @(x(9),y*0.9) r$(9)
+
+    ' Erase characters.
+    Color RGB(0,0,0)
+    Print @(x(10),y*0.5) " "
+    Print @(x(11),y*0.7) " "
+    Print @(x(12),y*1.0) " "
+    Print @(x(13),y*0.9) "   "
+    Print @(x(14),y*0.5) "    "
+    Print @(x(15),y*0.7) " "
+    Print @(x(16),y*0.6) " "
+    Print @(x(17),y*0.9) " "
+    Print @(x(18),y*1.0) " "
+    Print @(x(19),y*1.0) " "
+    Print @(x(10),y*1.0) "   "
+    Print @(x(11),y*1.0) "   "
+    Print @(x(12),y*1.0) "    "
+    Print @(x(13),y*1.0) "   "
+    Print @(x(14),y*0.7) "    "
+    Print @(x(15),y*1.0) "   "
+    Print @(x(16),y*0.2) "     "
+    Print @(x(17),y*1.0) "   "
+    Print @(x(18),y*0.8) "     "
+    Print @(x(19),y*1.0) "     "
+
+    If we.is_quit_pressed%() Then Exit Do
+
+  Next y
+
+Loop
+
+we.end_program()
 
