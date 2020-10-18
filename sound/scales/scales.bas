@@ -1,54 +1,20 @@
-' Scales
+' Scales v1.1
 ' Code by "TweakerRay"
 ' Messed about with for the CMM2 Welcome Tape by "thwill"
 
-cls
-color rgb(255,255,40)
+#Include "../../common/welcome.inc"
 
-?" "
-?"Scales V1 - A little Harmony Educating Help Programm."
-?" "
-?" "
-?"(by TweakerRay - www.tweakerray.de)"
-?" "
-?" "
-?"This Programm shows you where half steps and full steps of a scale are."
-?"You can listen to the scale and also can listen to their Harmony chords."
-?" "
-?"F1 / F2 Change Starting point of the scale"
-?" "
-?"Space - Play Scale"
-?" "
-?"1-7 Play the corresponding Harmony-Chord of that scale (I - VII)"
-?" "
-?"P - Toggle to Parallel Major or Minorscale (For Example C-Maj to A-min)"
-?" "
-?"R - Randomize 4 chords corresponding to your selected scale"
-?" "
-?"C - Play the randomized chords again..."
-?" "
-?"A - Arpmode on / off - (Just to change the sound if you like oldschool arps ;-) )"
-
-tastestart:
-tb1$=chr$(keydown(1))
-if keydown(1)=0 then goto tastestart
-
-cls
-
-fc=1 : bc=9 ' Color 1-15
-volume=12 ' Volume 1-25
-tnr=28 ' Key set to C2 at start
+volume=12
+tnr=28 ' Key set to C2 as start
 switch=0
-toggle=0 : yz1$="z" : yz2$="y" : layout$="DE" ' - German Layout
-Flag=0
 scn=1 ' 1=Major 2=Minor
 
 dim freq(88),freq1(88),freq2(88),freq3(88),freq4(88),t$(88)
 dim freqmaj(9),Freqmin(9)
 dim scalen$(12),ts$(12,12) ' Scalenames + Tonesteps Roman Numbers
 dim triad(12,7,3)
+dim r(4) ' Random numbers
 
-dim r(4) ' Randomize numbers
 freq(01)=27.5000 : freq(11)=48.9995 : freq(21)=87.3071 : freq(31)=155.563
 freq(02)=29.1353 : freq(12)=51.9130 : freq(22)=92.4986 : freq(32)=164.814
 freq(03)=30.8677 : freq(13)=55.0000 : freq(23)=97.9989 : freq(33)=174.614
@@ -222,58 +188,52 @@ freq2(tnr)=freq(28)
 freq3(tnr)=freq(28)
 freq4(tnr)=freq(28)
 
-font 2
-taste$=""
-cls
+helptext
 printscreen
 
-Taste1:
-if taste$<>"" then printscreen
-taste$=inkey$
+do
+  taste$=inkey$
 
-'Space Play Scale Notes
-if taste$=chr$(32) then checkscale
+  select case taste$
+    case " "
+      checkscale()
+    case chr$(145) ' F1
+      tnr=tnr-1
+    case chr$(146) ' F2
+      tnr=tnr+1
+    case "p", "P"
+      parallele()
+    case "a", "A"
+      switcha = not switcha
+    case "1", "2", "3", "4", "5", "6", "7"
+      trn = val(taste$)
+      arpselect
+    case "c", "C"
+      randomize4(1)
+    case "r", "R"
+      randomize4
+    case "h", "H"
+      helptext(1)
+    case "q", "Q" ' Quit
+      exit do      
+  end select
 
-'F1 - F2 change start point of scale
-if taste$=chr$(145) then tnr=tnr-1 : goto restrictions
-if taste$=chr$(146) then tnr=tnr+1 : goto restrictions
+  ' Apply restrictions.
+  if scn<1 then scn=1
+  if scn>2 then scn=2
+  if scn=1 and tnr<28 then tnr=28
+  if scn=2 and tnr<25 then tnr=25
+  if scn=1 and tnr>39 then tnr=39
+  if scn=2 and tnr>36 then tnr=36
 
-'F3 - F4 Change Scale Mode Major / Minor
-if taste$=chr$(147) then scn=scn-1 : goto restrictions
-if taste$=chr$(148) then scn=scn+1 : goto restrictions
+  if taste$<> "" then printscreen
 
-'Change to Parallel Key Minor to Major and vice-versa
-if taste$="p" then parallele
-if taste$="a" and switcha=0 then switcha=1 : goto Taste1
-if taste$="a" and switcha=1 then switcha=0 : goto taste1
+loop
 
-'Play Triads
-if taste$="1" then trn=1 : arpselect
-if taste$="2" then trn=2 : arpselect
-if taste$="3" then trn=3 : arpselect
-if taste$="4" then trn=4 : arpselect
-if taste$="5" then trn=5 : arpselect
-if taste$="6" then trn=6 : arpselect
-if taste$="7" then trn=7 : arpselect
-if taste$="c" then goto playagain
-if taste$="r" then randomize4
-if taste$="h" then helptext
-
-restrictions:
-if scn=1 and tnr<28 then tnr=28
-if scn=2 and tnr<25 then tnr=25
-if scn=1 and tnr>39 then tnr=39
-if scn=2 and tnr>36 then tnr=36
-
-if scn<1 then scn=1
-if scn>2 then scn=2
-
-if taste$="e" then end
-goto Taste1
+we.end_program()
 
 sub arpselect
-  if switcha=1 then triadplayarpmode
-  if switcha=0 then triadplay
+  if switcha then triadplayarpmode else triadplay
 end sub
 
 ' Scale Select
@@ -284,31 +244,29 @@ end sub
 
 ' Scale Maj
 sub Playscalemaj
-  X=1
   color rgb(255,255,40)
   ?@(1,60)
-  For x=1 to 8
+  for x=1 to 8
     play sound 1,B,Q,Freq(tnr+freqmaj(x)),volume
-    Pause 200
+    pause 200
     ?t$(tnr+freqmaj(x));"  ";ts$(1,x)
     if freqmaj(x+1)-freqmaj(x)=2 then color rgb(255,255,40) : ?x;" Full Step"
     if freqmaj(x+1)-freqmaj(x)=1 then color rgb(255,0,0) : ?x;" Half Step" : color rgb(255,255,40)
-  Next
+  next x
   play stop
 end sub
 
 ' Scale Min
 sub Playscalemin
-  X=1
   color rgb(255,255,40)
   ?@(1,60)
-  For x=1 to 8
+  for x=1 to 8
     play sound 1,B,Q,Freq(tnr+freqmin(x)),volume
-    Pause 200
+    pause 200
     ?t$(tnr+freqmin(x));"  ";ts$(2,x)
     if freqmin(x+1)-freqmin(x)=2 then color rgb(255,255,40) : ?x;" Full Step"
     if freqmin(x+1)-freqmin(x)=1 then color rgb(255,0,0) : ?x;" Half Step" : color rgb(255,255,40)
-  Next
+  next x
   play stop
 end sub
 
@@ -321,7 +279,6 @@ sub printscreen
 end sub
 
 sub triadplayarpmode
-  x=1
   for x=1 to 10
     play sound 1,B,Q,Freq(tnr+triad(scn,trn,1)),volume
     pause 20
@@ -329,7 +286,7 @@ sub triadplayarpmode
     pause 20
     play sound 1,B,Q,Freq(tnr+triad(scn,trn,3)),volume
     pause 20
-  next
+  next x
   play stop
 end sub
 
@@ -343,69 +300,75 @@ end sub
 
 ' Change to parallel Mode Major or minor scale
 sub parallele
-  if tnr<28 and switch=0 then goto taste1
-  If switch=0 then scn=2 : switch=1 : tnr=tnr-3 : goto switched
-  if switch=1 then scn=1 : switch=0 : tnr=tnr+3 : goto switched
-switched:
+  if switch then
+    scn=1
+    switch=0
+    tnr=tnr+3
+  elseif tnr>=28 then
+    scn=2
+    switch=1
+    tnr=tnr-3
+  endif
 end sub
 
-sub randomize4
-  r(1)=int(rnd(1)*7)+1
-  r(2)=int(rnd(1)*7)+1
-  r(3)=int(rnd(1)*7)+1
-  r(4)=int(rnd(1)*7)+1
-  x=1
+sub randomize4(replay)
 
-playagain:
-  if r(1)=0 then randomize4
-  if switcha=0 goto noarp
-  for x=1 to 4
-    ?@(1,400+x*20);ts$(scn,r(x));r(x)
-    for y=1 to 10
+  if not replay then
+    do
+      r(1)=int(rnd(1)*7)+1
+      r(2)=int(rnd(1)*7)+1
+      r(3)=int(rnd(1)*7)+1
+      r(4)=int(rnd(1)*7)+1
+    loop until r(1) <> 0
+  endif
+
+  if switcha then
+
+    for x=1 to 4
+      ?@(1,400+x*20);ts$(scn,r(x));r(x)
+      for y=1 to 10
+        play sound 1,B,Q,Freq(tnr+triad(scn,r(x),1)),volume
+        pause 20
+        play sound 1,B,Q,Freq(tnr+triad(scn,r(x),2)),volume
+        pause 20
+        play sound 1,B,Q,Freq(tnr+triad(scn,r(x),3)),volume
+        pause 20
+        play stop
+      next y
+    next x
+
+  else
+
+    for x=1 to 4
+      ?@(1,400+x*20);ts$(scn,r(x));r(x)
       play sound 1,B,Q,Freq(tnr+triad(scn,r(x),1)),volume
-      pause 20
-      play sound 1,B,Q,Freq(tnr+triad(scn,r(x),2)),volume
-      pause 20
-      play sound 1,B,Q,Freq(tnr+triad(scn,r(x),3)),volume
-      pause 20
+      play sound 2,B,Q,Freq(tnr+triad(scn,r(x),2)),volume
+      play sound 3,B,Q,Freq(tnr+triad(scn,r(x),3)),volume
+      pause 600
       play stop
-    next y
-  next x
-  goto taste2
+    next x
 
-noarp:
-  for x=1 to 4
-    ?@(1,400+x*20);ts$(scn,r(x));r(x)
-    play sound 1,B,Q,Freq(tnr+triad(scn,r(x),1)),volume
-    play sound 2,B,Q,Freq(tnr+triad(scn,r(x),2)),volume
-    play sound 3,B,Q,Freq(tnr+triad(scn,r(x),3)),volume
-    Pause 600
-    play stop
-  next x
-  goto taste2
+  endif
 
-taste2:
-  taste2$=inkey$
-  if taste2$="" then goto taste2
-  if taste2$="c" then goto playagain
-  if taste2$="r" then randomize4
-  if taste2$="a" and switcha=0 then switcha=1 : goto taste2
-  if taste2$="a" and switcha=1 then switcha=0 : goto taste2
-  goto taste1
 end sub
 
-sub helptext
+sub helptext(banner)
+  color rgb(255,255,40)
   cls
   font 1
-  ?"Helpscreen:"
-  ?" "
-  ?"Scales V1 - A little Harmony Educating Help Programm."
+
+  ? " "
+  if banner then
+    ?"Helpscreen:"
+    ?" "
+  endif
+  ?"Scales V1 - A little Harmony Educating Help Program."
   ?" "
   ?" "
   ?"(by TweakerRay - www.tweakerray.de)"
   ?" "
   ?" "
-  ?"This Programm shows you where half steps and full steps of a scale are."
+  ?"This Program shows you where half steps and full steps of a scale are."
   ?"You can listen to the scale and also can listen to their Harmony chords."
   ?" "
   ?"F1 / F2 Change Starting point of the scale"
@@ -421,10 +384,15 @@ sub helptext
   ?"C - Play the randomized chords again..."
   ?" "
   ?"A - Arpmode on / off - (Just to change the sound if you like oldschool arps ;-) )"
+  ?
+  ?"Q - Quit"
+  ?
+  ?
+  ?"Press any key to continue."
 
-  do
-    ta$=inkey$
-  loop until ta$<>""
-  cls : font 2
-  checkscale
+  do while inkey$ <> "" : loop
+  do while inkey$ = "" : loop
+
+  cls
+  font 2
 end sub
