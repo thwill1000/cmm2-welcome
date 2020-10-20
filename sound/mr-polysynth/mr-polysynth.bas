@@ -49,20 +49,18 @@ do while inkey$="" : loop
 
 cls
 
-dim i,j
-dim k1,k2,k3,k4,keys
-dim x
-dim layout$ = mm.info$(option usbkeyboard)
-dim volume=12 ' Volume 1-25
-dim fullkey1,fullkey2,fullkey3,fullkey4
-dim okt1,okt2,okt3,okt4
-dim s1,s2,s3,s4 ' 1=square, 2=sine, 3=noise
-dim switch
-dim tune1,tune2,tune3,tune4
-
-dim tnr(4) = (28,28,28,28) ' For if okt would be pressed before a key we set the key to C2
-
 dim freq(88)
+dim i
+dim k(4)
+dim keys
+dim layout$ = mm.info$(option usbkeyboard)
+dim notes
+dim okt(4)
+dim s(4) ' 1=square, 2=sine, 3=noise
+dim tnr(4) = (28,28,28,28) ' For if okt would be pressed before a key we set the key to C2
+dim tune(4)
+dim volume=12 ' Volume 1-25
+
 freq(01)=27.5000 : freq(11)=48.9995 : freq(21)=87.3071 : freq(31)=155.563
 freq(02)=29.1353 : freq(12)=51.9130 : freq(22)=92.4986 : freq(32)=164.814
 freq(03)=30.8677 : freq(13)=55.0000 : freq(23)=97.9989 : freq(33)=174.614
@@ -114,165 +112,144 @@ ta$(43)="0"
 ta$(44)="p"
 
 do
-  k1=keydown(1)
-  k2=keydown(2)
-  k3=keydown(3)
-  k4=keydown(4)
   keys=keydown(0)
+  notes=keys
+  for i = 1 To 4 : k(i) = keydown(i) : next i
+
+  if keys=0 then play stop
+
+  for i=1 to keys
+    handle_keypress(i)
+  next i
+
+  apply_restrictions()
+  update_display()
+  play_notes()
+loop
+
+sub handle_keypress(i)
+  local j, kk$
+
+  kk$=chr$(k(i))
+
+  if kk$=chr$(27) then we.end_program()
+
+  ' Check for keys corresponding to musical notes
+  for j=28 to 44
+    if kk$=ta$(j) then tnr(i)=j : Exit Sub
+  next j
+
+  select case kk$
+
+    ' Channel Oktave up and down
+    case chr$(145) : okt(1)=okt(1)-12 ' F1
+    case chr$(146) : okt(1)=okt(1)+12 ' F2
+    case chr$(147) : okt(2)=okt(2)-12 ' F3
+    case chr$(148) : okt(2)=okt(2)+12 ' F4
+    case chr$(149) : okt(3)=okt(3)-12 ' F5
+    case chr$(150) : okt(3)=okt(3)+12 ' F6
+    case chr$(151) : okt(4)=okt(4)-12 ' F7
+    case chr$(152) : okt(4)=okt(4)+12 ' F8
+
+    ' All four Channels Oktave up and down
+    case chr$(153) : for j=1 to 4 : okt(j)=okt(j)-12 : next j ' F9
+    case chr$(154) : for j=1 to 4 : okt(j)=okt(j)+12 : next j ' F10
+
+    ' Reset Tuning + Reset Oktaves
+    case chr$(155) : for j=1 to 4 : okt(j)=0 : next j ' F11
+    case chr$(156) : for j=1 to 4 : tune(j)=0 : next j ' F12
+
+    ' Sound changes 1-4
+    case "a"      : s(1)=s(1)+1
+    ' If "y" or "z" corresponds to a musical note key then this sub will already have exited.
+    case "y", "z" : s(1)=s(1)-1
+    case "s"      : s(2)=s(2)+1
+    case "x"      : s(2)=s(2)-1
+    case "d"      : s(3)=s(3)+1
+    case "c"      : s(3)=s(3)-1
+    case "f"      : s(4)=s(4)+1
+    case "v"      : s(4)=s(4)-1
+
+    ' Detune channels 1-4
+    case "g" : tune(1)=tune(1)+0.1
+    case "b" : tune(1)=tune(1)-0.1
+    case "h" : tune(2)=tune(2)+0.1
+    case "n" : tune(2)=tune(2)-0.1
+    case "j" : tune(3)=tune(3)+0.1
+    case "m" : tune(3)=tune(3)-0.1
+    case "k" : tune(4)=tune(4)+0.1
+    case "," : tune(4)=tune(4)-0.1
+
+    case else : exit sub
+
+  end select
+
+  notes=notes-1
+  pause 100
+end sub
+
+sub apply_restrictions()
+  local i
+
+  ' Restrict ocatave values.
+  for i = 1 to 4
+    if okt(i) > 48 then okt(i) = 48
+    if okt(i) < -24 then okt(i) = -24
+  next i
+
+  ' Restrict sound values.
+  ' Only sounds 1 & 2 are useful, 3 and 4 are noise.
+  for i = 1 to 4
+    if s(i) <= 1 then s(i)=1 else s(i)=2
+  next i
+
+  ' Restrict frequency.
+  for i = 1 to 4
+    if okt(i)=48 and tnr(i) > 40 then tnr(i)=40
+  next i
+end sub
+
+sub update_display()
+  local i
 
   font 2
 
-Screenstart:
+  color rgb(rnd()*255,rnd()*255,rnd()*255)
+  print @(12,1) "* * * * * * * * * Mr. Polysynth by TweakerRay * * * * * * * * *"
+  color rgb(0,255,0)
 
-  ' For Checking the Keys coming in...
-  '  Print @(10,40)"Taste:";k1;"   ";k2;"   ";k3;"   ";k4;"   ";keys;"  "
-  '  Print @(10,80)"Buffer:";buffer$;"  "
+  print @(10,100) "Keydown   :" format$(keys, "%4g") format$(notes, "%4g")
 
-  Print @(10,100) "Keydown:";keydown(0);" "
-  Print @(10,120) "Frequency:"
-  print @(130,120) "";freq(tnr(1))
-  print @(250,120) "";freq(tnr(2))
-  Print @(370,120) "";freq(tnr(3))
-  Print @(490,120) "";freq(tnr(4))
+  print @(10,120) "Frequency :";
+  for i = 1 To 4 : print format$(freq(tnr(i)), "%10g"); : next i : print
 
-  print @(10,240) "Sound:";s1;s2;s3;s4;"   "
-  print @(10,160) "Tuning:";tune1;" ";tune2;" ";tune3;" ";tune4;"               "
-  print @(10,180) "Oktave:";okt1;okt2;okt3;okt4;"              "
-  print @(10,200) "keynr:";fullkey1;fullkey2;fullkey3;fullkey4;"         "
-  print @(10,220) "Layout:";layout$
+  print @(10,160) "Tuning    :";
+  for i = 1 to 4 : print format$(tune(i), "%4g"); : next i : print
+
+  print @(10,180) "Oktave    :";
+  for i = 1 to 4 : print format$(okt(i), "%4g"); : next i : print
+
+  print @(10,200) "Key num   :";
+  for i = 1 to 4 : print format$(tnr(i)+okt(i), "%4g"); : next i : print
+
+  print @(10,220) "Sound     :";
+  for i = 1 To 4 : print format$(s(i), "%4g"); : next i : print
+
+  print @(10,240) "Layout    :  ";layout$
 
   font 1
   print @(10,320) "More music at http://tweakerray.bandcamp,com"
   print @(10,340) "And follow at http://www.youtube.com/tweakerray"
-
-  font 2
-
-  do
-    color rgb(rnd()*255,rnd()*255,rnd()*255)
-    ?@(12,1) "* * * * * * * * * Mr. Polysynth by TweakerRay * * * * * * * * *" :
-    color rgb(0,255,0)
-    if keydown(0) > 0 then exit do
-    play stop
-  loop
-
-  for i=1 to keydown(0)
-
-    handle_keypress(i)
-
-    ' Restrict ocatave values.
-    if okt1>48 then okt1=48
-    if okt2>48 then okt2=48
-    if okt3>48 then okt3=48
-    if okt4>48 then okt4=48
-    if okt1<-24 then okt1=-24
-    if okt2<-24 then okt2=-24
-    if okt3<-24 then okt3=-24
-    if okt4<-24 then okt4=-24
-
-    ' Restrict sound values.
-    ' Only sounds 1 & 2 are useful, 3 and 4 are noise.
-    if s1<=1 then s1=1 else s1=2
-    if s2<=1 then s2=1 else s2=2
-    if s3<=1 then s3=1 else s3=2
-    if s4<=1 then s4=1 else s4=2
-
-    ' Checking restrictions of frequency (Not below 20 Hz or over 20 Khz)
-
-    ' Check if keyvalue too high or low
-    fullkey1=tnr(1)+okt1
-    fullkey2=tnr(2)+okt2
-    fullkey3=tnr(3)+okt3
-    fullkey4=tnr(4)+okt4
-
-    if okt1=48 and tnr(1)>40 then tnr(1)=40
-    if okt2=48 and tnr(2)>40 then tnr(2)=40
-    if okt3=48 and tnr(3)>40 then tnr(3)=40
-    if okt4=48 and tnr(4)>40 then tnr(4)=40
-
-    ' Check if the same key is pressed, which means the sound is already playing
-    ' if buffer$=tpress$ then samesound=1 else samesound=0
-    ' buffer$=tpress$
-
-  next i
-
-  if switch=0 goto Screenstart
-
-  play_notes()
-
-loop
-
-sub handle_keypress(i)
-  Local k$
-
-  k$=chr$(keydown(i))
-
-  if k$=chr$(27) then we.end_program()
-
-  ' Check for keys corresponding to musical notes
-  switch = 0
-  for j=28 to 44
-    if k$=ta$(j) then tnr(i)=j : switch = 1 : Exit Sub
-  next j
-
-  Select Case k$
-
-    ' Channel Oktave up and down
-    Case chr$(145) : okt1=okt1-12 ' F1
-    Case chr$(146) : okt1=okt1+12 ' F2
-    Case chr$(147) : okt2=okt2-12 ' F3
-    Case chr$(148) : okt2=okt2+12 ' F4
-    Case chr$(149) : okt3=okt3-12 ' F5
-    Case chr$(150) : okt3=okt3+12 ' F6
-    Case chr$(151) : okt4=okt4-12 ' F7
-    Case chr$(152) : okt4=okt4+12 ' F8
-
-    ' All four Channels Oktave up and down
-    Case chr$(153) : okt1=okt1-12 : okt2=okt2-12 : okt3=okt3-12 : okt4=okt4-12 ' F9
-    Case chr$(154) : okt1=okt1+12 : okt2=okt2+12 : okt3=okt3+12 : okt4=okt4+12 ' F10
-
-    ' Reset Tuning + Reset Oktaves
-    Case chr$(155) : okt1=0 : okt2=0 : okt3=0 : okt4=0 ' F11
-    Case chr$(156) : tune1=0 : tune2=0 : tune3=0 : tune4=0 ' F12
-
-    ' Sound changes 1-4
-    Case "a"      : s1=s1+1
-     ' If "y" or "z" corresponds to a musical note key then this sub will already have exited.
-    Case "y", "z" : s1=s1-1
-    Case "s"      : s2=s2+1
-    Case "x"      : s2=s2-1
-    Case "d"      : s3=s3+1
-    Case "c"      : s3=s3-1
-    Case "f"      : s4=s4+1
-    Case "v"      : s4=s4-1
-
-    ' Detune channels 1-4
-    Case "g" : tune1=tune1+0.1
-    Case "b" : tune1=tune1-0.1
-    Case "h" : tune2=tune2+0.1
-    Case "n" : tune2=tune2-0.1
-    Case "j" : tune3=tune3+0.1
-    Case "m" : tune3=tune3-0.1
-    Case "k" : tune4=tune4+0.1
-    Case "," : tune4=tune4-0.1
-
-    Case Else : Exit Sub
-
-  End Select
-
-  keys=keys-1
-  pause 50
 end sub
 
 sub play_notes()
-  if s1=1 and keys>0 then play sound 1,B,Q,freq(tnr(1)+okt1)+tune1,volume
-  if s1=2 and keys>0 then play sound 1,B,S,freq(tnr(1)+okt1)+tune1,volume
+  local i
 
-  if s2=1 and keys>1 then play sound 2,B,Q,freq(tnr(2)+okt2)+tune2,volume
-  if s2=2 and keys>1 then play sound 2,B,S,freq(tnr(2)+okt2)+tune2,volume
-
-  if s3=1 and keys>2 then play sound 3,B,Q,freq(tnr(3)+okt3)+tune3,volume
-  if s3=2 and keys>2 then play sound 3,B,S,freq(tnr(3)+okt3)+tune3,volume
-
-  if s4=1 and keys>3 then play sound 4,B,Q,freq(tnr(4)+okt4)+tune4,volume
-  if s4=2 and keys>3 then play sound 4,B,S,freq(tnr(4)+okt4)+tune4,volume
+  for i=1 to notes
+    if s(i)=1 then
+      play sound 1,B,Q,freq(tnr(i)+okt(i))+tune(i),volume
+    elseif s(i)=2 then
+      play sound 1,B,S,freq(tnr(i)+okt(i))+tune(i),volume
+    endif
+  next i
 end sub
