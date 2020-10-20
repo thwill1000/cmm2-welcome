@@ -171,35 +171,9 @@ Screenstart:
 
   for i=1 to keydown(0)
 
-    tpress$=chr$(keydown(i))
+    handle_keypress(i)
 
-    if tpress$=chr$(27) then we.end_program()
-
-    ' Check for keys corresponding to musical notes
-    switch = 0
-    for j=28 to 44
-      if tpress$=ta$(j) then tnr(i)=j : switch = 1
-    next j
-
-    ' Channel Oktave up and down
-    if tpress$=chr$(145) then okt1=okt1-12 : keys=keys-1 : pause 50
-    if tpress$=chr$(146) then okt1=okt1+12 : keys=keys-1 : pause 50
-    if tpress$=chr$(147) then okt2=okt2-12 : keys=keys-1 : pause 50
-    if tpress$=chr$(148) then okt2=okt2+12 : keys=keys-1 : pause 50
-    if tpress$=chr$(149) then okt3=okt3-12 : keys=keys-1 : pause 50
-    if tpress$=chr$(150) then okt3=okt3+12 : keys=keys-1 : pause 50
-    if tpress$=chr$(151) then okt4=okt4-12 : keys=keys-1 : pause 50
-    if tpress$=chr$(152) then okt4=okt4+12 : keys=keys-1 : pause 50
-
-    ' All four Channels Oktave up and down
-    if tpress$=chr$(154) then okt1=okt1+12 : okt2=okt2+12 : okt3=okt3+12 : okt4=okt4+12 : keys=keys-1 : pause 50
-    if tpress$=chr$(153) then okt1=okt1-12 : okt2=okt2-12 : okt3=okt3-12 : okt4=okt4-12 : keys=keys-1 : pause 50
-
-    ' Reset Tuning + Reset Oktaves
-    if tpress$=chr$(155) then okt1=0 : okt2=0 : okt3=0 : okt4=0 : keys=keys-1 : pause 50
-    if tpress$=chr$(156) then tune1=0 : tune2=0 : tune3=0 : tune4=0 : keys=keys-1 : pause 50
-
-    ' Restrictioms (Check if Oktave Values get too high or low)
+    ' Restrict ocatave values.
     if okt1>48 then okt1=48
     if okt2>48 then okt2=48
     if okt3>48 then okt3=48
@@ -209,30 +183,8 @@ Screenstart:
     if okt3<-24 then okt3=-24
     if okt4<-24 then okt4=-24
 
-    if tpress$="a" then s1=s1+1 : keys=keys-1 : pause 50 ' Soundchange on sound 1
-    if layout$="DE" then
-      if tpress$="y" then s1=s1-1 : keys=keys-1 : pause 50 ' Soundchange on sound 1
-    else
-      if tpress$="z" then s1=s1-1 : keys=keys-2 : pause 50 ' Soundchange on sound 1
-    endif
-    if tpress$="s" then s2=s2+1 : keys=keys-1 : pause 50 ' Soundchange on sound 2
-    if tpress$="x" then s2=s2-1 : keys=keys-1 : pause 50 ' Soundchange on sound 2
-    if tpress$="d" then s3=s3+1 : keys=keys-1 : pause 50 ' Soundchange on sound 3
-    if tpress$="c" then s3=s3-1 : keys=keys-1 : pause 50 ' Soundchange on sound 3
-    if tpress$="f" then s4=s4+1 : keys=keys-1 : pause 50 ' Soundchange on sound 4
-    if tpress$="v" then s4=s4-1 : keys=keys-1 : pause 50 ' Soundchange on sound 4
-    if tpress$="g" then tune1=tune1+0.1 : keys=keys-1 : Pause 50
-    if tpress$="b" then tune1=tune1-0.1 : keys=keys-1 : Pause 50
-    if tpress$="h" then tune2=tune2+0.1 : keys=keys-1 : Pause 50
-    if tpress$="n" then tune2=tune2-0.1 : keys=keys-1 : Pause 50
-    if tpress$="j" then tune3=tune3+0.1 : keys=keys-1 : Pause 50
-    if tpress$="m" then tune3=tune3-0.1 : keys=keys-1 : Pause 50
-    if tpress$="k" then tune4=tune4+0.1 : keys=keys-1 : Pause 50
-    if tpress$="," then tune4=tune4-0.1 : keys=keys-1 : Pause 50
-
-    ' Check values to high or low for soundchange
-    ' you could go bigger as 2 to set it to 4 but 1 and 2 are only useful.
-    ' 3 and 4 would be noise
+    ' Restrict sound values.
+    ' Only sounds 1 & 2 are useful, 3 and 4 are noise.
     if s1<=1 then s1=1 else s1=2
     if s2<=1 then s2=1 else s2=2
     if s3<=1 then s3=1 else s3=2
@@ -262,6 +214,68 @@ Screenstart:
   play_notes()
 
 loop
+
+sub handle_keypress(i)
+  Local k$
+
+  k$=chr$(keydown(i))
+
+  if k$=chr$(27) then we.end_program()
+
+  ' Check for keys corresponding to musical notes
+  switch = 0
+  for j=28 to 44
+    if k$=ta$(j) then tnr(i)=j : switch = 1 : Exit Sub
+  next j
+
+  Select Case k$
+
+    ' Channel Oktave up and down
+    Case chr$(145) : okt1=okt1-12 ' F1
+    Case chr$(146) : okt1=okt1+12 ' F2
+    Case chr$(147) : okt2=okt2-12 ' F3
+    Case chr$(148) : okt2=okt2+12 ' F4
+    Case chr$(149) : okt3=okt3-12 ' F5
+    Case chr$(150) : okt3=okt3+12 ' F6
+    Case chr$(151) : okt4=okt4-12 ' F7
+    Case chr$(152) : okt4=okt4+12 ' F8
+
+    ' All four Channels Oktave up and down
+    Case chr$(153) : okt1=okt1-12 : okt2=okt2-12 : okt3=okt3-12 : okt4=okt4-12 ' F9
+    Case chr$(154) : okt1=okt1+12 : okt2=okt2+12 : okt3=okt3+12 : okt4=okt4+12 ' F10
+
+    ' Reset Tuning + Reset Oktaves
+    Case chr$(155) : okt1=0 : okt2=0 : okt3=0 : okt4=0 ' F11
+    Case chr$(156) : tune1=0 : tune2=0 : tune3=0 : tune4=0 ' F12
+
+    ' Sound changes 1-4
+    Case "a"      : s1=s1+1
+     ' If "y" or "z" corresponds to a musical note key then this sub will already have exited.
+    Case "y", "z" : s1=s1-1
+    Case "s"      : s2=s2+1
+    Case "x"      : s2=s2-1
+    Case "d"      : s3=s3+1
+    Case "c"      : s3=s3-1
+    Case "f"      : s4=s4+1
+    Case "v"      : s4=s4-1
+
+    ' Detune channels 1-4
+    Case "g" : tune1=tune1+0.1
+    Case "b" : tune1=tune1-0.1
+    Case "h" : tune2=tune2+0.1
+    Case "n" : tune2=tune2-0.1
+    Case "j" : tune3=tune3+0.1
+    Case "m" : tune3=tune3-0.1
+    Case "k" : tune4=tune4+0.1
+    Case "," : tune4=tune4-0.1
+
+    Case Else : Exit Sub
+
+  End Select
+
+  keys=keys-1
+  pause 50
+end sub
 
 sub play_notes()
   if s1=1 and keys>0 then play sound 1,B,Q,freq1(tnr(1)+okt1)+tune1,volume
