@@ -3,6 +3,7 @@
 ' Messed about with for the CMM2 Welcome Tape by "thwill"
 
 Option Explicit On
+Option Base 1
 
 #Include "../../common/welcome.inc"
 
@@ -57,16 +58,11 @@ dim fullkey1,fullkey2,fullkey3,fullkey4
 dim okt1,okt2,okt3,okt4
 dim s1,s2,s3,s4 ' 1=square, 2=sine, 3=noise
 dim switch
-dim tpress$
 dim tune1,tune2,tune3,tune4
 
-dim tnr(10)
-tnr(1)=28 ' For if okt would be pressed before a key we set the key to C2
-tnr(2)=28 ' For if okt would be pressed before a key we set the key to C2
-tnr(3)=28 ' For if okt would be pressed before a key we set the key to C2
-tnr(4)=28 ' For if okt would be pressed before a key we set the key to C2
+dim tnr(4) = (28,28,28,28) ' For if okt would be pressed before a key we set the key to C2
 
-dim freq(88),freq1(88),freq2(88),freq3(88),freq4(88),ta$(88)
+dim freq(88)
 freq(01)=27.5000 : freq(11)=48.9995 : freq(21)=87.3071 : freq(31)=155.563
 freq(02)=29.1353 : freq(12)=51.9130 : freq(22)=92.4986 : freq(32)=164.814
 freq(03)=30.8677 : freq(13)=55.0000 : freq(23)=97.9989 : freq(33)=174.614
@@ -98,11 +94,7 @@ freq(86)=3729.31
 freq(87)=3951.07
 freq(88)=4186.01
 
-' Fill frequency table for all 4 channels
-for x=1 to 88
-  freq1(x)=freq(x) : freq2(x)=freq(x) : freq3(x)=freq(x) : freq4(x)=freq(x)
-next
-
+dim ta$(88)
 ta$(28)="q"
 ta$(29)="2"
 ta$(30)="w"
@@ -120,12 +112,6 @@ ta$(41)="9"
 ta$(42)="o"
 ta$(43)="0"
 ta$(44)="p"
-
-' Set sounds to same on all 4 channels
-freq1(tnr(1))=freq(28)
-freq2(tnr(2))=freq(28)
-freq3(tnr(3))=freq(28)
-freq4(tnr(4))=freq(28)
 
 do
   k1=keydown(1)
@@ -278,23 +264,15 @@ sub handle_keypress(i)
 end sub
 
 sub play_notes()
-  if s1=1 and keys>0 then play sound 1,B,Q,freq1(tnr(1)+okt1)+tune1,volume
-  if s1=2 and keys>0 then play sound 1,B,S,freq1(tnr(1)+okt1)+tune1,volume
-  ' if s1=3 and keys>0 then play sound 1,B,N,freq1(tnr(1)+okt1)+tune1,volume
-  ' if s1=4 and keys>0 then play sound 1,B,P,freq1(tnr(1)+okt1)+tune1,volume
+  if s1=1 and keys>0 then play sound 1,B,Q,freq(tnr(1)+okt1)+tune1,volume
+  if s1=2 and keys>0 then play sound 1,B,S,freq(tnr(1)+okt1)+tune1,volume
 
-  if s2=1 and keys>1 then play sound 2,B,Q,freq2(tnr(2)+okt2)+tune2,volume
-  if s2=2 and keys>1 then play sound 2,B,S,freq2(tnr(2)+okt2)+tune2,volume
-  ' if s2=3 and keys>1 then play sound 2,B,N,freq2(tnr(2)+okt2)+tune2,volume
-  ' if s2=4 and keys>1 then play sound 2,B,P,freq2(tnr(2)+okt2)+tune2,volume
+  if s2=1 and keys>1 then play sound 2,B,Q,freq(tnr(2)+okt2)+tune2,volume
+  if s2=2 and keys>1 then play sound 2,B,S,freq(tnr(2)+okt2)+tune2,volume
 
-  if s3=1 and keys>2 then play sound 3,B,Q,freq3(tnr(3)+okt3)+tune3,volume
-  if s3=2 and keys>2 then play sound 3,B,S,freq3(tnr(3)+okt3)+tune3,volume
-  ' if s3=3 and keys>2 then play sound 3,B,N,freq3(tnr(3)+okt3)+tune3,volume
-  ' if s3=4 and keys>2 then play sound 4,B,P,freq3(tnr(3)+okt3)+tune3,volume
+  if s3=1 and keys>2 then play sound 3,B,Q,freq(tnr(3)+okt3)+tune3,volume
+  if s3=2 and keys>2 then play sound 3,B,S,freq(tnr(3)+okt3)+tune3,volume
 
-  if s4=1 and keys>3 then play sound 4,B,Q,freq4(tnr(4)+okt4)+tune4,volume
-  if s4=2 and keys>3 then play sound 4,B,S,freq4(tnr(4)+okt4)+tune4,volume
-  ' if s4=3 and keys>3 then play sound 4,B,N,freq4(tnr(4)+okt4)+tune4,volume
-  ' if s4=4 and keys>3 then play sound 4,B,P,freq4(tnr(4)+okt4)+tune4,volume
+  if s4=1 and keys>3 then play sound 4,B,Q,freq(tnr(4)+okt4)+tune4,volume
+  if s4=2 and keys>3 then play sound 4,B,S,freq(tnr(4)+okt4)+tune4,volume
 end sub
