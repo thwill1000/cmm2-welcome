@@ -38,7 +38,7 @@ For i% = 1 To 19
   If we.is_quit_key%(k$) Then Exit For
 Next i%
 
-we.wait_for_quit()
+If Not we.is_quit_key%(k$) Then we.wait_for_quit()
 we.end_program()
 
 sub DrawDragon(ord, sig)
