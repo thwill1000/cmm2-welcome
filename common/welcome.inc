@@ -23,10 +23,10 @@ Sub we.check_firmware_version(v$)
 End Sub
 
 Function we.sanitise_firmware_version$(v$)
-  Local i, s$
-  For i = 1 To Len(v$)
-    If InStr("0123456789", Mid$(v$, i, 1)) > 0 Then s$ = s$ + Mid$(v$, i, 1)
-  Next i
+  Local i%, s$
+  For i% = 1 To Len(v$)
+    If InStr("0123456789", Mid$(v$, i%, 1)) > 0 Then s$ = s$ + Mid$(v$, i%, 1)
+  Next i%
   Do While Len(s$) < 5 : s$ = s$ + "0" : Loop
   If Len(s$) > 5 Then Error "Unexpected firmware version format: " + v$
   we.sanitise_firmware_version$ = s$
