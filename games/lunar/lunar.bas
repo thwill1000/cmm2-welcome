@@ -1,7 +1,11 @@
-  ' LunarLander2v73.BAS
+  ' LunarLander2v74.BAS
   ' Lunar Lander For Nostalganauts
   ' Written for the Colour Maximite 2 by Vegipete, August 2020
   '
+  ' v74 - Vegipete:
+  '     - further fixes for image rotation with newest firmware; now
+  '       uses a fixed sprite-sheet instead of generating the rotated
+  '       images "on the fly".
   ' v73 - Vegipete:
   '     - added workaround for difference in direction of IMAGE ROTATE
   '       between firmware 5.05.05 and 5.05.06.
@@ -30,16 +34,16 @@
   ' v1  - Vegipete:
   '     - initial version
 
-  'The program needs:
-  'Font #8 = CHR$ 128-131, ^ < \/ > Arrows (Defined below)
-  'Font #10 = CHR$ 32-43, Blank + 10 chunks of shrapnel (Defined below)
-  'The following files should be on the SD card in the same folder:
-  ' "LanderPict.png" - the lander graphic
-  ' "EagleLanded.wav"  'The Eagle has landed' - louder than previous MOD version
-  ' "Success.wav" - not used in this version but you can try it!
-  ' "Crash.wav"
-  ' "Crumple.wav"
-  ' "LunarLander2v7.bas"  this file
+  ' The program needs:
+  '   Font #8 = CHR$ 128-131, ^ < \/ > Arrows (Defined below)
+  '   Font #10 = CHR$ 32-43, Blank + 10 chunks of shrapnel (Defined below)
+  ' The following files should be on the SD card in the same folder:
+  '   "LanderPict.png"  - the lander sprites
+  '   "EagleLanded.wav" - 'The Eagle has landed' sample
+  '   "Success.wav"     - not used in this version but you can try it!
+  '   "Crash.wav"
+  '   "Crumple.wav"
+  '   "lunar.bas"       - this file
 
 #Include "../../common/welcome.inc"
 
@@ -97,6 +101,19 @@
   PLAY VOLUME Vol_Start, Vol_Start
 
   '***********************************
+  ' Sprites are no longer generated on the fly due to differences between
+  ' different firmware versions.
+  ' The behaviour of IMAGE ROTATE changed starting with version 5.05.05
+  ' The sense of roation changed for mathematical consistency, requiring
+  ' a special test to determine firmware version. More significantly, the
+  ' rotation algorithm changed too, resulting in rotated images that had
+  ' become gray.
+  '
+  ' To solve these problems for once and all, I reflashed my CMM2 with
+  ' firmware version 5.05.04, regenerated the rotated lander images and
+  ' created a sprite sheet with all images pre-generated.
+  '
+  ' The following is description of how it used to work:
   ' Build the lander sprites.
   ' The sprite file only contains images of the lander straight up
   ' with and without rocket burn. For nice rotation, 18 more images
@@ -108,26 +125,7 @@
   ' Finally, the 38 total sprites are then yanked from the page.
   PAGE WRITE 2
   CLS
-
-  ' The CMM2 5.05.06 firmware fixes a "bug" present in the direction of rotation
-  ' produced by the IMAGE ROTATE command of the 5.05.05 firmware. This code is
-  ' intended to identify and use the correct rotation.
-  PIXEL 0,1  ' draw one white pixel, left edge middle of a 3x3 region
-  IMAGE ROTATE 0,0,3,3,0,0,90
-  IF PEEK(byte mm.info(page address 2) + 1) = 255 THEN ' test for pixel top center
-    rotfactor = -1
-  ELSE
-    rotfactor = 1
-  ENDIF
-  CLS
-
   LOAD PNG WE.PROG_DIR$ + "/LanderPict.png"
-
-  ' generate the rotations
-  FOR i = 1 TO 18
-    IMAGE ROTATE 0, 0,40,40,i*40, 0,i*5*rotfactor
-    IMAGE ROTATE 0,40,40,40,i*40,40,i*5*rotfactor
-  NEXT i
 
   ' populate the sprites
   FOR i = 1 TO 19

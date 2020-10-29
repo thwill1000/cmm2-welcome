@@ -24,6 +24,10 @@ Release 0.5:
    - by "TweakerRay".
  - Added "Scrolling Text" demo
    - by "vegipete" and the "Sasquatch".
+ - Updated "Lunar Lander" to v7.4
+   - by "vegipete"
+   - uses fixed sprite-sheet to try and fix strange rotation and sprite colour
+     bug show by firmware 5.05.06RC7.
  - Updated splash-screen and menu-system
    - code by "thwill" and "vegipete", music by "Tweaker Ray".
    - simpler more "professional" splash screen.
