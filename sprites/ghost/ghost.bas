@@ -13,13 +13,13 @@ for i=0 to 2 : page write i : cls : next i
 
 ' Load a sprite which is the image of the ghost from a png file.
 ' The fact it is a png is important as png files encode transparency as well as solid colours.
-sprite loadpng 1, WE.PROG_DIR$ + "/ghost"
+sprite loadpng 1, WE.PROG_DIR$ + "/ghost.png"
 
 ' Set that we are going to write to the background layer.
 page write 0
 
 ' Load the background image to the background layer - page 0.
-load png WE.PROG_DIR$ + "/background"
+load png WE.PROG_DIR$ + "/background.png"
 text 0, 0, "Press Q to Quit", "", 1
 
 ' Initialise the display position of the ghost.
