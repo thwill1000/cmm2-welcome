@@ -1,4 +1,4 @@
-' Mr. Polysynth
+' Mr. Polysynth v1.1
 ' Code by "TweakerRay"
 ' Messed about with for the CMM2 Welcome Tape by "thwill"
 
@@ -8,40 +8,60 @@ Option Base 1
 #Include "../../common/welcome.inc"
 
 cls
-color rgb(40,255,20)
+const MY_GREEN = rgb(40,255,20)
 
-?" Hi ! This is my small Polysynth V1"
-?" "
-?" You can play the synth with your keyboard:"
-?" Just imagine the Keys from Q-P as White Keys and the numberkeys above as Black keys of a Piano"
-?" "
+color rgb(white)
+?" Welcome to Polysynth v1.1"
+?
+?" You can only play the synth with a ";
+color rgb(yellow)
+? "USB ";
+color rgb(white)
+? "keyboard; ";
+color rgb(yellow)
+? "a serial connection is not sufficient."
+?
+color rgb(white)
+?" Use the keys from Q-P as White Keys and the number keys above as Black keys of a Piano."
+?
+color MY_GREEN
 ?"  2  3        5  6  7     9  0     <----- Black Keys"
-?" "
+?
 ?" Q  W  E  R  T  Z  U  I  O  P      <----- White Keys"
-?" "
-?" The Synth can play up to 4 Notes simultaneously. All sounds come from both Speakers."
-?" "
-?" You can change the okaves on the 4 Notes independently:"
-?" "
-?" F1 / F2  Oktave up / down on Note 1"
-?" F3 / F4  Oktave up / down on Note 2"
-?" F5 / F6  Oktave up / down on Note 3"
-?" F7 / F8  Oktave up / down on Note 4"
-?" F9 / F10 Oktave up / down on ALL 4 Notes"
-?" F11  Reset All oktaves to Zero   "
-?" F12  Reset Tuning to Zero     "
-?" "
-?" Change the Sound on the Channel:"
-?" "
+?
+color rgb(white)
+?" The synth can play up to 4 notes simultaneously with sound coming from both speakers."
+?
+color rgb(yellow)
+?" Note that not all keyboards support 4 simultaneous keypresses for all key combinations."
+?
+color rgb(white)
+?" You can change the Octaves on the 4 notes independently:"
+?
+color MY_GREEN
+?" F1 / F2        -  Octave up / down on Note 1"
+?" F3 / F4        -  Octave up / down on Note 2"
+?" F5 / F6        -  Octave up / down on Note 3"
+?" F7 / F8        -  Octave up / down on Note 4"
+?" F9 / F10       -  Octave up / down on ALL 4 Notes"
+?" F11            -  Reset All octaves to Zero"
+?" F12            -  Reset Tuning to Zero"
+?
+color rgb(white)
+?" Change the Sound on the Channels:"
+?
+color MY_GREEN
 ?" A / S / D / F  -  Sound change + on Channel 1 / 2 / 3 / 4 (Square or Sine)"
 ?" Y / X / C / V  -  Sound change - on Channel 1 / 2 / 3 / 4 (Square or Sine)"
-?" "
-?" Detune Channels with:"
-?" "
+?
+color rgb(white)
+?" Detune the Channels:"
+?
+color MY_GREEN
 ?" G / H / J / K  -  Detune + on Note 1 / 2 / 3 / 4"
 ?" B / N / M / ,  -  Detune - on Note 1 / 2 / 3 / 4"
-?" "
-?" "
+?
+color rgb(white)
 ?" Press [Esc] to Quit"
 
 do while inkey$<>"" : loop
@@ -50,14 +70,11 @@ do while inkey$="" : loop
 cls
 
 dim freq(88)
-dim i
-dim k(4)
-dim keys
 dim layout$ = mm.info$(option usbkeyboard)
-dim notes
 dim okt(4)
 dim s(4) ' 1=square, 2=sine, 3=noise
-dim tnr(4) = (28,28,28,28) ' For if okt would be pressed before a key we set the key to C2
+dim tnr(4) = (-1,-1,-1,-1)
+dim tnr_new(4) = (-1,-1,-1,-1)
 dim tune(4)
 dim volume=12 ' Volume 1-25
 
@@ -111,35 +128,35 @@ ta$(42)="o"
 ta$(43)="0"
 ta$(44)="p"
 
-do
-  keys=keydown(0)
-  notes=keys
-  for i = 1 To 4 : k(i) = keydown(i) : next i
+main()
+end ' Should never get here.
 
-  if keys=0 then play stop
+sub main()
+  local i
 
-  for i=1 to keys
-    handle_keypress(i)
-  next i
-
-  apply_restrictions()
-  update_display()
-  play_notes()
-loop
+  do
+    for i = 1 to 4 : handle_keypress(i) : next
+    apply_restrictions()
+    update_notes()
+    update_display()
+    play_notes()
+  loop
+end sub
 
 sub handle_keypress(i)
-  local j, kk$
+  local j, key$
 
-  kk$=chr$(k(i))
+  key$=chr$(keydown(i))
 
-  if kk$=chr$(27) then we.end_program()
+  if key$=chr$(27) then we.end_program()
 
   ' Check for keys corresponding to musical notes
   for j=28 to 44
-    if kk$=ta$(j) then tnr(i)=j : Exit Sub
-  next j
+    if key$=ta$(j) then tnr_new(i)=j : Exit Sub
+  next
+  tnr_new(i) = -1 ' no note on this key
 
-  select case kk$
+  select case key$
 
     ' Channel Oktave up and down
     case chr$(145) : okt(1)=okt(1)-12 ' F1
@@ -152,12 +169,12 @@ sub handle_keypress(i)
     case chr$(152) : okt(4)=okt(4)+12 ' F8
 
     ' All four Channels Oktave up and down
-    case chr$(153) : for j=1 to 4 : okt(j)=okt(j)-12 : next j ' F9
-    case chr$(154) : for j=1 to 4 : okt(j)=okt(j)+12 : next j ' F10
+    case chr$(153) : for j=1 to 4 : okt(j)=okt(j)-12 : next ' F9
+    case chr$(154) : for j=1 to 4 : okt(j)=okt(j)+12 : next ' F10
 
     ' Reset Tuning + Reset Oktaves
-    case chr$(155) : for j=1 to 4 : okt(j)=0 : next j ' F11
-    case chr$(156) : for j=1 to 4 : tune(j)=0 : next j ' F12
+    case chr$(155) : for j=1 to 4 : okt(j)=0 : next ' F11
+    case chr$(156) : for j=1 to 4 : tune(j)=0 : next ' F12
 
     ' Sound changes 1-4
     case "a"      : s(1)=s(1)+1
@@ -184,28 +201,51 @@ sub handle_keypress(i)
 
   end select
 
-  notes=notes-1
   pause 100
 end sub
 
 sub apply_restrictions()
   local i
 
-  ' Restrict ocatave values.
+  ' Restrict ocatave values to range -24 .. +48.
   for i = 1 to 4
-    if okt(i) > 48 then okt(i) = 48
-    if okt(i) < -24 then okt(i) = -24
-  next i
+    okt(i) = min(okt(i), 48)
+    okt(i) = max(okt(i), -24)
+  next
 
   ' Restrict sound values.
   ' Only sounds 1 & 2 are useful, 3 and 4 are noise.
   for i = 1 to 4
     if s(i) <= 1 then s(i)=1 else s(i)=2
-  next i
+  next
 
   ' Restrict frequency.
   for i = 1 to 4
-    if okt(i)=48 and tnr(i) > 40 then tnr(i)=40
+    if okt(i)=48 then tnr_new(i) = min(tnr_new(i), 40)
+  next
+end sub
+
+sub update_notes()
+  local i, j
+
+  ' Remove notes from tnr() that are not in tnr_new()
+  for i=1 to 4
+    if tnr(i) > -1 then
+      for j=1 to 4
+        if tnr_new(j)=tnr(i) then tnr_new(j)=-1 : exit for
+      next j
+      if j=5 then tnr(i)=-1
+    endif
+  next i
+
+  ' Add new notes from tnr_new() to tnr()
+  for i=1 to 4
+    if tnr_new(i) > -1 then
+      for j=1 to 4
+        if tnr(j)=-1 then tnr(j)=tnr_new(i) : exit for
+      next j
+      if j=5 then error "Should not happen"
+    endif
   next i
 end sub
 
@@ -218,22 +258,36 @@ sub update_display()
   print @(12,1) "* * * * * * * * * Mr. Polysynth by TweakerRay * * * * * * * * *"
   color rgb(0,255,0)
 
-  print @(10,100) "Keydown   :" format$(keys, "%4g") format$(notes, "%4g")
+  print @(10,100) "Num keys  :" format$(keydown(0), "%4g")
 
   print @(10,120) "Frequency :";
-  for i = 1 To 4 : print format$(freq(tnr(i)), "%10g"); : next i : print
+  for i = 1 To 4
+    if tnr(i) = -1 then
+      print " -------";
+    else
+      print format$(freq(tnr(i)), "%8g");
+    endif
+  next
+  print
 
   print @(10,160) "Tuning    :";
-  for i = 1 to 4 : print format$(tune(i), "%4g"); : next i : print
+  for i = 1 to 4 : print format$(tune(i), "%4g"); : next : print
 
-  print @(10,180) "Oktave    :";
-  for i = 1 to 4 : print format$(okt(i), "%4g"); : next i : print
+  print @(10,180) "Octave    :";
+  for i = 1 to 4 : print format$(okt(i), "%4g"); : next : print
 
   print @(10,200) "Key num   :";
-  for i = 1 to 4 : print format$(tnr(i)+okt(i), "%4g"); : next i : print
+  for i = 1 to 4
+    if tnr(i) = -1 then
+      print "   -";
+    else
+      print format$(tnr(i)+okt(i), "%4g");
+    endif
+  next
+  print
 
   print @(10,220) "Sound     :";
-  for i = 1 To 4 : print format$(s(i), "%4g"); : next i : print
+  for i = 1 To 4 : print format$(s(i), "%4g"); : next : print
 
   print @(10,240) "Layout    :  ";layout$
 
@@ -243,13 +297,17 @@ sub update_display()
 end sub
 
 sub play_notes()
-  local i
+  local f, i
 
-  for i=1 to notes
-    if s(i)=1 then
-      play sound 1,B,Q,freq(tnr(i)+okt(i))+tune(i),volume
-    elseif s(i)=2 then
-      play sound 1,B,S,freq(tnr(i)+okt(i))+tune(i),volume
+  for i=1 to 4
+    if tnr(i) > -1 then
+      f = freq(tnr(i) + okt(i)) + tune(i)
+      select case s(i)
+        case 1 : play sound i,B,Q,f,volume
+        case 2 : play sound i,B,S,f,volume
+      end select
+    else
+      play sound i,B,O
     endif
-  next i
+  next
 end sub
