@@ -2,7 +2,7 @@ ChangeLog
 ---------
 
 Release 0.5:
- - IMPORTANT: requires firmware 5.05.06 or later.
+ - IMPORTANT: requires firmware 5.05.06RC12 or later.
  - Added "Bouncing Balls" sprite demo
    - by Markus Mangold.
  - Added "Brownian Motion" sprite demo
@@ -20,6 +20,7 @@ Release 0.5:
    - Defender-like gameplay.
  - Added "Mr. Polysynth"
    - by "TweakerRay".
+   - messed about with by "thwill".
  - Added "Musical Scales"
    - by "TweakerRay".
  - Added "Scrolling Text" demo
@@ -29,7 +30,7 @@ Release 0.5:
    - uses fixed sprite-sheet to try and fix strange rotation and sprite colour
      bug show by firmware 5.05.06RC7.
  - Updated splash-screen and menu-system
-   - code by "thwill" and "vegipete", music by "Tweaker Ray".
+   - code by "thwill" and "vegipete", music by "TweakerRay".
    - simpler more "professional" splash screen.
    - great soundtrack.
    - prettier menu optimised for VGA and Serial display.
