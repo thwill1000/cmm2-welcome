@@ -1,6 +1,47 @@
 ChangeLog
 ---------
 
+Release 0.5:
+ - IMPORTANT: requires firmware 5.05.06RC12 or later.
+ - Added "Bouncing Balls" sprite demo
+   - by Markus Mangold.
+ - Added "Brownian Motion" sprite demo
+   - by Peter Mather.
+ - Added "Composition #1 (Passacaglia in 32 Bits)"
+   - generative music demo by William Leue.
+ - Added "Ghost" sprite demo
+   - by Peter Mather.
+ - Added "GPIO Pin Tester"
+   - by "TassyJim" with edits by "BigMik".
+ - Added "Matrix Text"
+   - by "TweakerRay".
+ - Added "Guardian" shoot 'em up game
+   - by "PeteCotton" with music by "TweakerRay".
+   - Defender-like gameplay.
+ - Added "Mr. Polysynth"
+   - by "TweakerRay".
+   - messed about with by "thwill".
+ - Added "Musical Scales"
+   - by "TweakerRay".
+ - Added "Scrolling Text" demo
+   - by "vegipete" and the "Sasquatch".
+ - Updated "Lunar Lander" to v7.4
+   - by "vegipete"
+   - uses fixed sprite-sheet to try and fix strange rotation and sprite colour
+     bug show by firmware 5.05.06RC7.
+ - Updated splash-screen and menu-system
+   - code by "thwill" and "vegipete", music by "TweakerRay".
+   - simpler more "professional" splash screen.
+   - great soundtrack.
+   - prettier menu optimised for VGA and Serial display.
+   - added cursor key navigation.
+   - other cosmetic and organisational tweaks.
+ - Updated "Minesweeper" to v1.0.1
+   - by William Leue.
+   - fixed bug in the navigation buttons that caused the '4' key not to work for
+     moving the cursor left.
+   - centered the board on the screen.
+
 Release 0.4:
  - Added "Hunt the Wumpus"
   - by William Leue
