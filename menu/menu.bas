@@ -494,6 +494,7 @@ denizens:
 Data "Andrew_G", "", ""
 Data "Bigmik", "Mick", "Gulovsen"
 Data "capsikin", "", ""
+Data "jirsoft", "", ""
 Data "matherp", "Peter", "Mather"
 Data "", "Markus", "Mangold"
 Data "PeteCotton", "", ""
