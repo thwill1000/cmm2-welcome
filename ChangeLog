@@ -11,11 +11,13 @@ Release 0.5.1
  - Updated "Barnsley's Fern using CSUB"
   - recompiled CSUB to run with 5.06.00 firmware.
  - Updated "Hunt the Wumpus"
-  - fixed bug where control does not return to the Welcome Tape menu.
-  - fixed bug where player could start in the non-existent room 0.
+  - fixed bug where control did not return to the "Welcome Tape"
+    menu when game ends.
+  - fixed bug where player could start in a non-existent room 0.
  - Updated "Lunar Lander" to v7.5
   - handle the fact that HELP is now an MMBasic command.
  - Updated "Mandelbrot Explorer" to version 1.4
+  - by the "Sasquatch".
   - recompiled CSUB to run with 5.06.00 firmware.
   - added incremental speed improvements.
   - added zooming enhancements suggested by @vegipete.
