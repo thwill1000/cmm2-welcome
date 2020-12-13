@@ -128,9 +128,11 @@ do
   if angle <= 179 then
     ' flip to other page
     flip_page = 1 + (flip_page = 1)
+  else
+    angle = 0
   endif
 
-loop until (angle > 179) Or we.is_quit_pressed%()
+loop until we.is_quit_pressed%()
 
 we.wait_for_quit()
 we.end_program()
