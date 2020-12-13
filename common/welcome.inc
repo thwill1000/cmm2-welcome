@@ -1,6 +1,6 @@
 ' Author: Thomas Hugo Williams
 
-Const WE.VERSION$ = "Version 0.5"
+Const WE.VERSION$ = "Version 0.5.1"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
 Const WE.QUIT_KEY$ = "Q"
@@ -8,7 +8,7 @@ Const WE.QUIT_KEY$ = "Q"
 Dim we.quit% = 0
 
 Sub we.check_firmware_version(v$)
-  If v$ = "" Then v$ = "5.05.06"
+  If v$ = "" Then v$ = "5.06.00"
 
   Local actual$ = we.sanitise_firmware_version$(Str$(Mm.Info(Version)))
   Local desired$ = we.sanitise_firmware_version$(v$)
