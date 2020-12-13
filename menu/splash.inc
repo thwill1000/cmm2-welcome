@@ -8,6 +8,8 @@ Sub splash()
   Local i, j, posn
   Local coords(12, 3)
 
+  show_serial_splash()
+
   ' read in the home possition for each sprite
   for i = 0 to 12
     read coords(i,0), coords(i,1)
@@ -15,7 +17,7 @@ Sub splash()
 
   ' load and prepare graphics
   page write 2
-  Cls
+  cls_vga()
   load png WE.PROG_DIR$ + "/logo-large.png"  ' this was saved as a 32 bit PNG
 
   ' Colour number 0 is always transparent for sprites
@@ -58,7 +60,7 @@ Sub splash()
   ' All drawing is performed on page 1. When each image is complete,
   ' page 1 is copied to page 0 for viewing.
   page write 1
-  Cls
+  cls_vga()
 
   we.clear_keyboard_buffer();
 
@@ -70,7 +72,7 @@ Sub splash()
     If Inkey$ <> "" Then Exit Sub
   Next i
 
-  Cls ' erase page, show sprite version of swatches instead
+  cls_vga() ' erase page, show sprite version of swatches instead
   DrawSwatches(0, coords())
   page copy 1,0
 
@@ -88,6 +90,7 @@ Sub splash()
   Text 400, 290, WE.VERSION$, "C", 1, 1, RGB(WHITE)
   Text 400, 570, "Press any key to go to the menu", "C", 2
 
+  Option Console Both
   we.clear_keyboard_buffer()
 
   Do
@@ -128,6 +131,25 @@ Sub splash()
 
   Loop Until Inkey$ <> ""
 
+End Sub
+
+Sub show_serial_splash()
+  Option Console Serial
+  Cls
+  print_centered("Colour Maximite 2 " + Chr$(34) + "WELCOME TAPE" + Chr$(34))
+  print_centered(we.VERSION$)
+  Print
+  print_centered("Most programs require a VGA display")
+  print_centered("Some programs also require a USB keyboard")
+  Print
+  print_centered("Press any key to go to the menu")
+  Option Console Both
+End Sub
+
+Sub cls_vga()
+  Option Console Screen
+  Cls
+  Option Console Both
 End Sub
 
 ' Paint a coloured strip
