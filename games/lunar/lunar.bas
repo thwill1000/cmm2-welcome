@@ -2,6 +2,8 @@
   ' Lunar Lander For Nostalganauts
   ' Written for the Colour Maximite 2 by Vegipete, August 2020
   '
+  ' v75 - thwill:
+  '     - updated to run on firmware 5.06.00 and tidied up Help overlay code
   ' v74 - Vegipete:
   '     - further fixes for image rotation with newest firmware; now
   '       uses a fixed sprite-sheet instead of generating the rotated
@@ -57,7 +59,7 @@
   CONST True = 1
   CONST False = 0
 
-  DIM INTEGER Show_Help = False   'True   'Set this to have Help on or off on startup
+  DIM INTEGER help_on = False ' set True to have Help overlay shown at startup
   DIM surface(800)
   DIM INTEGER Vol_Adj, Mute = False, Pause_It = False
   DIM INTEGER Vol_Start = 25, Vol_Level = Vol_Start
@@ -202,15 +204,9 @@
                 vylander = 0
               END IF
             END IF
-            IF KEYDOWN (i) = 72 OR KEYDOWN (i) = 104 THEN ' H or h pressed, get HELP
-              IF Show_Help THEN
-                Show_Help = False
-                Help
-                TEXT MM.HRES-10,Y_CTR+28,"Press [H|h] for HELP.","RB",7,1, RGB(Yellow), RGB(GRAY)
-              ELSE
-                Show_Help = True
-                Help
-              END IF
+            IF KEYDOWN(i) = 72 OR KEYDOWN (i) = 104 THEN ' H or h pressed, toggle HELP
+              help_on = Not help_on
+              ShowHelp()
             END IF
             IF KEYDOWN(i) = 130 THEN direction =  1    ' left arrow, rotate left
             IF KEYDOWN(i) = 131 THEN direction = -1    ' right arrow, rotate right
@@ -326,15 +322,9 @@ Paused:
     DO
       Tmp$ = INKEY$
       IF Tmp$ <> "" THEN
-        IF UCASE$(Tmp$) = "H" THEN ' H or h pressed, show or hide HELP
-          IF Show_Help THEN
-            Show_Help = False
-            Help
-            TEXT MM.HRES-10,Y_CTR+28,"Press [H|h] for HELP.","RB",7,1, RGB(Yellow), RGB(GRAY)
-          ELSE
-            Show_Help = True
-            Help
-          END IF
+        IF UCASE$(Tmp$) = "H" THEN
+          help_on = NOT help_on
+          ShowHelp()
         END IF
         IF we.is_quit_key%(Tmp$) Then we.end_program()
         IF ASC(Tmp$) = 13 THEN EXIT DO  ' Return key, go again
@@ -398,44 +388,54 @@ SUB ShowGauges
 END SUB
 
 '***********************************
-SUB Help
-  LOCAL INTEGER Col = RGB(WHITE)
-  IF not Show_Help THEN
-    Col = RGB(GRAY)
-  ELSE    'Hide any Help text
-    TEXT MM.HRES-10,Y_CTR+28,"                      ","RB",7,1, RGB(GRAY), RGB(GRAY)
-  END IF
+SUB ShowHelp()
 
-  'Show_Keys:   'The variables below are defined above but are retained here to assist
-  '  X_Ctr = mm.hres-50
-  '  Y_Ctr = mm.vres-40
-  TEXT X_Ctr,Y_Ctr-12,chr$(128),CB,8,1,Col,RGB(GRAY)    'Up  arrow
-  TEXT X_Ctr, Y_Ctr-55, "PAUSE",CB, 7,1, Col,RGB(GRAY)
-  TEXT X_Ctr, Y_Ctr-45, "ON/OFF",CB, 7,1, Col,RGB(GRAY)
+  Const FORE = RGB(White)
+  Const BACK = RGB(Gray)
 
-  TEXT X_Ctr,Y_Ctr+27-5,chr$(129),CB,8,1,Col,RGB(GRAY)  'Down  "
-  TEXT X_Ctr, Y_Ctr+28, "MUTE",CB, 7,1, Col,RGB(GRAY)
-  TEXT X_Ctr, Y_Ctr+38, "ON/OFF",CB, 7,1, Col,RGB(GRAY)
+  ' Note:
+  '   X_Ctr = MM.HRES-50
+  '   Y_Ctr = MM.VRES-40
 
-  TEXT X_Ctr-5,Y_Ctr+5,chr$(130),RB,8,1,Col,RGB(GRAY)   'Left  "
-  TEXT X_Ctr-45, Y_Ctr+4, "Rotate",LB, 7,1, Col,-1'RGB(GRAY)
-  TEXT X_Ctr-45, Y_Ctr+14, "Left",LB, 7,1, Col,RGB(GRAY)
+  ' Overwrite help overlay area with background coloured box.
+  Box X_Vol+25, Y_Ctr-65, MM.HRES-X_Vol-25, MM.VRES-Y_Ctr+65, , BACK, BACK
 
-  TEXT X_Ctr+5,Y_Ctr+5,Chr$(131),LB,8,1,Col,RGB(GRAY)   'Right "
-  TEXT X_Ctr+15, Y_Ctr+4, "Rotate",LB, 7,1, Col,RGB(GRAY)
-  TEXT X_Ctr+15, Y_Ctr+14, "Right",LB, 7,1, Col,RGB(GRAY)
+  If Not help_on Then
+    Text MM.HRES-10, Y_Ctr+28, "Press [H|h] for HELP.", "RB", 7, 1, RGB(Yellow), BACK
+    Exit Sub
+  EndIf
 
-  BOX X_Ctr - 100, Y_Ctr - 25, 50, 20,,Col, RGB(GRAY)   'Space bar
-  TEXT X_Ctr-75, Y_Ctr-15, "Thrust",CM, 7,1,Col,RGB(GRAY)
+  ' Up arrow
+  TEXT X_Ctr,     Y_Ctr-12, Chr$(128), CB, 8,1, FORE, BACK
+  TEXT X_Ctr,     Y_Ctr-55, "PAUSE",   CB, 7,1, FORE, BACK
+  TEXT X_Ctr,     Y_Ctr-45, "ON/OFF",  CB, 7,1, FORE, BACK
 
-  TEXT X_Vol+20+8, Y_Vol+23, "+ Up", LB, 7,1,Col,RGB(GRAY)   'Sound level adjust
-  TEXT X_Vol+20+8, Y_Vol+33, "- Down", LB, 7,1,Col,RGB(GRAY)
-  BOX X_Vol+17+8, Y_Vol+13,11,10,,Col
-  BOX X_Vol+17+8, Y_Vol+24,11,10,,Col
+  ' Down arrow
+  TEXT X_Ctr,     Y_Ctr+22, Chr$(129), CB, 8,1, FORE, BACK
+  TEXT X_Ctr,     Y_Ctr+28, "MUTE",    CB, 7,1, FORE, BACK
+  TEXT X_Ctr,     Y_Ctr+38, "ON/OFF",  CB, 7,1, FORE, BACK
 
-  IF NOT Show_Help THEN TEXT MM.HRES-10,Y_CTR+28,"Press [H|h] for HELP.","RB",7,1, RGB(Yellow), -1
-'  IF NOT Show_Help THEN TEXT MM.HRES-10,Y_CTR+28,"Press [H|h] for HELP.","RB",7,1, RGB(Yellow), RGB(GRAY)
-END SUB 'Help
+  ' Left arrow
+  TEXT X_Ctr-5,   Y_Ctr+5,  Chr$(130), RB, 8,1, FORE, BACK
+  TEXT X_Ctr-45,  Y_Ctr+4,  "Rotate",  LB, 7,1, FORE, BACK
+  TEXT X_Ctr-45,  Y_Ctr+14, "Left",    LB, 7,1, FORE, BACK
+
+  ' Right arrow
+  TEXT X_Ctr+5,   Y_Ctr+5,  Chr$(131), LB, 8,1, FORE, BACK
+  TEXT X_Ctr+15,  Y_Ctr+4,  "Rotate",  LB, 7,1, FORE, BACK
+  TEXT X_Ctr+15,  Y_Ctr+14, "Right",   LB, 7,1, FORE, BACK
+
+  ' Spacebar
+  BOX  X_Ctr-100, Y_Ctr-25, 50, 20, , FORE, BACK
+  TEXT X_Ctr-75,  Y_Ctr-15, "Thrust",  CM, 7,1, FORE, BACK
+
+  ' Sound level adjustment
+  TEXT X_Vol+28,  Y_Vol+23, "+ Up",    LB, 7, 1, FORE, BACK
+  TEXT X_Vol+28,  Y_Vol+33, "- Down",  LB, 7, 1, FORE, BACK
+  BOX  X_Vol+25,  Y_Vol+13, 11, 10, , FORE
+  BOX  X_Vol+25,  Y_Vol+24, 11, 10, , FORE
+
+END SUB ' ShowHelp
 
 '***********************************
 SUB DrawMoon
@@ -456,7 +456,7 @@ SUB DrawMoon
     END IF
   NEXT i
 
-  Help
+  ShowHelp()
 
   ' Control Panel Frame
   rbox 150,502,450,120,10,&hC0C0C0,&hC0C0C0

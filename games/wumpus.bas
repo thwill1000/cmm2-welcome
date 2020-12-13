@@ -70,7 +70,7 @@ sub NewGame
   for i = 1 to ENTITIES
     do
       retry = 0
-      c = int(rnd*NUM_CAVES)
+      c = int(rnd*NUM_CAVES) + 1
         for j = 1 to n
           if c = locs(j) then
             retry = 1
@@ -131,7 +131,7 @@ sub PlayLoop running
     loop until ok = 1
     DrawCaves()
   loop until running = 0
-end
+end sub
 
 ' print a description of the current room, including any
 ' warnings or hazards
@@ -250,7 +250,7 @@ function PlayAgain()
     if ans$ = "N" then
       PlayAgain = again
       cls
-      end
+      we.end_program()
     else if ans$ = "Y" then
       again = 1
       NewGame

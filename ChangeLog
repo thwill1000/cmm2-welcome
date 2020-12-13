@@ -1,6 +1,29 @@
 ChangeLog
 ---------
 
+Release 0.5.1
+ - IMPORTANT: requires firmware 5.06.00 or later.
+ - This is a maintenance release, it contains the same catalogue of
+   programs as Release 0.5.
+ - Updated "Barnsley's Fern using CSUB"
+  - recompiled CSUB to run with 5.06.00 firmware.
+ - Updated "Hunt the Wumpus"
+  - fixed bug where control does not return to the Welcome Tape menu.
+  - fixed bug where player could start in the non-existent room 0.
+ - Updated "Lunar Lander" to v7.5
+  - handle the fact that HELP is now an MMBasic command.
+ - Updated "Mandelbrot Explorer" to version 1.4
+  - recompiled CSUB to run with 5.06.00 firmware.
+  - added incremental speed improvements.
+  - added zooming enhancements suggested by @vegipete.
+  - added mouse support.
+ - Updated "Scrolling Text" demo
+  - recompiled CSUB (by "jirsoft") to run with 5.06.00 firmware.
+ - Updated new splash-screen
+  - serial console is no longer blank whilst VGA animation playing.
+ - Updated old splash-screen
+  - "sunrise" animation repeats until the user Quits.
+
 Release 0.5:
  - IMPORTANT: requires firmware 5.05.06RC12 or later.
  - Added "Bouncing Balls" sprite demo
@@ -27,8 +50,8 @@ Release 0.5:
    - by "vegipete" and the "Sasquatch".
  - Updated "Lunar Lander" to v7.4
    - by "vegipete"
-   - uses fixed sprite-sheet to try and fix strange rotation and sprite colour
-     bug show by firmware 5.05.06RC7.
+   - uses fixed sprite-sheet to try and fix strange rotation and
+     sprite colour bug show by firmware 5.05.06RC7.
  - Updated splash-screen and menu-system
    - code by "thwill" and "vegipete", music by "TweakerRay".
    - simpler more "professional" splash screen.
@@ -38,8 +61,8 @@ Release 0.5:
    - other cosmetic and organisational tweaks.
  - Updated "Minesweeper" to v1.0.1
    - by William Leue.
-   - fixed bug in the navigation buttons that caused the '4' key not to work for
-     moving the cursor left.
+   - fixed bug in the navigation buttons that caused the '4' key not
+     to work for moving the cursor left.
    - centered the board on the screen.
 
 Release 0.4:
@@ -55,38 +78,38 @@ Release 0.4:
   - added support for Modes 10, 11 and 12.
  - Updated "Lunar Lander" to v7.3
    - by "vegipete"
-   - added workaround for difference in direction of IMAGE ROTATE between
-     firmware 5.05.05 and 5.05.06.
+   - added workaround for difference in direction of IMAGE ROTATE
+     between firmware 5.05.05 and 5.05.06.
  - Updated "Mandelbrot Explorer" to version 1.3
-   - by "Sasquatch"
-   - CSUB now renders the Base image in under 1 second on a 400MHz CMM2 due to
-     changes in compiler and linker/library settings.
+   - by the "Sasquatch"
+   - CSUB now renders the Base image in under 1 second on a 400MHz
+     CMM2 due to changes in compiler and linker/library settings.
 
 Release 0.3.1:
- - This is a maintenance release, it contains the same inventory of programs
-   as Release 0.3.
+ - This is a maintenance release, it contains the same catalogue of
+   programs as Release 0.3.
  - Updated "Mandelbrot Explorer" to version 1.2
-   - by "Sasquatch"
+   - by the "Sasquatch"
    - fixed responsiveness to both USB keyboard and serial console.
-   - added source for pure MMBasic version of Mandelbrot subroutine to the
-     bottom of the program.
-   - changed hotkeys on file and help screens for better integration with the
-     "Welcome Tape".
+   - added source for pure MMBasic version of Mandelbrot subroutine to
+     the bottom of the program.
+   - changed hotkeys on file and help screens for better integration
+     with the "Welcome Tape".
  - Updated "Barnsley's Fern using CSUB"
-   - by "Sasquatch"
+   - by the "Sasquatch"
    - fixed responsiveness to both USB keyboard and serial console.
  - Changed how returning from a program to the menu is implemented,
    this should not cause any visible difference.
 
 Release 0.3:
  - Added "Mandelbrot Explorer"
-  - by "Sasquatch"
+  - by the "Sasquatch"
  - Added "Playing Cards" demo
   - by "vegipete"
  - Added "Graphic Test Card" utility
   - by "TassyJim"
  - Added "Barnsley's Fern using CSUB"
-  - by "Sasquatch"
+  - by the "Sasquatch"
 
 Release 0.2:
  - Added missing 'Conway's Game of Life' implementation
@@ -100,9 +123,9 @@ Release 0.2:
  - Updated Lunar Lander to v7.2
    - by "vegipete"
  - Changed menu framework to display "Loading <file>..." message
-   - due to the delay whilst the VGA monitor switches resolution/frequency you
-     may not always see this when transitioning to the menu from a program that
-     was not using Mode 1.
+   - due to the delay whilst the VGA monitor switches resolution/frequency
+     you may not always see this when transitioning to the menu from a
+     program that was not using Mode 1.
 
 Release 0.1:
  - Initial release to The Back Shed.
