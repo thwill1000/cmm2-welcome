@@ -238,7 +238,7 @@ End Sub
 
 Sub show_credits()
   Local denizens$(20, 2), i, s$, sz
-  Restore denizens
+  Restore denizens_data
   sz = read_string_array(denizens$())
 
   we.clear_keyboard_buffer()
@@ -490,7 +490,7 @@ Data "end"
 ' Denizens of TBS: TBS username, forename, surname, TBS username
 '  - ordered alphabetically by username unless someone has a better idea.
 ' Note that Scott Adams will be listed separately as he is not a denizen of the TBS.
-denizens:
+denizens_data:
 Data "Andrew_G", "", ""
 Data "Bigmik", "Mick", "Gulovsen"
 Data "capsikin", "", ""
