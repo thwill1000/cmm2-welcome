@@ -7,11 +7,10 @@ Sinclair Spectrum, BBC Micro and Apple II.
 It is a collaborative effort by the denizens of
 [The Back Shed](http://www.thebackshed.com/forum/ViewForum.php?FID=16).
 
-## How do I run it?
+## How do I install/run it?
 
  - **IMPORTANT: Requires firmware version 5.06.00 or later**
- - Download the latest release: https://github.com/thwill1000/cmm2-welcome/releases/download/r0.5.1/welcome-r0.5.1.zip
-    - or clone/download the latest work in progress: https://github.com/thwill1000/cmm2-welcome
+ - Download the latest release: https://github.com/thwill1000/cmm2-welcome/releases/latest
  - Extract all the files to ```A:\welcome\```
  - ```RUN "\welcome\welcome.bas"```
 
