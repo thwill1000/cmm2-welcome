@@ -1,3 +1,2 @@
-# Actually they are MMBasic not VBA, but close enough.
-*.bas linguist-language=VBA
-*.inc linguist-language=VBA
+*.bas linguist-language=BASIC
+*.inc linguist-language=BASIC
