@@ -7,6 +7,8 @@ Sinclair Spectrum, BBC Micro and Apple II.
 It is a collaborative effort by the denizens of
 [The Back Shed](http://www.thebackshed.com/forum/ViewForum.php?FID=16).
 
+<img src="welcome.png" width="400" title="Welcome Tape screenshot">
+
 ## How do I install and run it?
 
  - **IMPORTANT: Requires firmware version 5.06.00 or later**
