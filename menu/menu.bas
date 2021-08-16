@@ -43,7 +43,7 @@ End
 
 Function show_menu$(menu_label$)
   On Error Ignore
-  Execute "Restore " + menu_label$
+  Execute "Restore " + menu_label$ + "_data"
   On Error Abort
   If Mm.ErrNo <> 0 Then Error "Unknown menu: " + menu_label$
 
@@ -238,7 +238,7 @@ End Sub
 
 Sub show_credits()
   Local denizens$(20, 2), i, s$, sz
-  Restore denizens
+  Restore denizens_data
   sz = read_string_array(denizens$())
 
   we.clear_keyboard_buffer()
@@ -350,7 +350,7 @@ Sub goodbye()
   Option Console Both
 End Sub
 
-menu_top:
+menu_top_data:
 Data "Contents"
 'Data "1", "WHAT'S NEW?", "menu_new"
 Data "1", "Games & Other Amusements", "menu_games"
@@ -367,7 +367,7 @@ Data "C", "Show Credits", "credits"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_csub:
+menu_csub_data:
 Data "CSUB Examples"
 Data "1", "Barnsley's Fern using CSUB", "fractals/barnsleys-fern-csub.bas"
 Data "2", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
@@ -376,7 +376,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_fractals:
+menu_fractals_data:
 Data "Graphics, Fractals"
 Data "1", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
 Data "2", "Barnsley's Fern", "fractals/barnsleys-fern.bas"
@@ -394,7 +394,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_games:
+menu_games_data:
 Data "Games & Other Amusements"
 Data "1", "Conway's Game of Life", "life/life.bas"
 Data "2", "Eliza, the Rogerian psychotherapist", "eliza/eliza.bas"
@@ -408,7 +408,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_misc:
+menu_misc_data:
 Data "Miscellaneous"
 Data "1", "Matrix Text", "misc/matrix-text/matrix-text.bas"
 Data "2", "Original Splash Screen", "misc/original-splash/splash.bas"
@@ -417,7 +417,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_new:
+menu_new_data:
 Data "What's New?"
 Data "1", "Bouncing Balls", "sprites/bouncing-balls/balls.bas"
 Data "2", "Brownian Motion", "sprites/brownian-motion/brownian.bas"
@@ -433,7 +433,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_sound:
+menu_sound_data:
 Data "Sound & Music"
 Data "1", "Chirps, an interactive sound effect demo", "sound/chirps/chirps-ui.bas"
 Data "2", "Composition #1 (Passacaglia in 32 bits)", "sound/gen-music/GenMusic1.bas"
@@ -444,7 +444,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_sprites:
+menu_sprites_data:
 Data "Graphics, Sprites"
 Data "1", "Bouncing Balls", "sprites/bouncing-balls/balls.bas"
 Data "2", "Brownian Motion", "sprites/brownian-motion/brownian.bas"
@@ -454,7 +454,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_turtle:
+menu_turtle_data:
 Data "Graphics, Turtle"
 Data "1", "Dragon Curve", "turtle/dragon-curve.bas"
 Data "2", "Hex Gasket", "turtle/hex-gasket.bas"
@@ -470,7 +470,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_utils:
+menu_utils_data:
 Data "Utilities"
 Data "1", "Graphics Test Card", "utils/test-card.bas"
 Data "2", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
@@ -478,7 +478,7 @@ Data "B", "Back", "menu_top"
 Data "Q", "Quit", "quit"
 Data "end"
 
-menu_3d:
+menu_3d_data:
 Data "Graphics, 3D"
 Data "1", "Rotating Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
 Data "2", "Rotating Dodecahedron", "graphics/dodecahedron.bas"
@@ -490,7 +490,7 @@ Data "end"
 ' Denizens of TBS: TBS username, forename, surname, TBS username
 '  - ordered alphabetically by username unless someone has a better idea.
 ' Note that Scott Adams will be listed separately as he is not a denizen of the TBS.
-denizens:
+denizens_data:
 Data "Andrew_G", "", ""
 Data "Bigmik", "Mick", "Gulovsen"
 Data "capsikin", "", ""
