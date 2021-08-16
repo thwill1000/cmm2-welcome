@@ -11,9 +11,9 @@ It is a collaborative effort by the denizens of
 
 ## How do I install and run it?
 
- - **IMPORTANT: Requires firmware version 5.06.00 or later**
- - Download the latest release: https://github.com/thwill1000/cmm2-welcome/releases/latest
- - Extract all the files to ```A:\welcome\```
+ - **IMPORTANT: Requires firmware version 5.07.00 or later**
+ - Download the [latest release](https://github.com/thwill1000/cmm2-welcome/releases/latest)
+ - Extract to ```A:\welcome\```
  - ```RUN "\welcome\welcome.bas"```
 
 ## FAQ
