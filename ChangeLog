@@ -10,6 +10,9 @@ Version 1.0.1 - 16-Aug-2021:
  - Updated "Mandelbrot Explorer" to version 1.4.1
    - fixed bug on help/intro screen where image partially covered the
      instructions for using the mouse.
+   - updated mouse support; if OPTION MOUSE is set then PS/2 or Hobbytronics
+     mouse should work as configured.
+   - updated so that [Esc] and [B] keys now return user to the help/intro screen.
 
 Version 1.0.0:
  - For firmware 5.06.00 or later.

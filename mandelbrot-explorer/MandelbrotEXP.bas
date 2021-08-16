@@ -54,7 +54,7 @@ Setup:
   CList = False
   HaveChuk = False
   HaveClassic = False
-  HaveMouse = False
+  MouseChannel = Mm.Info(Option Mouse)
   ZoomMode = False
   RefreshCursor = False
 
@@ -90,13 +90,14 @@ Setup:
     End If
   End If
 
-  'Check for Mouse on I2C2 Pin27 SDA, Pin28 SCK
+  'Check for Mouse
   On Error Skip 1
-    Controller Mouse Open
-  If MM.ERRNO = 0 Then
-    HaveMouse = True
-    OldMouseX = Mouse(X)
-    OldMouseY = Mouse(Y)
+    Controller Mouse Open MouseChannel
+  If MM.ERRNO <> 0 Then
+    MouseChannel = -1
+  Else
+    OldMouseX = Mouse(X, MouseChannel)
+    OldMouseY = Mouse(Y, MouseChannel)
   End If
 
 
@@ -163,30 +164,30 @@ Do  'Main Loop Starts Here
    End If
 
   'Check for Mouse Movement and Buttons
-  If HaveMouse Then
+  If MouseChannel > -1 Then
 
     ' If Mouse is paused, check for intentional movement
     ' This allows movement by keyboard or 'Chuk
     If PauseMouse Then
-      If ABS(Mouse(X) - OldMouseX) > 5 Or Abs(Mouse(Y) - OldMouseY) > 5 Then
+      If ABS(Mouse(X, MouseChannel) - OldMouseX) > 5 Or Abs(Mouse(Y, MouseChannel) - OldMouseY) > 5 Then
         PauseMouse = False
       End If
     End If
 
     ' If mouse not paused, move cursor to mouse position
     If Not PauseMouse Then
-      If Mouse(X) <> OldMouseX Or Mouse(Y) <> OldMouseY Then
-        XCursor = Mouse(X)
-        YCursor = Mouse(Y)
+      If Mouse(X, MouseChannel) <> OldMouseX Or Mouse(Y, MouseChannel) <> OldMouseY Then
+        XCursor = Mouse(X, MouseChannel)
+        YCursor = Mouse(Y, MouseChannel)
         RefreshCursor = True
-        OldMouseX = Mouse(X)
-        OldMouseY = Mouse(Y)
+        OldMouseX = Mouse(X, MouseChannel)
+        OldMouseY = Mouse(Y, MouseChannel)
       End If
     End If
 
-    If Mouse(L) Then K = 67 'Left Mouse Button, Re-Center at Cursor
-    If Mouse(R) Then K = 73 'Right Mouse Button, Zoom In
-    If Mouse(W) THen K = 79 'Center Mouse Button, Zoom Out
+    If Mouse(L, MouseChannel) Then K = 67 'Left Mouse Button, Re-Center at Cursor
+    If Mouse(R, MouseChannel) Then K = 73 'Right Mouse Button, Zoom In
+    If Mouse(W, MouseChannel) Then K = 79 'Center Mouse Button, Zoom Out
 
   End If
 
@@ -314,7 +315,7 @@ Do  'Main Loop Starts Here
       End If
       Pause(200)
 
-    Else IF K = 72 Or K = 104 Or K = 63 Then 'H or h or ?
+    Else IF K = 72 Or K = 104 Or K= 98 Or K = 66 Or K = 63 Or K = 27 Then 'H, h, B, b, ? or [Esc]
       'Show Help Screen
       hide_cursor()
       HelpScreen
@@ -453,7 +454,7 @@ Loop While Not Done  'End of Main Loop
 Map Reset
 If HaveChuk Then Wii Nunchuk Close
 If HaveClassic Then Wii Classic Close
-If HaveMouse Then Controller Mouse Close
+If MouseChannel > -1 Then Controller Mouse Close MouseChannel
 CLS
 
 we.end_program()
