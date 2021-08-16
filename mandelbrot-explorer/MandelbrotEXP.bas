@@ -7,7 +7,7 @@
 
 #Include "../common/welcome.inc"
 
-we.check_firmware_version("5.06.00")
+we.check_firmware_version("5.07.00")
 
 Setup:
   'Screen Resolution set here,
@@ -654,7 +654,7 @@ Sub HelpScreen
   CLS
   Do While Inkey$ <> "" : Loop
   Print
-  Print "Mandelbrot Explorer V1.4 for Color Maximite 2
+  Print "Mandelbrot Explorer V1.4.1 for Color Maximite 2
   Print
   Print "By the Sasquatch"
   Print " With thanks to matherp, vegipete, thwill and yock1960 for your contributions"
@@ -696,7 +696,7 @@ Sub HelpScreen
   Print "Note: Press <Enter> at any prompt to retain current value"
   Print : Print
   On Error Skip 1
-    Load JPG WE.PROG_DIR$ + "/Mandelbrotaxes.jpg",XMax-351,200
+    Load JPG WE.PROG_DIR$ + "/Mandelbrotaxes.jpg",XMax-351,240
   Print "Press Q)uit F)ile or any key to Continue"
   Pause(100)
   Do
