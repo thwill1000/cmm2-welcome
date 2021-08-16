@@ -7,14 +7,18 @@ Sinclair Spectrum, BBC Micro and Apple II.
 It is a collaborative effort by the denizens of
 [The Back Shed](http://www.thebackshed.com/forum/ViewForum.php?FID=16).
 
-<img src="welcome.png" width="400" title="Welcome Tape screenshot">
+<img src="resources/screenshot.png" width="400" title="Welcome Tape screenshot">
 
-## How do I install and run it?
+## How do I install it ?
 
  - **IMPORTANT: Requires firmware version 5.07.00 or later**
  - Download the [latest release](https://github.com/thwill1000/cmm2-welcome/releases/latest)
- - Extract to ```A:\welcome\```
- - ```RUN "\welcome\welcome.bas"```
+ - Extract to a directory of your choice, e.g. ```A:/welcome```
+
+## How do I run it ?
+
+  - Type ```chdir "A:/welcome"```
+  - Type ```*welcome```
 
 ## FAQ
 
