@@ -1,6 +1,10 @@
 ChangeLog
 ---------
 
+Version 1.0.2 - Under development:
+ - Updated "Minesweeper" to version 1.0.2
+   - fixed bug where using the lower-case 'a' key to move left did not work.
+
 Version 1.0.1 - 16-Aug-2021:
  - For firmware 5.07.00 or later.
  - This is a maintenance release, it contains the same catalogue of

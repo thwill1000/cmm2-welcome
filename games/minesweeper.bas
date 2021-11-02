@@ -1,9 +1,12 @@
-'----------------------------------------------------------
+'---------------------------------------------------------------------
 ' Minesweeper for CMM2
-' Rev 1.0.0 William M Leue 9/17/2020
-' Rev 1.0.1 10/6/2020
+' Rev 1.0.0 William M Leue 17-Sep-2020
+' Rev 1.0.1 William M Leue 6-Oct-2020
 '  centered board, fixed a bug in navigation key detection
-'-----------------------------------------------------------
+' Rev 1.0.2 Thomas H. Williams 2-Nov-2021
+'  fixed bug where using the lower-case 'a' key to move left did not
+'  work.
+'---------------------------------------------------------------------
 
 option default integer
 option base 1
@@ -1174,7 +1177,7 @@ sub ReadSegActivations
 end sub
 
 ' Keyboard ASCII values for control keys
-data 87, 83, 68, 65, 119, 115, 100, 115, 128, 129, 131, 130, 56, 50, 54, 52, 53, 10, 43, 45, 47, 63
+data 87, 83, 68, 65, 119, 115, 100, 97, 128, 129, 131, 130, 56, 50, 54, 52, 53, 10, 43, 45, 47, 63
 
 ' Seven-segment display segment polygons (relative to bounding box)
 data SS, SS, SDISW-SS, SS, SDISW-SS-SEGW, SS+SEGW, SS+SEGW, SS+SEGW
