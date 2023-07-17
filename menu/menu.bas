@@ -91,8 +91,8 @@ Function show_menu$(menu_label$)
           show_credits()
           show_menu$ = menu_label$
           Exit Function
-        Else If items$(i, 2) = "quit" Then
-          If Not quit() Then show_menu$ = menu_label$
+        Else If items$(i, 2) = "menu_quit" Then
+          If Not menu_quit() Then show_menu$ = menu_label$
           Exit Function
         Else If Left$(items$(i, 2), 5) = "menu_" Then
           show_menu$ = items$(i, 2)
@@ -138,7 +138,7 @@ End Sub
 Function wait_for_key$()
   Local k$ = we.wait_for_key$()
   Select Case Asc(k$)
-    Case 13       : k$ = "select" ' enter
+    Case 10, 13   : k$ = "select" ' enter
     Case 27       : k$ = "q"      ' escape
     Case Asc("m") : k$ = "b"      ' for backward compatibility [M] does same as [B]
     Case 128      : k$ = "up"     ' up arrow
@@ -329,7 +329,7 @@ Sub show_credits_serial(credits$(), txt$())
   Option Console Both
 End Sub
 
-Function quit()
+Function menu_quit()
   we.clear_keyboard_buffer()
 
   Local s$ = "Are you sure you want to Quit [y|N] ?"
@@ -338,7 +338,7 @@ Function quit()
   Print
   print_centered(s$)
   Option Console Both
-  If LCase$(we.wait_for_key$()) = "y" Then quit = 1
+  If LCase$(we.wait_for_key$()) = "y" Then menu_quit = 1
 End Function
 
 Sub goodbye()
@@ -364,7 +364,7 @@ Data "8", "Miscellaneous", "menu_misc"
 Data "9", "Utilities", "menu_utils"
 Data "C", "Show Credits", "credits"
 'Data "D", "COMING SOON", "menu_next"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_csub_data:
@@ -373,7 +373,7 @@ Data "1", "Barnsley's Fern using CSUB", "fractals/barnsleys-fern-csub.bas"
 Data "2", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
 Data "3", "Scrolling Text", "misc/scrolling-text/scrolling-text.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_fractals_data:
@@ -391,7 +391,7 @@ Data "X", "Tree - Random Recursive", "turtle/random-tree.bas"
 Data "Y", "Tree - Pine, Recursive", "turtle/pine-tree.bas"
 Data "Z", "Tree - Pine, Random Recursive", "turtle/random-pine-tree.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_games_data:
@@ -405,7 +405,7 @@ Data "6", "Mandelbrot Explorer", "mandelbrot-explorer/mandelbrotexp.bas"
 Data "7", "Minesweeper", "games/minesweeper.bas"
 Data "8", "Scott Adams' Pirate Adventure", "pirate/src/interp.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_misc_data:
@@ -414,7 +414,7 @@ Data "1", "Matrix Text", "misc/matrix-text/matrix-text.bas"
 Data "2", "Original Splash Screen", "misc/original-splash/splash.bas"
 Data "3", "Scrolling Text", "misc/scrolling-text/scrolling-text.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_new_data:
@@ -430,7 +430,7 @@ Data "8", "Mr. Polysynth", "sound/mr-polysynth/mr-polysynth.bas"
 Data "9", "Musical Scales", "sound/scales/scales.bas"
 Data "X", "Scrolling Text", "misc/scrolling-text/scrolling-text.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_sound_data:
@@ -441,7 +441,7 @@ Data "3", "Mr. Polysynth", "sound/mr-polysynth/mr-polysynth.bas"
 Data "4", "Musical Scales", "sound/scales/scales.bas"
 Data "5", "Speech Demo", "sound/speech/speech.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_sprites_data:
@@ -451,7 +451,7 @@ Data "2", "Brownian Motion", "sprites/brownian-motion/brownian.bas"
 Data "3", "Ghost, sprite with transparency", "sprites/ghost/ghost.bas"
 Data "4", "Playing Cards", "sprites/playing-cards/showcards.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_turtle_data:
@@ -467,7 +467,7 @@ Data "8", "Tree - Random Recursive", "turtle/random-tree.bas"
 Data "9", "Tree - Pine, Recursive", "turtle/pine-tree.bas"
 Data "X", "Tree - Pine, Random Recursive", "turtle/random-pine-tree.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_utils_data:
@@ -475,7 +475,7 @@ Data "Utilities"
 Data "1", "Graphics Test Card", "utils/test-card.bas"
 Data "2", "GPIO Pin Tester", "utils/pin-test/PinTest.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 menu_3d_data:
@@ -484,7 +484,7 @@ Data "1", "Rotating Wireframe Buckyball", "graphics/wireframe-buckyball.bas"
 Data "2", "Rotating Dodecahedron", "graphics/dodecahedron.bas"
 Data "3", "Rotating Football", "graphics/football.bas"
 Data "B", "Back", "menu_top"
-Data "Q", "Quit", "quit"
+Data "Q", "Quit", "menu_quit"
 Data "end"
 
 ' Denizens of TBS: TBS username, forename, surname, TBS username

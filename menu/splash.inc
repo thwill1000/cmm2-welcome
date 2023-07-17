@@ -65,7 +65,7 @@ Sub splash()
   we.clear_keyboard_buffer();
 
   ' paint the coloured swatches, one by one
-  Const PAINT_SPEED = 0
+  Const PAINT_SPEED = 3
   Local colours(3) = (RGB(RED), RGB(GREEN), RGB(BLUE), RGB(YELLOW))
   For i = 0 To 3
     PaintStrip(i, colours(i), PAINT_SPEED, coords())
@@ -81,6 +81,7 @@ Sub splash()
     for j = MM.HRES-1 to coords(i,0) step -10
       sprite show i+1, j, coords(i,1) + 10, 1
       page copy 1,0,B   ' wait for vertical blanking before copying page
+      Pause 20
     next j
     sprite show i+1, coords(i,0), coords(i,1) + 10, 1 ' make sure sprite is in right place
     If Inkey$ <> "" Then Exit Sub
@@ -109,6 +110,7 @@ Sub splash()
       DrawLetters(coords())
 
       page copy 1,0,B
+      Pause 20
 
       posn = posn + .1
 

@@ -1,9 +1,16 @@
 ChangeLog
 ---------
 
-Version 1.0.2 - Under development:
+Version 1.0.2 - 5-Dec-2023:
+ - For firmware 5.07.00 or later.
+ - This is a maintenance release, it contains the same catalogue of
+   programs as Version 1.0.0.
  - Updated "Minesweeper" to version 1.0.2
    - fixed bug where using the lower-case 'a' key to move left did not work.
+ - Updated timings on splash screen.
+ - Updated firmware version sanitisation.
+ - Updated menu to use menu_quit() instead of quit() as a SUB name; the latter
+   is a keyword in MMBasic for Windows and MMBasic for Linux (MMB4L).
 
 Version 1.0.1 - 16-Aug-2021:
  - For firmware 5.07.00 or later.
