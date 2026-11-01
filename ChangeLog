@@ -1,6 +1,19 @@
 ChangeLog
 ---------
 
+Version 1.0.3 - 1-Nov-2026:
+ - For firmware 5.07.00 or later.
+ - This is a maintenance release, it contains the same catalogue of
+   programs as Version 1.0.0.
+ - Miscellaneous fixes by Peter Mather:
+   - Fixed bug in "Minesweeper" where seven-segment "1" was incorrectly lit.
+   - Fixed bug in "Pirate Adventure" where cancelling a SAVE would try to save
+     to a file with no name and crash.
+   - Fixed harmless syntax mistake in "Lunar Lander" where several TEXT commands
+     had stray closing brackets.
+   - Fixed harmless syntax mistake in 'splash.inc' where there was a stray
+     semi-colon after call to we.clear_keyboard_buffer().
+
 Version 1.0.2 - 5-Dec-2023:
  - For firmware 5.07.00 or later.
  - This is a maintenance release, it contains the same catalogue of

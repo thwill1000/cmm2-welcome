@@ -1,6 +1,6 @@
 ' Author: Thomas Hugo Williams
 
-Const WE.VERSION$ = "Version 1.0.2"
+Const WE.VERSION$ = "Version 1.0.3"
 Const WE.PROG_DIR$ = we.get_parent$(Mm.Info$(Current))
 Const WE.INSTALL_DIR$ = we.get_install_dir$()
 Const WE.QUIT_KEY$ = "Q"
@@ -10,8 +10,14 @@ Dim we.quit% = 0
 Sub we.check_firmware_version(v$)
   If v$ = "" Then v$ = "5.07.00"
 
-  Local actual$ = we.sanitise_firmware_version$(Str$(Mm.Info(Version)))
-  Local desired$ = we.sanitise_firmware_version$(v$)
+  If Mm.Info(Device X) = "MMB4L" Then
+    ' Hack around MMB4L's different version numbering
+    ' by just reporting expected version.
+    Const actual$ = we.sanitise_firmware_version$(v$)
+  Else
+    Const actual$ = we.sanitise_firmware_version$(Str$(Mm.Info(Version)))
+  EndIf
+  Const desired$ = we.sanitise_firmware_version$(v$)
 
   If actual$ < desired$ Then
     Cls
