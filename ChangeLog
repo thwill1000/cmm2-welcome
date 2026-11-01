@@ -1,6 +1,13 @@
 ChangeLog
 ---------
 
+Version 1.0.3 - 1-Nov-2026:
+ - For firmware 5.07.00 or later.
+ - This is a maintenance release, it contains the same catalogue of
+   programs as Version 1.0.0.
+ - Miscellaneous fixes by Peter Mather:
+   - ...
+
 Version 1.0.2 - 5-Dec-2023:
  - For firmware 5.07.00 or later.
  - This is a maintenance release, it contains the same catalogue of
