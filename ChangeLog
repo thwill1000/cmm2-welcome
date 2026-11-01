@@ -9,6 +9,8 @@ Version 1.0.3 - 1-Nov-2026:
    - Fixed bug in "Minesweeper" where seven-segment "1" was incorrectly lit.
    - Fixed harmless syntax mistake in "Lunar Lander" where several TEXT commands
      had stray closing brackets.
+   - Fixed harmless syntax mistake in 'splash.inc' where there was a stray
+     semi-colon after call to we.clear_keyboard_buffer().
 
 Version 1.0.2 - 5-Dec-2023:
  - For firmware 5.07.00 or later.

@@ -62,7 +62,7 @@ Sub splash()
   page write 1
   cls_vga()
 
-  we.clear_keyboard_buffer();
+  we.clear_keyboard_buffer()
 
   ' paint the coloured swatches, one by one
   Const PAINT_SPEED = 3
