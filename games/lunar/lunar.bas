@@ -1,7 +1,8 @@
-  ' LunarLander2v74.BAS
   ' Lunar Lander For Nostalganauts
   ' Written for the Colour Maximite 2 by Vegipete, August 2020
   '
+  ' v76 - Peter Mather:
+  '     - removed stray closing brackets from TEXT commands.
   ' v75 - thwill:
   '     - updated to run on firmware 5.06.00 and tidied up Help overlay code
   ' v74 - Vegipete:
@@ -281,26 +282,26 @@
                 TEXT xlander+20,ylander-15,"Success!","CT",4,1,rgb(green)
                 PlaySound$ = "EagleLanded.wav"
               ELSE
-                TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
+                TEXT xlander+20,ylander-40,"Crash!","CT",4,1,rgb(red)
                 ctxt$ = "Too fast."
-                TEXT xlander+20,ylander-15),ctxt$,"CT",4,1, RGB(WHITE)
+                TEXT xlander+20,ylander-15,ctxt$,"CT",4,1, RGB(WHITE)
                 PlaySound$ = "crash.wav"
               END IF
             ELSEIF rlander < 6 OR rlander > 68 THEN     ' close to vertical?
-              TEXT xlander+20,ylander-65),"Crumple!","CT",4,1,rgb(red)
-              TEXT xlander+20,ylander-40),"Not quite level enough.","CT",4,1, RGB(WHITE)
-              TEXT xlander+20,ylander-15),"Maybe rescue will arrive in time.","CT",1,1, RGB(WHITE)
+              TEXT xlander+20,ylander-65,"Crumple!","CT",4,1,rgb(red)
+              TEXT xlander+20,ylander-40,"Not quite level enough.","CT",4,1, RGB(WHITE)
+              TEXT xlander+20,ylander-15,"Maybe rescue will arrive in time.","CT",1,1, RGB(WHITE)
               PlaySound$ = "crumple.wav"
             ELSE
-              TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
+              TEXT xlander+20,ylander-40,"Crash!","CT",4,1,rgb(red)
               ctxt$ = "Too far off level."
-              TEXT xlander+20,ylander-15),ctxt$,"CT",4,1, RGB(WHITE)
+              TEXT xlander+20,ylander-15,ctxt$,"CT",4,1, RGB(WHITE)
               PlaySound$ = "crash.wav"
             END IF
           ELSE
-            TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
+            TEXT xlander+20,ylander-40,"Crash!","CT",4,1,rgb(red)
             ctxt$ = "Missed the pad."
-            TEXT xlander+20,ylander-15),ctxt$,"CT", 4,1, RGB(WHITE)
+            TEXT xlander+20,ylander-15,ctxt$,"CT", 4,1, RGB(WHITE)
             PlaySound$ = "crash.wav"
           END IF
           PAGE COPY 1,0,D
@@ -658,8 +659,8 @@ sub Kaboom  ' Sudden unexpected violent disassembly
       endif
     next j
 
-    TEXT xlander+20,ylander-40),"Crash!","CT",4,1,rgb(red)
-    TEXT xlander+20,ylander-15),ctxt$,"CT",4,1, RGB(WHITE)
+    TEXT xlander+20,ylander-40,"Crash!","CT",4,1,rgb(red)
+    TEXT xlander+20,ylander-15,ctxt$,"CT",4,1, RGB(WHITE)
 
     pause 20
 

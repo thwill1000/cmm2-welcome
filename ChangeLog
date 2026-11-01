@@ -7,6 +7,8 @@ Version 1.0.3 - 1-Nov-2026:
    programs as Version 1.0.0.
  - Miscellaneous fixes by Peter Mather:
    - Fixed bug in "Minesweeper" where seven-segment "1" was incorrectly lit.
+   - Fixed harmless syntax mistake in "Lunar Lander" where several TEXT commands
+     had stray closing brackets.
 
 Version 1.0.2 - 5-Dec-2023:
  - For firmware 5.07.00 or later.
