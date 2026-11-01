@@ -6,6 +6,8 @@
 ' Rev 1.0.2 Thomas H. Williams 2-Nov-2021
 '  fixed bug where using the lower-case 'a' key to move left did not
 '  work.
+' Rev 1.0.3 Peter Mather 1-Nov-2026
+'  fixed bug where seven-segment "1" was incorrectly lit.
 '---------------------------------------------------------------------
 
 option default integer
@@ -1193,7 +1195,7 @@ data SS, SDISH-SS, SDISW-SS, SDISH-SS, SDISW-SS-SEGW, SDISH-SS-SEGW, SS+SEGW, SD
 
 ' Seven-segment activation list for numbers 0 through 9
 data 1, 1, 1, 0, 1, 1, 1
-data 0, 1, 0, 0, 1, 0, 0
+data 0, 0, 1, 0, 0, 1, 0
 data 1, 0, 1, 1, 1, 0, 1
 data 1, 0, 1, 1, 0, 1, 1
 data 0, 1, 1, 1, 0, 1, 0
