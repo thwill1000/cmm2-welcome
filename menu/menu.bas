@@ -22,7 +22,7 @@ Play MP3 WE.PROG_DIR$ + "/TweakerRaySpaceFlight-160kb.mp3"
 Dim menu_label$ = Mm.CmdLine$
 If menu_label$ = "" Then
   menu_label$ = "menu_top"
-  splash()
+  If Mm.Info(Device X) <> "MMB4L" Then splash()
 EndIf
 
 ' Load CMM2 logo.
