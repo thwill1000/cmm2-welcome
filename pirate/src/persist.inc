@@ -25,7 +25,7 @@ Function do_save()
     If s$ = "" Then game = 0
   EndIf
 
-  If game = 0 Then con.println("Cancelled.") Exit Function
+  If game = 0 Then con.println("Cancelled.") : Exit Function
 
   con.println("Saving '" + f$ + "' ...")
 
